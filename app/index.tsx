@@ -4,9 +4,9 @@ import { tw } from "@/utils/tailwind";
 
 const Index = () => {
   return (
-    <View style={tw.style("items-center justify-center flex-1")}>
+    <View style={tw.style("items-center justify-center flex-1 bg-undertone")}>
       <Text
-        style={tw.style("text-sky-300 font-semibold tracking-widest text-xl")}
+        style={tw.style("text-secondary font-bold tracking-widest text-xl")}
       >
         Hello World
       </Text>
