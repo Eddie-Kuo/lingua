@@ -11,10 +11,18 @@ const Index = () => {
           resizeMode="contain"
           style={tw.style("w-64 h-52")}
         />
-        <Text style={tw.style("text-white font-bold tracking-widest text-xl")}>
+        <Text
+          style={tw.style(
+            "text-highlight font-semibold tracking-widest text-3xl"
+          )}
+        >
           Lingua
         </Text>
-        <Text style={tw.style("text-white font-bold tracking-widest text-xl")}>
+        <Text
+          style={tw.style(
+            "text-highlightAccent font-medium tracking-widest text-xl"
+          )}
+        >
           Speak Freely, Text Clearly
         </Text>
       </View>
