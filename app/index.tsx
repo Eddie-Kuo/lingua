@@ -1,8 +1,7 @@
 import { View, Text, Image, Button, Pressable } from "react-native";
 import React from "react";
-// import { tw } from "@/utils/tailwind";
+import { tw } from "@/utils/tailwind";
 import { Link } from "expo-router";
-import tw from "twrnc";
 
 const Index = () => {
   return (
