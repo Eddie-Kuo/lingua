@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import { Link, useRouter } from "expo-router";
 import ActionButton from "@/components/ActionButton";
+import { supabase } from "@/utils/supabase";
 
 const SignUp = () => {
   const [phone, setPhone] = useState<string>("");
@@ -18,7 +19,24 @@ const SignUp = () => {
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 80 : 0;
 
-  const handleSignIn = () => {};
+  const handleSignIn = async () => {
+    const fullPhoneNumber = `${areaCode}${phone}`;
+
+    try {
+      await supabase.auth.signInWithOtp({
+        phone: fullPhoneNumber,
+      });
+
+      router.push({
+        pathname: "/verify/[phone]",
+        params: { phone: fullPhoneNumber },
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log("Error: ", error.message);
+      }
+    }
+  };
 
   return (
     <KeyboardAvoidingView

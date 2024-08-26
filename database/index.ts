@@ -6,7 +6,7 @@ import * as users from "./schemas/users";
 
 config({ path: ".env" }); // or .env.local
 
-const connectionString = process.env.EXPO_PUBLIC_SUPABASE_URL;
+const connectionString = process.env.EXPO_PUBLIC_DRIZZLE_CONNECTION_POOLER;
 
 export const client = postgres(connectionString!, { prepare: false });
 
