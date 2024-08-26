@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { tw } from "@/utils/tailwind";
 import { Link, useRouter } from "expo-router";
+import AuthActionButton from "@/components/AuthActionButton";
 
 const SignUp = () => {
   const [phone, setPhone] = useState<string>("");
@@ -64,15 +65,7 @@ const SignUp = () => {
         <View style={tw.style("flex-1")} />
 
         <View style={tw.style("absolute bottom-10 w-[100%] items-center")}>
-          <Pressable
-            onPress={handleSignIn}
-            style={tw.style(
-              "w-[90%] items-center rounded-full bg-highlightAccent py-3",
-            )}>
-            <Text style={tw.style("text-lg font-semibold text-white")}>
-              Sign Up
-            </Text>
-          </Pressable>
+          <AuthActionButton onPress={handleSignIn}>Sign In</AuthActionButton>
         </View>
       </View>
     </KeyboardAvoidingView>
