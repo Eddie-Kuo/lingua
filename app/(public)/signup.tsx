@@ -3,15 +3,13 @@ import {
   Text,
   KeyboardAvoidingView,
   TextInput,
-  TouchableOpacity,
   Platform,
   Pressable,
 } from "react-native";
 import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
 import { tw } from "@/utils/tailwind";
 import { Link, useRouter } from "expo-router";
-import AuthActionButton from "@/components/AuthActionButton";
+import ActionButton from "@/components/ActionButton";
 
 const SignUp = () => {
   const [phone, setPhone] = useState<string>("");
@@ -65,7 +63,7 @@ const SignUp = () => {
         <View style={tw.style("flex-1")} />
 
         <View style={tw.style("absolute bottom-10 w-[100%] items-center")}>
-          <AuthActionButton onPress={handleSignIn}>Sign In</AuthActionButton>
+          <ActionButton onPress={handleSignIn}>Sign In</ActionButton>
         </View>
       </View>
     </KeyboardAvoidingView>
