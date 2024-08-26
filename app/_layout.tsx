@@ -1,8 +1,5 @@
-import { ClerkProvider } from "@clerk/clerk-expo";
 import { Slot } from "expo-router";
 import * as SecureStore from "expo-secure-store";
-
-const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 const tokenCache = {
   async getToken(key: string) {
@@ -26,13 +23,7 @@ const InitialLayout = () => {
 };
 
 const RootLayout = () => {
-  return (
-    <ClerkProvider
-      publishableKey={CLERK_PUBLISHABLE_KEY!}
-      tokenCache={tokenCache}>
-      <InitialLayout />
-    </ClerkProvider>
-  );
+  return <InitialLayout />;
 };
 
 export default RootLayout;
