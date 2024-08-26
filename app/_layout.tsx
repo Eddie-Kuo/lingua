@@ -18,8 +18,8 @@ const InitialLayout = () => {
     if (session && isAuthGroup) {
       router.replace("/(authenticated)");
     } else if (!session) {
-      return;
-      // router.replace("/(public)");
+      router.replace("/(public)/signup");
+      // return;
     }
   }, [session, initialized]);
 

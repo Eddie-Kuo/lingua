@@ -9,6 +9,5 @@ export default defineConfig({
   dialect: "postgresql",
   dbCredentials: {
     url: process.env.EXPO_PUBLIC_SUPABASE_URL!,
-    password: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!,
   },
 });

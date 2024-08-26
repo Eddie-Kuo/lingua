@@ -32,7 +32,7 @@ const Index = () => {
         <Link asChild href={"/(public)"}>
           <Pressable
             style={tw.style(
-              "w-[80%] items-center rounded-full bg-highlightAccent py-3",
+              "w-[90%] items-center rounded-full bg-highlightAccent py-3",
             )}>
             <Text style={tw.style("text-lg font-semibold text-white")}>
               Start Messaging
