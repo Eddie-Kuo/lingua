@@ -27,15 +27,6 @@ const SignUp = () => {
         phone: fullPhoneNumber,
       });
 
-      //* after verification - we want to check if user instance is in database
-
-      //* if this is the first time a user is signing in, we want to create a database instance
-      //* route the user to onboarding
-
-      //* if the user is a returning user we want to directly route them to dashboard
-
-      console.log("SESSION: ", session);
-
       router.push({
         pathname: "/verify/[phone]",
         params: { phone: fullPhoneNumber },

@@ -8,6 +8,7 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 import { supabase } from "@/utils/supabase";
+import { getUserByPhoneNumber } from "@/database/queries/user";
 
 const PhoneVerification = () => {
   const { phone } = useLocalSearchParams<{ phone: string }>();
@@ -34,9 +35,18 @@ const PhoneVerification = () => {
         type: "sms",
       });
 
-      console.log("SESSION: ", session);
+      //* after verification - we want to check if user instance is in database
 
-      router.replace("/(authenticated)");
+      const data = await getUserByPhoneNumber(phone);
+      if (data?.error === "Phone number not in database") {
+        //* if this is the first time a user is signing in, we want to create a database instance
+        //* route the user to onboarding
+      }
+
+      if (data?.success) {
+        //* if the user is a returning user we want to directly route them to dashboard
+        router.replace("/(authenticated)");
+      }
     } catch (error) {
       if (error instanceof Error) {
         console.log("Error: ", error.message);
