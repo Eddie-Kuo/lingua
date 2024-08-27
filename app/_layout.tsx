@@ -19,7 +19,7 @@ const InitialLayout = () => {
       router.replace("/(authenticated)");
     } else if (!session) {
       // router.replace("/verify/+18327557675");
-      router.replace("/(public)/signup");
+      router.replace("/");
       // return;
     }
   }, [session, initialized]);

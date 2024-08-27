@@ -1,11 +1,13 @@
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
 import { Session } from "@supabase/supabase-js";
 import { tw } from "@/utils/tailwind";
+import { useAuth } from "@/context/AuthProvider";
 
 const Home = () => {
   const [session, setSession] = useState<Session | null>(null);
+  const { signOut } = useAuth();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -20,6 +22,7 @@ const Home = () => {
   return (
     <View style={tw.style("flex-1 items-center justify-center")}>
       {session && session.user && <Text>{session.user.id}</Text>}
+      <Button title="sign out" onPress={signOut}></Button>
     </View>
   );
 };
