@@ -1,11 +1,14 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Button } from "react-native";
 import React from "react";
 import { tw } from "@/utils/tailwind";
 import { useRouter } from "expo-router";
 import ActionButton from "@/components/ActionButton";
+import { getUserByPhoneNumber } from "@/database/queries/user";
+// import { getUserById } from "@/database/queries/user";
 
 const Index = () => {
   const router = useRouter();
+
   return (
     <View
       style={tw.style(
@@ -34,6 +37,10 @@ const Index = () => {
         <ActionButton onPress={() => router.push("/(public)/signup")}>
           Start Messaging
         </ActionButton>
+        <Button
+          title="get user"
+          onPress={() => getUserByPhoneNumber("+18327557675")}
+        />
       </View>
     </View>
   );
