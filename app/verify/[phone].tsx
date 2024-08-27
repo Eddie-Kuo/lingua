@@ -1,20 +1,49 @@
 import { View, Text } from "react-native";
-import React, { Fragment, useState } from "react";
-import { useLocalSearchParams } from "expo-router";
+import React, { Fragment, useEffect, useState } from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { tw } from "@/utils/tailwind";
 import {
   CodeField,
   Cursor,
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
+import { supabase } from "@/utils/supabase";
 
 const PhoneVerification = () => {
   const { phone } = useLocalSearchParams<{ phone: string }>();
+  const router = useRouter();
   const [code, setCode] = useState("");
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value: code,
     setValue: setCode,
   });
+
+  useEffect(() => {
+    if (code.length === 6) {
+      verifyCode();
+    }
+  }, [code]);
+
+  const verifyCode = async () => {
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.verifyOtp({
+        phone: phone,
+        token: code,
+        type: "sms",
+      });
+
+      console.log("SESSION: ", session);
+
+      router.replace("/(authenticated)");
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log("Error: ", error.message);
+      }
+    }
+  };
+
   return (
     <View style={tw.style("flex-1 gap-3 bg-secondary p-3")}>
       <Text style={tw.style("text-5xl font-semibold text-highlightAccent")}>
