@@ -1,3 +1,4 @@
+import { getUserByPhoneNumber } from "@/database/queries/user";
 import { supabase } from "@/utils/supabase";
 import { Session, User } from "@supabase/supabase-js";
 import {
@@ -13,6 +14,7 @@ type AuthProps = {
   session: Session | null;
   initialized?: boolean;
   signOut?: () => void;
+  isFirstTimeUser?: boolean;
 };
 
 // Initialize react context
@@ -27,6 +29,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>();
   const [session, setSession] = useState<Session | null>(null);
   const [initialized, setInitialized] = useState<boolean>(false);
+  const [isFirstTimeUser, setIsFirstTimeUser] = useState<boolean>(true);
 
   useEffect(() => {
     // Listen for changes to authentication state
@@ -41,6 +44,23 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    const getUserStatus = async () => {
+      const data = await getUserByPhoneNumber(user.phone!);
+
+      // user is in database
+      if (data?.success) {
+        console.log(data.success);
+        setIsFirstTimeUser(false);
+      }
+    };
+    getUserStatus();
+  }, [user, session]);
+
   // Log out the user
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -51,6 +71,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     session,
     initialized,
     signOut,
+    isFirstTimeUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

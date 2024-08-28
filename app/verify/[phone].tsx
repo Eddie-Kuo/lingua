@@ -35,16 +35,16 @@ const PhoneVerificationScreen = () => {
         type: "sms",
       });
 
-      //* after verification - we want to check if user instance is in database
-
-      const data = await getUserByPhoneNumber(phone);
-      if (data?.error === "Phone number not in database") {
-        //* if this is the first time a user is signing in, we want to create a database instance
-        //* route the user to onboarding
+      // after verification - we want to check if user instance is in database
+      const userStatus = await getUserByPhoneNumber(session!.user!.phone!);
+      if (userStatus?.error === "Phone number not in database") {
+        // if this is the first time a user is signing in, we want to create a database instance
+        // route the user to onboarding
+        router.replace("/(onboarding)");
       }
 
-      if (data?.success) {
-        //* if the user is a returning user we want to directly route them to dashboard
+      if (userStatus?.success) {
+        // if the user is a returning user we want to directly route them to dashboard
         router.replace("/(authenticated)");
       }
     } catch (error) {
