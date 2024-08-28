@@ -5,7 +5,7 @@ import { Session } from "@supabase/supabase-js";
 import { tw } from "@/utils/tailwind";
 import { useAuth } from "@/context/AuthProvider";
 
-const Home = () => {
+const HomeScreen = () => {
   const [session, setSession] = useState<Session | null>(null);
   const { signOut } = useAuth();
 
@@ -27,4 +27,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeScreen;

@@ -10,7 +10,7 @@ import {
 import { supabase } from "@/utils/supabase";
 import { getUserByPhoneNumber } from "@/database/queries/user";
 
-const PhoneVerification = () => {
+const PhoneVerificationScreen = () => {
   const { phone } = useLocalSearchParams<{ phone: string }>();
   const router = useRouter();
   const [code, setCode] = useState("");
@@ -96,4 +96,4 @@ const PhoneVerification = () => {
   );
 };
 
-export default PhoneVerification;
+export default PhoneVerificationScreen;

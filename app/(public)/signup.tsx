@@ -12,7 +12,7 @@ import { Link, useRouter } from "expo-router";
 import ActionButton from "@/components/ActionButton";
 import { supabase } from "@/utils/supabase";
 
-const SignUp = () => {
+const SignUpScreen = () => {
   const [phone, setPhone] = useState<string>("");
   const [areaCode, setAreaCode] = useState<string>("+1");
   const router = useRouter();
@@ -88,4 +88,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUpScreen;
