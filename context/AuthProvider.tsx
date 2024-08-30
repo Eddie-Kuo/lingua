@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
       // user is in database
       if (data?.success) {
-        console.log(data.success);
+        console.log("Returning user Information: ", data.success);
         setIsFirstTimeUser(false);
       }
     };

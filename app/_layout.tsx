@@ -21,6 +21,9 @@ const InitialLayout = () => {
       // router.replace("/verify/+18327557675");
       router.replace("/");
       // return;
+      //* Dev purposes to get to onboarding screen
+    } else if (session) {
+      router.replace("/(onboarding)");
     }
   }, [session, initialized]);
 
