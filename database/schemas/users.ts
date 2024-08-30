@@ -6,7 +6,6 @@ export const usersTable = pgTable("users", {
   firstName: text("first_name").notNull(),
   lastName: text("last_name").notNull(),
   picURL: text("pic_url"),
-  username: text("username").unique(),
   selectedLanguage: text("selectedLanguage").notNull(),
 });
 
