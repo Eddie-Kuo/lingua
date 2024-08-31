@@ -48,7 +48,8 @@ const SignUpScreen = () => {
           Let's get started!
         </Text>
         <Text style={tw.style("text-undertone")}>
-          Enter your phone number. We will send you a confirmation code there
+          Enter your phone number. Whether you're a new or returning user, we
+          will send you a confirmation code to verify your device.
         </Text>
         <View style={tw.style("mt-4 flex-row gap-3")}>
           <TextInput
@@ -69,16 +70,6 @@ const SignUpScreen = () => {
             placeholderTextColor="grey"
           />
         </View>
-
-        <Link href={"/"} replace asChild style={tw.style("flex-row gap-1")}>
-          <Pressable>
-            <Text style={tw.style("text-white")}>Already have an account?</Text>
-            <Text style={tw.style("font-semibold text-highlightAccent")}>
-              Log In
-            </Text>
-          </Pressable>
-        </Link>
-        <View style={tw.style("flex-1")} />
 
         <View style={tw.style("absolute bottom-10 w-[100%] items-center")}>
           <ActionButton onPress={handleSignIn}>Sign In</ActionButton>
