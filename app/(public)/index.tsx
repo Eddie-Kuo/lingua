@@ -1,22 +1,62 @@
-import { View, Text, TextInput, Image } from "react-native";
-import React from "react";
+import { View, Text, TextInput, Image, StyleSheet } from "react-native";
+import React, { useState } from "react";
 import ActionButton from "@/components/ActionButton";
 import { tw } from "@/utils/tailwind";
+import { Dropdown } from "react-native-element-dropdown";
+import AntDesign from "@expo/vector-icons/AntDesign";
+
+const languages = [
+  { label: "English" },
+  { label: "Spanish" },
+  { label: "Mandarin" },
+];
 
 const LanguageSelection = () => {
+  const [value, setValue] = useState<string>("");
+  const [isFocus, setIsFocus] = useState(false);
+
   return (
     <View style={tw.style("flex-1 gap-4 bg-secondary p-3")}>
       <Text style={tw.style("text-5xl font-semibold text-highlightAccent")}>
         Let's get started!
       </Text>
 
-      <Text style={tw.style("text-mg font-medium leading-5 text-undertone")}>
-        Start by selecting the language of choice you're most comfortable with
-        texting! The language you select will reflect the language used
-        throughout the app and the language in which the messages you will
-        receive.
+      <Text style={tw.style("text-lg font-medium leading-6 text-undertone")}>
+        Start by selecting the language of choice you're most comfortable with!
+        {"\n"}
+        {"\n"}
+        The language you select will reflect the language used throughout the
+        app and the language in which the messages you will receive.
       </Text>
-      <View style={tw.style("mt-4 flex-row gap-3")}></View>
+      <View style={tw.style("w-full")}>
+        <Dropdown
+          style={tw.style(
+            "h-12 rounded-lg border-[0.5px] border-undertone px-3",
+            isFocus && "border-highlightAccent",
+          )}
+          placeholderStyle={tw.style("text-undertone")}
+          placeholder="Select Language"
+          selectedTextStyle={tw.style("text-undertone")}
+          data={languages}
+          maxHeight={300}
+          labelField="label"
+          valueField="label"
+          value={value}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={(item) => {
+            setValue(item.label);
+          }}
+          renderLeftIcon={() => (
+            <AntDesign
+              style={tw.style("mr-2")}
+              color={"#E6EFF5"}
+              name="wechat"
+              size={20}
+            />
+          )}
+        />
+      </View>
 
       <View style={tw.style("absolute bottom-10 w-[100%] items-center")}>
         <ActionButton onPress={() => {}}>Continue</ActionButton>
