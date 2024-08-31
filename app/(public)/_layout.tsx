@@ -9,6 +9,7 @@ const PublicLayout = () => {
         title: "",
         headerBackTitle: "",
         headerShadowVisible: false,
+        headerTintColor: "#E6EFF5",
         headerStyle: {
           backgroundColor: "#274560",
         },

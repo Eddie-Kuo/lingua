@@ -45,9 +45,9 @@ const SignUpScreen = () => {
       keyboardVerticalOffset={keyboardVerticalOffset}>
       <View style={tw.style("flex-1 gap-4 p-3")}>
         <Text style={tw.style("text-5xl font-semibold text-highlightAccent")}>
-          Let's get started!
+          Time to Verify!
         </Text>
-        <Text style={tw.style("text-undertone")}>
+        <Text style={tw.style("text-lg text-undertone")}>
           Enter your phone number. Whether you're a new or returning user, we
           will send you a confirmation code to verify your device.
         </Text>
@@ -72,7 +72,7 @@ const SignUpScreen = () => {
         </View>
 
         <View style={tw.style("absolute bottom-10 w-[100%] items-center")}>
-          <ActionButton onPress={handleSignIn}>Sign In</ActionButton>
+          <ActionButton onPress={handleSignIn}>Request Code</ActionButton>
         </View>
       </View>
     </KeyboardAvoidingView>

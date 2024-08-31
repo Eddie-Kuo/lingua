@@ -4,6 +4,7 @@ import ActionButton from "@/components/ActionButton";
 import { tw } from "@/utils/tailwind";
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { useRouter } from "expo-router";
 
 const languages = [
   { label: "English" },
@@ -12,6 +13,7 @@ const languages = [
 ];
 
 const LanguageSelection = () => {
+  const router = useRouter();
   const [value, setValue] = useState<string>("");
   const [isFocus, setIsFocus] = useState(false);
 
@@ -59,7 +61,9 @@ const LanguageSelection = () => {
       </View>
 
       <View style={tw.style("absolute bottom-10 w-[100%] items-center")}>
-        <ActionButton onPress={() => {}}>Continue</ActionButton>
+        <ActionButton onPress={() => router.push("/signup")}>
+          Continue
+        </ActionButton>
       </View>
     </View>
   );
