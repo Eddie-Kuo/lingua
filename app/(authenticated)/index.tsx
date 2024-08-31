@@ -1,12 +1,30 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { View, Text, Button } from "react-native";
+import React, { useEffect, useState } from "react";
+import { supabase } from "@/utils/supabase";
+import { Session } from "@supabase/supabase-js";
+import { tw } from "@/utils/tailwind";
+import { useAuth } from "@/context/AuthProvider";
 
-const Home = () => {
+const HomeScreen = () => {
+  const [session, setSession] = useState<Session | null>(null);
+  const { signOut } = useAuth();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
+
   return (
-    <View>
-      <Text>Home</Text>
+    <View style={tw.style("flex-1 items-center justify-center")}>
+      {session && session.user && <Text>{session.user.id}</Text>}
+      <Button title="sign out" onPress={signOut}></Button>
     </View>
   );
 };
 
-export default Home;
+export default HomeScreen;

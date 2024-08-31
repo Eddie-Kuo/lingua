@@ -1,0 +1,1 @@
+ALTER TABLE "users" RENAME COLUMN "selectedLanguage" TO "selected_language";

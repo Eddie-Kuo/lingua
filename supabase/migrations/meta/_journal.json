@@ -15,6 +15,20 @@
       "when": 1724687365762,
       "tag": "0001_demonic_mongu",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1724986030214,
+      "tag": "0002_fantastic_arachne",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1724986130159,
+      "tag": "0003_ambiguous_spyke",
+      "breakpoints": true
     }
   ]
 }

@@ -1,9 +1,12 @@
-import { View, Text, Image, Button, Pressable } from "react-native";
+import { View, Text, Image } from "react-native";
 import React from "react";
 import { tw } from "@/utils/tailwind";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
+import ActionButton from "@/components/ActionButton";
 
 const Index = () => {
+  const router = useRouter();
+
   return (
     <View
       style={tw.style(
@@ -29,16 +32,9 @@ const Index = () => {
         </Text>
       </View>
       <View style={tw.style("absolute bottom-10 w-[100%] items-center")}>
-        <Link asChild href={"/(public)"}>
-          <Pressable
-            style={tw.style(
-              "w-[80%] items-center rounded-full bg-highlightAccent py-3",
-            )}>
-            <Text style={tw.style("text-lg font-semibold text-white")}>
-              Start Messaging
-            </Text>
-          </Pressable>
-        </Link>
+        <ActionButton onPress={() => router.push("/(public)/signup")}>
+          Start Messaging
+        </ActionButton>
       </View>
     </View>
   );
