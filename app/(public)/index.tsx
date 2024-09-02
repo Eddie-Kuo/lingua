@@ -5,22 +5,18 @@ import { tw } from "@/utils/tailwind";
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useRouter } from "expo-router";
+import useLanguageStore from "@/store/languageStore";
+import { Language } from "@/utils/types/type";
 
-const languages: LanguageOptions[] = [
+const languages: Language[] = [
   { language: "English" },
   { language: "Spanish" },
   { language: "Mandarin" },
 ];
 
-export type LanguageOptions = {
-  language: "English" | "Spanish" | "Mandarin";
-};
-
 const LanguageSelection = () => {
   const router = useRouter();
-  const [targetLanguage, setTargetLanguage] = useState<LanguageOptions>({
-    language: "English",
-  });
+  const { language, setLanguage } = useLanguageStore();
   const [isFocus, setIsFocus] = useState(false);
 
   return (
@@ -49,11 +45,11 @@ const LanguageSelection = () => {
           maxHeight={300}
           labelField="language"
           valueField="language"
-          value={targetLanguage}
+          value={language}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
-          onChange={(item: LanguageOptions) => {
-            setTargetLanguage({ language: item.language });
+          onChange={(item: Language) => {
+            setLanguage({ language: item.language });
           }}
           renderLeftIcon={() => (
             <AntDesign
@@ -67,13 +63,7 @@ const LanguageSelection = () => {
       </View>
 
       <View style={tw.style("absolute bottom-10 w-[100%] items-center")}>
-        <ActionButton
-          onPress={() =>
-            router.push({
-              pathname: "/signup",
-              params: { language: targetLanguage.language },
-            })
-          }>
+        <ActionButton onPress={() => router.push("/signup")}>
           Continue
         </ActionButton>
       </View>

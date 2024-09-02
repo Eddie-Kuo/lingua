@@ -4,6 +4,7 @@ import { tw } from "@/utils/tailwind";
 import ActionButton from "@/components/ActionButton";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
+import useLanguageStore from "@/store/languageStore";
 
 const OnboardingScreen = () => {
   // onSubmit - populate database with user information including the phone number and the selected language
@@ -39,16 +40,20 @@ type UserInfo = {
 };
 
 function UserInfoForm() {
-  const { phone, language } = useLocalSearchParams<{
+  const { phone } = useLocalSearchParams<{
     phone: string;
     language: "English" | "Spanish" | "Mandarin";
   }>();
+
+  const { language } = useLanguageStore();
+  console.log("LANGUAGE FROM THE LANGUAGE STORE!!!", language);
+
   const [userInfo, setUserInfo] = useState<UserInfo>({
-    phoneNumber: "",
+    phoneNumber: phone,
     firstName: "",
     lastName: "",
     picURL: "",
-    selectedLanguage: language,
+    selectedLanguage: language.language,
   });
 
   const updateFirstName = (input: string) => {

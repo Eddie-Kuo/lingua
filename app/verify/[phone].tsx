@@ -53,6 +53,8 @@ const PhoneVerificationScreen = () => {
         // if the user is a returning user we want to directly route them to dashboard
         router.replace("/(authenticated)");
       }
+
+      //Todo: handle error when user enters the wrong otp
     } catch (error) {
       if (error instanceof Error) {
         console.log("Error: ", error.message);
