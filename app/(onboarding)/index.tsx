@@ -30,17 +30,31 @@ const OnboardingScreen = () => {
   );
 };
 
-// type UserInfo = {
-//   phoneNumber: string;
-//   firstName: string;
-//   lastName: string;
-//   picURL: string;
-//   selectedLanguage: "English" | "Spanish" | "Mandarin";
-// };
+type UserInfo = {
+  phoneNumber: string;
+  firstName: string;
+  lastName: string;
+  picURL: string;
+  selectedLanguage: "English" | "Spanish" | "Mandarin";
+};
 
 function UserInfoForm() {
-  const [userInfo, setUserInfo] = useState<User>();
+  const [userInfo, setUserInfo] = useState<UserInfo>({
+    phoneNumber: "",
+    firstName: "",
+    lastName: "",
+    picURL: "",
+    selectedLanguage: "English",
+  });
 
+  const updateFirstName = (input: string) => {
+    setUserInfo((prev) => ({ ...prev, firstName: input }));
+  };
+  const updateLastName = (input: string) => {
+    setUserInfo((prev) => ({ ...prev, firstName: input }));
+  };
+
+  console.log("USERINFO", userInfo);
   return (
     <View style={tw.style("flex-1 items-center gap-10")}>
       <View>
@@ -59,23 +73,20 @@ function UserInfoForm() {
       </View>
       <View style={tw.style("flex w-full gap-5")}>
         <TextInput
+          key={"firstName"}
+          onChangeText={updateFirstName}
           style={tw.style("w-full rounded-xl bg-undertone p-4")}
           placeholder="First Name (Required)"
           autoCorrect={false}
         />
         <TextInput
+          onChangeText={updateLastName}
           style={tw.style("w-full rounded-xl bg-undertone p-4")}
           placeholder="Last Name (Required)"
-          autoCorrect={false}
-        />
-        <TextInput
-          style={tw.style("w-full rounded-xl bg-undertone p-4")}
-          placeholder="Email"
           autoCorrect={false}
         />
       </View>
     </View>
   );
 }
-
 export default OnboardingScreen;
