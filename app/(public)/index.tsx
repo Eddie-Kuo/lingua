@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Image, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 import React, { useState } from "react";
 import ActionButton from "@/components/ActionButton";
 import { tw } from "@/utils/tailwind";

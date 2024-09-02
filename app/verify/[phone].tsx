@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React, { Fragment, useEffect, useState } from "react";
-import { useLocalSearchParams, usePathname, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { tw } from "@/utils/tailwind";
 import {
   CodeField,

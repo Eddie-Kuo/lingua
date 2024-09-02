@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import ActionButton from "@/components/ActionButton";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
 import useUserStore from "@/store/userStore";
 
 const OnboardingScreen = () => {
