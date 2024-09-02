@@ -5,7 +5,7 @@ import { tw } from "@/utils/tailwind";
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useRouter } from "expo-router";
-import useLanguageStore from "@/store/languageStore";
+import useUserStore from "@/store/userStore";
 import { Language } from "@/utils/types/type";
 
 const languages: Language[] = [
@@ -16,7 +16,7 @@ const languages: Language[] = [
 
 const LanguageSelection = () => {
   const router = useRouter();
-  const { language, setLanguage } = useLanguageStore();
+  const { language, setLanguage } = useUserStore();
   const [isFocus, setIsFocus] = useState(false);
 
   return (

@@ -1,14 +1,18 @@
 import { Language } from "@/utils/types/type";
 import { create } from "zustand";
 
-type LanguageStore = {
+type UserStore = {
   language: Language;
+  phoneNumber: string;
   setLanguage: (language: Language) => void;
+  setPhoneNumber: (phone: string) => void;
 };
 
-const useLanguageStore = create<LanguageStore>((set) => ({
+const useUserStore = create<UserStore>((set) => ({
   language: { language: "English" },
+  phoneNumber: "",
   setLanguage: (lang: Language) => set({ language: lang }),
+  setPhoneNumber: (phone: string) => set({ phoneNumber: phone }),
 }));
 
-export default useLanguageStore;
+export default useUserStore;

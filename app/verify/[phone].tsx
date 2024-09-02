@@ -9,11 +9,11 @@ import {
 } from "react-native-confirmation-code-field";
 import { supabase } from "@/utils/supabase";
 import { getUserByPhoneNumber } from "@/database/queries/user";
+import useUserStore from "@/store/userStore";
 
 const PhoneVerificationScreen = () => {
-  const { phone, language } = useLocalSearchParams<{
+  const { phone } = useLocalSearchParams<{
     phone: string;
-    language: string;
   }>();
   const router = useRouter();
   const [code, setCode] = useState("");
@@ -21,6 +21,7 @@ const PhoneVerificationScreen = () => {
     value: code,
     setValue: setCode,
   });
+  const { setPhoneNumber } = useUserStore();
 
   useEffect(() => {
     if (code.length === 6) {
@@ -43,10 +44,8 @@ const PhoneVerificationScreen = () => {
       if (userStatus?.error === "Phone number not in database") {
         // if this is the first time a user is signing in, we want to create a database instance
         // route the user to onboarding
-        router.replace({
-          pathname: "/(onboarding)",
-          params: { language: language },
-        });
+        setPhoneNumber(phone);
+        router.replace("/(onboarding)");
       }
 
       if (userStatus?.success) {
