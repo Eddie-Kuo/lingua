@@ -4,17 +4,17 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Platform,
-  Pressable,
 } from "react-native";
 import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
-import { Link, useRouter } from "expo-router";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import ActionButton from "@/components/ActionButton";
 import { supabase } from "@/utils/supabase";
 
 const SignUpScreen = () => {
   const [phone, setPhone] = useState<string>("");
   const [areaCode, setAreaCode] = useState<string>("+1");
+  const { language } = useLocalSearchParams<{ language: string }>();
   const router = useRouter();
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 80 : 0;
@@ -29,7 +29,7 @@ const SignUpScreen = () => {
 
       router.push({
         pathname: "/verify/[phone]",
-        params: { phone: fullPhoneNumber },
+        params: { phone: fullPhoneNumber, language: language },
       });
     } catch (error) {
       if (error instanceof Error) {

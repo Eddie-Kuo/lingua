@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React, { Fragment, useEffect, useState } from "react";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, usePathname, useRouter } from "expo-router";
 import { tw } from "@/utils/tailwind";
 import {
   CodeField,
@@ -11,7 +11,10 @@ import { supabase } from "@/utils/supabase";
 import { getUserByPhoneNumber } from "@/database/queries/user";
 
 const PhoneVerificationScreen = () => {
-  const { phone } = useLocalSearchParams<{ phone: string }>();
+  const { phone, language } = useLocalSearchParams<{
+    phone: string;
+    language: string;
+  }>();
   const router = useRouter();
   const [code, setCode] = useState("");
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -40,7 +43,10 @@ const PhoneVerificationScreen = () => {
       if (userStatus?.error === "Phone number not in database") {
         // if this is the first time a user is signing in, we want to create a database instance
         // route the user to onboarding
-        router.replace("/(onboarding)");
+        router.replace({
+          pathname: "/(onboarding)",
+          params: { language: language },
+        });
       }
 
       if (userStatus?.success) {

@@ -6,15 +6,21 @@ import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useRouter } from "expo-router";
 
-const languages = [
-  { label: "English" },
-  { label: "Spanish" },
-  { label: "Mandarin" },
+const languages: LanguageOptions[] = [
+  { language: "English" },
+  { language: "Spanish" },
+  { language: "Mandarin" },
 ];
+
+export type LanguageOptions = {
+  language: "English" | "Spanish" | "Mandarin";
+};
 
 const LanguageSelection = () => {
   const router = useRouter();
-  const [value, setValue] = useState<string>("");
+  const [targetLanguage, setTargetLanguage] = useState<LanguageOptions>({
+    language: "English",
+  });
   const [isFocus, setIsFocus] = useState(false);
 
   return (
@@ -41,13 +47,13 @@ const LanguageSelection = () => {
           selectedTextStyle={tw.style("text-undertone")}
           data={languages}
           maxHeight={300}
-          labelField="label"
-          valueField="label"
-          value={value}
+          labelField="language"
+          valueField="language"
+          value={targetLanguage}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
-          onChange={(item) => {
-            setValue(item.label);
+          onChange={(item: LanguageOptions) => {
+            setTargetLanguage({ language: item.language });
           }}
           renderLeftIcon={() => (
             <AntDesign
@@ -61,7 +67,13 @@ const LanguageSelection = () => {
       </View>
 
       <View style={tw.style("absolute bottom-10 w-[100%] items-center")}>
-        <ActionButton onPress={() => router.push("/signup")}>
+        <ActionButton
+          onPress={() =>
+            router.push({
+              pathname: "/signup",
+              params: { language: targetLanguage.language },
+            })
+          }>
           Continue
         </ActionButton>
       </View>

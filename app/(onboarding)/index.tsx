@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import ActionButton from "@/components/ActionButton";
 import { Ionicons } from "@expo/vector-icons";
-import { User } from "@supabase/supabase-js";
+import { useLocalSearchParams } from "expo-router";
 
 const OnboardingScreen = () => {
   // onSubmit - populate database with user information including the phone number and the selected language
@@ -39,12 +39,16 @@ type UserInfo = {
 };
 
 function UserInfoForm() {
+  const { phone, language } = useLocalSearchParams<{
+    phone: string;
+    language: "English" | "Spanish" | "Mandarin";
+  }>();
   const [userInfo, setUserInfo] = useState<UserInfo>({
     phoneNumber: "",
     firstName: "",
     lastName: "",
     picURL: "",
-    selectedLanguage: "English",
+    selectedLanguage: language,
   });
 
   const updateFirstName = (input: string) => {
