@@ -4,33 +4,9 @@ import { tw } from "@/utils/tailwind";
 import ActionButton from "@/components/ActionButton";
 import { Ionicons } from "@expo/vector-icons";
 import useUserStore from "@/store/userStore";
+import { createUser } from "@/database/queries/user";
 
-const OnboardingScreen = () => {
-  // onSubmit - populate database with user information including the phone number and the selected language
-  const handleSubmit = () => {};
-
-  return (
-    <View style={tw.style("flex-1 gap-5 bg-secondary px-5")}>
-      <View>
-        <Text style={tw.style("text-4xl font-bold text-highlightAccent")}>
-          Set up your profile ✍🏻
-        </Text>
-        <Text style={tw.style("text-lg leading-5 text-zinc-300")}>
-          Let's set up your personal information that will be displayed on your
-          profile and to other users!
-        </Text>
-      </View>
-
-      <UserInfoForm />
-
-      <View style={tw.style("mb-10 w-[100%] items-center")}>
-        <ActionButton onPress={handleSubmit}>Submit</ActionButton>
-      </View>
-    </View>
-  );
-};
-
-type UserInfo = {
+export type UserInfo = {
   phoneNumber: string;
   firstName: string;
   lastName: string;
@@ -38,7 +14,7 @@ type UserInfo = {
   selectedLanguage: "English" | "Spanish" | "Mandarin";
 };
 
-function UserInfoForm() {
+const OnboardingScreen = () => {
   const { language, phoneNumber } = useUserStore();
   const [userInfo, setUserInfo] = useState<UserInfo>({
     phoneNumber: phoneNumber,
@@ -55,39 +31,71 @@ function UserInfoForm() {
     setUserInfo((prev) => ({ ...prev, lastName: input }));
   };
 
-  console.log("USERINFO", userInfo);
+  const handleSubmit = () => {
+    //TODO: add form validation before allowing user to click submit
+    try {
+      createUser(userInfo);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log("🚀 ~ handleSubmit ~ error:", error.message);
+      } else {
+        console.log(
+          "🚀 ~ handleSubmit ~ error: Some other type of unknown error",
+        );
+      }
+    }
+  };
+
   return (
-    <View style={tw.style("flex-1 items-center gap-10")}>
+    <View style={tw.style("flex-1 gap-5 bg-secondary px-5")}>
       <View>
-        <Image
-          style={tw.style("h-28 w-28 rounded-full bg-orange-200")}
-          source={require("@/assets/images/ghost.png")}
-          resizeMode="contain"
-        />
-        <TouchableOpacity
-          onPress={() => {}}
-          style={tw.style(
-            "absolute bottom-0 right-0 rounded-full border-[3px] border-secondary bg-undertone p-2",
-          )}>
-          <Ionicons name="camera-outline" size={20} color={"grey"} />
-        </TouchableOpacity>
+        <Text style={tw.style("text-4xl font-bold text-highlightAccent")}>
+          Set up your profile ✍🏻
+        </Text>
+        <Text style={tw.style("text-lg leading-5 text-zinc-300")}>
+          Let's set up your personal information that will be displayed on your
+          profile and to other users!
+        </Text>
       </View>
-      <View style={tw.style("flex w-full gap-5")}>
-        <TextInput
-          key={"firstName"}
-          onChangeText={updateFirstName}
-          style={tw.style("w-full rounded-xl bg-undertone p-4")}
-          placeholder="First Name (Required)"
-          autoCorrect={false}
-        />
-        <TextInput
-          onChangeText={updateLastName}
-          style={tw.style("w-full rounded-xl bg-undertone p-4")}
-          placeholder="Last Name (Required)"
-          autoCorrect={false}
-        />
+
+      {/* Form */}
+      <View style={tw.style("flex-1 items-center gap-10")}>
+        <View>
+          <Image
+            style={tw.style("h-28 w-28 rounded-full bg-orange-200")}
+            source={require("@/assets/images/ghost.png")}
+            resizeMode="contain"
+          />
+          <TouchableOpacity
+            onPress={() => {}}
+            style={tw.style(
+              "absolute bottom-0 right-0 rounded-full border-[3px] border-secondary bg-undertone p-2",
+            )}>
+            <Ionicons name="camera-outline" size={20} color={"grey"} />
+          </TouchableOpacity>
+        </View>
+        <View style={tw.style("flex w-full gap-5")}>
+          <TextInput
+            key={"firstName"}
+            onChangeText={updateFirstName}
+            style={tw.style("w-full rounded-xl bg-undertone p-4")}
+            placeholder="First Name (Required)"
+            autoCorrect={false}
+          />
+          <TextInput
+            onChangeText={updateLastName}
+            style={tw.style("w-full rounded-xl bg-undertone p-4")}
+            placeholder="Last Name (Required)"
+            autoCorrect={false}
+          />
+        </View>
+      </View>
+
+      <View style={tw.style("mb-10 w-[100%] items-center")}>
+        <ActionButton onPress={handleSubmit}>Submit</ActionButton>
       </View>
     </View>
   );
-}
+};
+
 export default OnboardingScreen;
