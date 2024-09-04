@@ -52,7 +52,7 @@ function UserInfoForm() {
     setUserInfo((prev) => ({ ...prev, firstName: input }));
   };
   const updateLastName = (input: string) => {
-    setUserInfo((prev) => ({ ...prev, firstName: input }));
+    setUserInfo((prev) => ({ ...prev, lastName: input }));
   };
 
   console.log("USERINFO", userInfo);
