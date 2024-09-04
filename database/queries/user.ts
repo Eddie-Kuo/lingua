@@ -1,3 +1,4 @@
+import { UserInfo } from "@/app/(auth)/(onboarding)";
 import { supabase } from "@/utils/supabase";
 
 //? Getting this error when making queries with Drizzle ORM - using Supabase queries instead
@@ -25,5 +26,21 @@ export const getUserByPhoneNumber = async (phoneNumber: string) => {
     if (error instanceof Error) {
       console.log("Error getting user by phone number: ", error.message);
     }
+  }
+};
+
+// Add user to database
+export const createUser = async (user: UserInfo) => {
+  const { error } = await supabase.from("users").insert({
+    phone_number: user.phoneNumber,
+    first_name: user.firstName,
+    last_name: user.lastName,
+    pic_url: "",
+    selected_language: user.selectedLanguage,
+  });
+
+  if (error) {
+    console.log("🚀 ~ createUser ~ error:", error.message);
+    return { error: error.message };
   }
 };

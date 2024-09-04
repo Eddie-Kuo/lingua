@@ -39,13 +39,15 @@ const PhoneVerificationScreen = () => {
         type: "sms",
       });
 
+      // add phone number to store
+      setPhoneNumber(phone);
+
       // after verification - we want to check if user instance is in database
       const userStatus = await getUserByPhoneNumber(session!.user!.phone!);
       if (userStatus?.error === "Phone number not in database") {
         // if this is the first time a user is signing in, we want to create a database instance
         // route the user to onboarding
-        setPhoneNumber(phone);
-        router.replace("/(onboarding)");
+        router.replace("/(auth)/(onboarding)");
       }
 
       if (userStatus?.success) {

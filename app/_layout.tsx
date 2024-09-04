@@ -1,5 +1,5 @@
 import { AuthProvider, useAuth } from "@/context/AuthProvider";
-import { Slot, useRouter, useSegments } from "expo-router";
+import { Slot, Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 
 const InitialLayout = () => {
@@ -19,16 +19,19 @@ const InitialLayout = () => {
       router.replace("/(authenticated)");
     } else if (!session) {
       // router.replace("/verify/+18327557675");
-      router.replace("/");
+      router.push("/(auth)/(public)/");
       // return;
       //* Dev purposes to get to onboarding screen
+    } else if (session) {
+      router.replace("/(auth)/(onboarding)/");
     }
-    // else if (session) {
-    //   router.replace("/(onboarding)");
-    // }
   }, [session, initialized]);
 
-  return <Slot />;
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+    </Stack>
+  );
 };
 
 const RootLayout = () => {
