@@ -1,4 +1,11 @@
-import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import ActionButton from "@/components/ActionButton";
@@ -23,6 +30,10 @@ const OnboardingScreen = () => {
     picURL: "",
     selectedLanguage: language.language,
   });
+  const [formError, setFormError] = useState({
+    firstName: "",
+    lastName: "",
+  });
 
   const updateFirstName = (input: string) => {
     setUserInfo((prev) => ({ ...prev, firstName: input }));
@@ -33,7 +44,29 @@ const OnboardingScreen = () => {
 
   const handleSubmit = () => {
     //TODO: add form validation before allowing user to click submit
+    // clear any existing errors from previous submission
+    setFormError({ firstName: "", lastName: "" });
+
     try {
+      if (!userInfo.firstName) {
+        setFormError((prev) => ({
+          ...prev,
+          firstName: "Please enter your first name!",
+        }));
+        Alert.alert("enter first name");
+      }
+      if (!userInfo.lastName) {
+        setFormError((prev) => ({
+          ...prev,
+          lastName: "Please enter your last name!",
+        }));
+        Alert.alert("enter last name");
+
+        return;
+      }
+
+      console.log("userInfo");
+
       createUser(userInfo);
     } catch (error) {
       if (error instanceof Error) {
