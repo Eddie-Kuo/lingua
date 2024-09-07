@@ -43,7 +43,6 @@ const OnboardingScreen = () => {
   };
 
   const handleSubmit = () => {
-    //TODO: add form validation before allowing user to click submit
     // clear any existing errors from previous submission
     setFormError({ firstName: "", lastName: "" });
 
@@ -53,20 +52,16 @@ const OnboardingScreen = () => {
           ...prev,
           firstName: "Please enter your first name!",
         }));
-        Alert.alert("enter first name");
+        return;
       }
       if (!userInfo.lastName) {
         setFormError((prev) => ({
           ...prev,
           lastName: "Please enter your last name!",
         }));
-        Alert.alert("enter last name");
-
         return;
       }
-
-      console.log("userInfo");
-
+      // create user instance in database
       createUser(userInfo);
     } catch (error) {
       if (error instanceof Error) {
@@ -107,7 +102,7 @@ const OnboardingScreen = () => {
             <Ionicons name="camera-outline" size={20} color={"grey"} />
           </TouchableOpacity>
         </View>
-        <View style={tw.style("flex w-full gap-5")}>
+        <View style={tw.style("flex w-full")}>
           <TextInput
             key={"firstName"}
             onChangeText={updateFirstName}
@@ -115,12 +110,22 @@ const OnboardingScreen = () => {
             placeholder="First Name (Required)"
             autoCorrect={false}
           />
+          {formError.firstName && (
+            <Text style={tw.style("ml-2 mt-2 text-rose-500")}>
+              {formError.firstName}
+            </Text>
+          )}
           <TextInput
             onChangeText={updateLastName}
-            style={tw.style("w-full rounded-xl bg-undertone p-4")}
+            style={tw.style("mt-5 w-full rounded-xl bg-undertone p-4")}
             placeholder="Last Name (Required)"
             autoCorrect={false}
           />
+          {formError.lastName && (
+            <Text style={tw.style("ml-2 mt-2 text-rose-500")}>
+              {formError.lastName}
+            </Text>
+          )}
         </View>
       </View>
 
