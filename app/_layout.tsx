@@ -1,5 +1,5 @@
 import { AuthProvider, useAuth } from "@/context/AuthProvider";
-import { Slot, Stack, useRouter, useSegments } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 
 const InitialLayout = () => {
@@ -18,12 +18,7 @@ const InitialLayout = () => {
     if (session && !isAuthGroup && !isFirstTimeUser) {
       router.replace("/(authenticated)");
     } else if (!session) {
-      // router.replace("/verify/+18327557675");
-      router.push("/(auth)/(public)/");
-      // return;
-      //* Dev purposes to get to onboarding screen
-    } else if (session) {
-      router.replace("/(auth)/(onboarding)/");
+      router.replace("/");
     }
   }, [session, initialized]);
 

@@ -15,7 +15,6 @@ const PublicLayout = () => {
         },
       }}>
       <Stack.Screen name="index" />
-      <Stack.Screen name="signup" />
     </Stack>
   );
 };

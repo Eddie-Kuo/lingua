@@ -1,139 +1,75 @@
-import {
-  View,
-  Text,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { View, Text } from "react-native";
 import React, { useState } from "react";
-import { tw } from "@/utils/tailwind";
 import ActionButton from "@/components/ActionButton";
-import { Ionicons } from "@expo/vector-icons";
+import { tw } from "@/utils/tailwind";
+import { Dropdown } from "react-native-element-dropdown";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { useRouter } from "expo-router";
 import useUserStore from "@/store/userStore";
-import { createUser } from "@/database/queries/user";
+import { Language } from "@/utils/types/type";
 
-export type UserInfo = {
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
-  picURL: string;
-  selectedLanguage: "English" | "Spanish" | "Mandarin";
-};
+const languages: Language[] = [
+  { language: "English" },
+  { language: "Spanish" },
+  { language: "Mandarin" },
+];
 
-const OnboardingScreen = () => {
-  const { language, phoneNumber } = useUserStore();
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    phoneNumber: phoneNumber,
-    firstName: "",
-    lastName: "",
-    picURL: "",
-    selectedLanguage: language.language,
-  });
-  const [formError, setFormError] = useState({
-    firstName: "",
-    lastName: "",
-  });
-
-  const updateFirstName = (input: string) => {
-    setUserInfo((prev) => ({ ...prev, firstName: input }));
-  };
-  const updateLastName = (input: string) => {
-    setUserInfo((prev) => ({ ...prev, lastName: input }));
-  };
-
-  const handleSubmit = () => {
-    // clear any existing errors from previous submission
-    setFormError({ firstName: "", lastName: "" });
-
-    try {
-      if (!userInfo.firstName) {
-        setFormError((prev) => ({
-          ...prev,
-          firstName: "Please enter your first name!",
-        }));
-        return;
-      }
-      if (!userInfo.lastName) {
-        setFormError((prev) => ({
-          ...prev,
-          lastName: "Please enter your last name!",
-        }));
-        return;
-      }
-      // create user instance in database
-      createUser(userInfo);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log("🚀 ~ handleSubmit ~ error:", error.message);
-      } else {
-        console.log(
-          "🚀 ~ handleSubmit ~ error: Some other type of unknown error",
-        );
-      }
-    }
-  };
+const LanguageSelection = () => {
+  const router = useRouter();
+  const { language, setLanguage } = useUserStore();
+  const [isFocus, setIsFocus] = useState(false);
 
   return (
-    <View style={tw.style("flex-1 gap-5 bg-secondary px-5")}>
-      <View>
-        <Text style={tw.style("text-4xl font-bold text-highlightAccent")}>
-          Set up your profile ✍🏻
-        </Text>
-        <Text style={tw.style("text-lg leading-5 text-zinc-300")}>
-          Let's set up your personal information that will be displayed on your
-          profile and to other users!
-        </Text>
+    <View style={tw.style("flex-1 gap-4 bg-secondary p-3")}>
+      <Text style={tw.style("text-5xl font-semibold text-highlightAccent")}>
+        Let's get started!
+      </Text>
+
+      <Text style={tw.style("text-lg font-medium leading-6 text-undertone")}>
+        Start by selecting the language of choice you're most comfortable with!
+        {"\n"}
+        {"\n"}
+        The language you select will reflect the language used throughout the
+        app and the language in which the messages you will receive.
+      </Text>
+      <View style={tw.style("w-full")}>
+        <Dropdown
+          style={tw.style(
+            "h-12 rounded-lg border-[0.5px] border-undertone px-3",
+            isFocus && "border-highlightAccent",
+          )}
+          placeholderStyle={tw.style("text-undertone")}
+          placeholder="Select Language"
+          selectedTextStyle={tw.style("text-undertone")}
+          data={languages}
+          maxHeight={300}
+          labelField="language"
+          valueField="language"
+          value={language}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={(item: Language) => {
+            setLanguage({ language: item.language });
+          }}
+          renderLeftIcon={() => (
+            <AntDesign
+              style={tw.style("mr-2")}
+              color={"#E6EFF5"}
+              name="wechat"
+              size={20}
+            />
+          )}
+        />
       </View>
 
-      {/* Form */}
-      <View style={tw.style("flex-1 items-center gap-10")}>
-        <View>
-          <Image
-            style={tw.style("h-28 w-28 rounded-full bg-orange-200")}
-            source={require("@/assets/images/ghost.png")}
-            resizeMode="contain"
-          />
-          <TouchableOpacity
-            onPress={() => {}}
-            style={tw.style(
-              "absolute bottom-0 right-0 rounded-full border-[3px] border-secondary bg-undertone p-2",
-            )}>
-            <Ionicons name="camera-outline" size={20} color={"grey"} />
-          </TouchableOpacity>
-        </View>
-        <View style={tw.style("flex w-full")}>
-          <TextInput
-            key={"firstName"}
-            onChangeText={updateFirstName}
-            style={tw.style("w-full rounded-xl bg-undertone p-4")}
-            placeholder="First Name (Required)"
-            autoCorrect={false}
-          />
-          {formError.firstName && (
-            <Text style={tw.style("ml-2 mt-2 text-rose-500")}>
-              {formError.firstName}
-            </Text>
-          )}
-          <TextInput
-            onChangeText={updateLastName}
-            style={tw.style("mt-5 w-full rounded-xl bg-undertone p-4")}
-            placeholder="Last Name (Required)"
-            autoCorrect={false}
-          />
-          {formError.lastName && (
-            <Text style={tw.style("ml-2 mt-2 text-rose-500")}>
-              {formError.lastName}
-            </Text>
-          )}
-        </View>
-      </View>
-
-      <View style={tw.style("mb-10 w-[100%] items-center")}>
-        <ActionButton onPress={handleSubmit}>Submit</ActionButton>
+      <View style={tw.style("absolute bottom-10 w-[100%] items-center")}>
+        <ActionButton
+          onPress={() => router.push("/(auth)/(onboarding)/signup")}>
+          Continue
+        </ActionButton>
       </View>
     </View>
   );
 };
 
-export default OnboardingScreen;
+export default LanguageSelection;

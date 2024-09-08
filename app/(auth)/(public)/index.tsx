@@ -1,74 +1,82 @@
-import { View, Text } from "react-native";
+import {
+  View,
+  Text,
+  KeyboardAvoidingView,
+  TextInput,
+  Platform,
+} from "react-native";
 import React, { useState } from "react";
-import ActionButton from "@/components/ActionButton";
 import { tw } from "@/utils/tailwind";
-import { Dropdown } from "react-native-element-dropdown";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import { useRouter } from "expo-router";
-import useUserStore from "@/store/userStore";
-import { Language } from "@/utils/types/type";
+import ActionButton from "@/components/ActionButton";
+import { supabase } from "@/utils/supabase";
 
-const languages: Language[] = [
-  { language: "English" },
-  { language: "Spanish" },
-  { language: "Mandarin" },
-];
+const PhoneSignUpScreen = () => {
+  const [phone, setPhone] = useState<string>("");
+  const [areaCode, setAreaCode] = useState<string>("+1");
 
-const LanguageSelection = () => {
   const router = useRouter();
-  const { language, setLanguage } = useUserStore();
-  const [isFocus, setIsFocus] = useState(false);
+
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 80 : 0;
+
+  const handleSignIn = async () => {
+    const fullPhoneNumber = `${areaCode}${phone}`;
+
+    try {
+      const { data: session } = await supabase.auth.signInWithOtp({
+        phone: fullPhoneNumber,
+      });
+
+      router.push({
+        pathname: "/(auth)/verify/[phone]",
+        params: { phone: fullPhoneNumber },
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log("Error: ", error.message);
+      }
+    }
+  };
 
   return (
-    <View style={tw.style("flex-1 gap-4 bg-secondary p-3")}>
-      <Text style={tw.style("text-5xl font-semibold text-highlightAccent")}>
-        Let's get started!
-      </Text>
+    <KeyboardAvoidingView
+      style={tw.style("flex-1 items-center bg-secondary")}
+      behavior="padding"
+      keyboardVerticalOffset={keyboardVerticalOffset}>
+      <View style={tw.style("flex-1 gap-4 p-3")}>
+        <Text style={tw.style("text-5xl font-semibold text-highlightAccent")}>
+          Time to Verify!
+        </Text>
+        <Text style={tw.style("text-lg text-undertone")}>
+          Enter your phone number. Whether you're a new or returning user, we
+          will send you a confirmation code to verify your device.
+        </Text>
+        <View style={tw.style("mt-4 flex-row gap-3")}>
+          <TextInput
+            value={areaCode}
+            style={tw.style("rounded-xl bg-white p-5 text-xl font-semibold")}
+            placeholder="+1"
+            keyboardType="numeric"
+            placeholderTextColor="grey"
+          />
+          <TextInput
+            value={phone}
+            onChangeText={(text: string) => setPhone(text)}
+            style={tw.style(
+              "flex-1 rounded-xl bg-white p-6 text-xl font-semibold",
+            )}
+            placeholder="Mobile number"
+            keyboardType="numeric"
+            placeholderTextColor="grey"
+          />
+        </View>
 
-      <Text style={tw.style("text-lg font-medium leading-6 text-undertone")}>
-        Start by selecting the language of choice you're most comfortable with!
-        {"\n"}
-        {"\n"}
-        The language you select will reflect the language used throughout the
-        app and the language in which the messages you will receive.
-      </Text>
-      <View style={tw.style("w-full")}>
-        <Dropdown
-          style={tw.style(
-            "h-12 rounded-lg border-[0.5px] border-undertone px-3",
-            isFocus && "border-highlightAccent",
-          )}
-          placeholderStyle={tw.style("text-undertone")}
-          placeholder="Select Language"
-          selectedTextStyle={tw.style("text-undertone")}
-          data={languages}
-          maxHeight={300}
-          labelField="language"
-          valueField="language"
-          value={language}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={(item: Language) => {
-            setLanguage({ language: item.language });
-          }}
-          renderLeftIcon={() => (
-            <AntDesign
-              style={tw.style("mr-2")}
-              color={"#E6EFF5"}
-              name="wechat"
-              size={20}
-            />
-          )}
-        />
+        <View style={tw.style("absolute bottom-10 w-[100%] items-center")}>
+          <ActionButton onPress={handleSignIn}>Request Code</ActionButton>
+        </View>
       </View>
-
-      <View style={tw.style("absolute bottom-10 w-[100%] items-center")}>
-        <ActionButton onPress={() => router.push("/signup")}>
-          Continue
-        </ActionButton>
-      </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
-export default LanguageSelection;
+export default PhoneSignUpScreen;

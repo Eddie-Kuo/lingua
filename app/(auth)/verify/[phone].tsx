@@ -21,7 +21,7 @@ const PhoneVerificationScreen = () => {
     value: code,
     setValue: setCode,
   });
-  const { setPhoneNumber } = useUserStore();
+  const { setPhoneNumber, phoneNumber } = useUserStore();
 
   useEffect(() => {
     if (code.length === 6) {
@@ -39,20 +39,15 @@ const PhoneVerificationScreen = () => {
         type: "sms",
       });
 
-      // add phone number to store
-      setPhoneNumber(phone);
+      if (session) {
+        setPhoneNumber(phone);
 
-      // after verification - we want to check if user instance is in database
-      const userStatus = await getUserByPhoneNumber(session!.user!.phone!);
-      if (userStatus?.error === "Phone number not in database") {
-        // if this is the first time a user is signing in, we want to create a database instance
-        // route the user to onboarding
-        router.replace("/(auth)/(onboarding)");
-      }
-
-      if (userStatus?.success) {
-        // if the user is a returning user we want to directly route them to dashboard
-        router.replace("/(authenticated)");
+        const userInDatabase = await getUserByPhoneNumber(phone);
+        if (userInDatabase) {
+          router.replace("/(authenticated)");
+        } else {
+          router.replace("/(auth)/(onboarding)/");
+        }
       }
 
       //Todo: handle error when user enters the wrong otp
