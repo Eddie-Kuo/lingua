@@ -26,7 +26,6 @@ export type UserInfo = {
 const OnboardingScreen = () => {
   const router = useRouter();
   const { language, phoneNumber } = useUserStore();
-  console.log("🚀 ~ OnboardingScreen ~ phoneNumber:", phoneNumber);
   const [userInfo, setUserInfo] = useState<UserInfo>({
     phoneNumber: phoneNumber,
     firstName: "",

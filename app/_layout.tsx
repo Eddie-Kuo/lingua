@@ -1,5 +1,5 @@
 import { AuthProvider, useAuth } from "@/context/AuthProvider";
-import { Stack, useRouter, useSegments } from "expo-router";
+import { Slot, Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 
 const InitialLayout = () => {
@@ -15,7 +15,9 @@ const InitialLayout = () => {
     // Check if the path is in the authenticated group
     const isAuthGroup = segments[0] === "(authenticated)";
 
-    if (session && !isAuthGroup && !isFirstTimeUser) {
+    console.log("SESSION APP LAYOUT", session);
+
+    if (session && !isAuthGroup && !!isFirstTimeUser) {
       router.replace("/(authenticated)");
     } else if (!session) {
       router.replace("/");
@@ -23,9 +25,10 @@ const InitialLayout = () => {
   }, [session, initialized]);
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" />
-    </Stack>
+    // <Stack screenOptions={{ headerShown: false }}>
+    //   <Stack.Screen name="index" />
+    // </Stack>
+    <Slot />
   );
 };
 
