@@ -39,18 +39,19 @@ const PhoneVerificationScreen = () => {
         type: "sms",
       });
 
-      if (session) {
-        setPhoneNumber(phone);
-
-        const userInDatabase = await getUserByPhoneNumber(phone);
-        if (userInDatabase) {
-          router.replace("/(authenticated)");
-        } else {
-          router.replace("/(auth)/(onboarding)/");
-        }
+      if (!session) {
+        //Todo: handle what happens when the code enters is wrong
+        return;
       }
 
-      //Todo: handle error when user enters the wrong otp
+      // OTP was verified
+      setPhoneNumber(phone);
+
+      // checks if user is in database - route to onboarding screen if new user
+      const userInDatabase = await getUserByPhoneNumber(phone);
+      if (!userInDatabase) {
+        router.replace("/(auth)/onboarding/");
+      }
     } catch (error) {
       if (error instanceof Error) {
         console.log("Error: ", error.message);

@@ -20,15 +20,14 @@ const InitialLayout = () => {
     if (session && !isAuthGroup && !!isFirstTimeUser) {
       router.replace("/(authenticated)");
     } else if (!session) {
-      router.replace("/");
+      router.replace("/(auth)");
     }
   }, [session, initialized]);
 
   return (
-    // <Stack screenOptions={{ headerShown: false }}>
-    //   <Stack.Screen name="index" />
-    // </Stack>
-    <Slot />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+    </Stack>
   );
 };
 
