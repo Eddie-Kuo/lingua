@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  KeyboardAvoidingView,
 } from "react-native";
 import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
@@ -106,7 +107,7 @@ const OnboardingScreen = () => {
             <Ionicons name="camera-outline" size={20} color={"grey"} />
           </TouchableOpacity>
         </View>
-        <View style={tw.style("flex w-full")}>
+        <KeyboardAvoidingView style={tw.style("flex w-full")}>
           <TextInput
             key={"firstName"}
             onChangeText={updateFirstName}
@@ -130,7 +131,7 @@ const OnboardingScreen = () => {
               {formError.lastName}
             </Text>
           )}
-        </View>
+        </KeyboardAvoidingView>
       </View>
 
       <View style={tw.style("mb-10 w-[100%] items-center")}>
