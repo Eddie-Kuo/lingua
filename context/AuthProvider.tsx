@@ -1,4 +1,5 @@
 import { getUserByPhoneNumber } from "@/database/queries/user";
+import useUserStore from "@/store/userStore";
 import { supabase } from "@/utils/supabase";
 import { Session, User } from "@supabase/supabase-js";
 import {
@@ -30,6 +31,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [session, setSession] = useState<Session | null>(null);
   const [initialized, setInitialized] = useState<boolean>(false);
   const [isFirstTimeUser, setIsFirstTimeUser] = useState<boolean>(true);
+  const { phoneNumber } = useUserStore();
 
   useEffect(() => {
     // Listen for changes to authentication state
@@ -50,11 +52,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     }
 
     const getUserStatus = async () => {
-      const data = await getUserByPhoneNumber(user.phone!);
+      const data = await getUserByPhoneNumber(phoneNumber);
 
       // user is in database
-      if (data?.success) {
-        console.log("Returning user Information: ", data.success);
+      if (data) {
+        console.log("Returning user Information: ", data);
         setIsFirstTimeUser(false);
       }
     };

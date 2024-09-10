@@ -11,7 +11,7 @@ import { useRouter } from "expo-router";
 import ActionButton from "@/components/ActionButton";
 import { supabase } from "@/utils/supabase";
 
-const SignUpScreen = () => {
+const PhoneSignUpScreen = () => {
   const [phone, setPhone] = useState<string>("");
   const [areaCode, setAreaCode] = useState<string>("+1");
 
@@ -28,7 +28,7 @@ const SignUpScreen = () => {
       });
 
       router.push({
-        pathname: "/verify/[phone]",
+        pathname: "/(auth)/verify/[phone]",
         params: { phone: fullPhoneNumber },
       });
     } catch (error) {
@@ -79,4 +79,4 @@ const SignUpScreen = () => {
   );
 };
 
-export default SignUpScreen;
+export default PhoneSignUpScreen;

@@ -15,15 +15,12 @@ const InitialLayout = () => {
     // Check if the path is in the authenticated group
     const isAuthGroup = segments[0] === "(authenticated)";
 
-    if (session && !isAuthGroup && !isFirstTimeUser) {
+    console.log("SESSION APP LAYOUT", session);
+
+    if (session && !isAuthGroup && !!isFirstTimeUser) {
       router.replace("/(authenticated)");
     } else if (!session) {
-      // router.replace("/verify/+18327557675");
-      router.push("/(auth)/(public)/");
-      // return;
-      //* Dev purposes to get to onboarding screen
-    } else if (session) {
-      router.replace("/(auth)/(onboarding)/");
+      router.replace("/(auth)");
     }
   }, [session, initialized]);
 

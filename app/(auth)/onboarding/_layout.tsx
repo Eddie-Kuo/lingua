@@ -1,15 +1,13 @@
 import React from "react";
-import { Stack, useRouter } from "expo-router";
+import { Stack } from "expo-router";
 
-const PublicLayout = () => {
-  const router = useRouter();
+const OnboardingLayout = () => {
   return (
     <Stack
       screenOptions={{
         title: "",
         headerBackTitle: "",
         headerShadowVisible: false,
-        headerTintColor: "#E6EFF5",
         headerStyle: {
           backgroundColor: "#274560",
         },
@@ -20,4 +18,4 @@ const PublicLayout = () => {
   );
 };
 
-export default PublicLayout;
+export default OnboardingLayout;
