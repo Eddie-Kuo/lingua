@@ -46,7 +46,7 @@ const PhoneVerificationScreen = () => {
         return;
       }
 
-      // OTP was verified
+      // OTP was verified - set phone number in global store
       setPhoneNumber(phone);
       if (isFirstTimeUser) {
         router.replace("/(auth)/onboarding/");

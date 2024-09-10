@@ -17,7 +17,7 @@ const InitialLayout = () => {
 
     console.log("SESSION APP LAYOUT", isFirstTimeUser);
 
-    if (session && !isAuthGroup && isFirstTimeUser) {
+    if (session && !isAuthGroup && !isFirstTimeUser) {
       // router.replace("/(auth)/onboarding/signup");
       router.replace("/(authenticated)");
     } else if (!session) {
