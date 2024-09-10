@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import useUserStore from "@/store/userStore";
 import { createUser } from "@/database/queries/user";
 import { useRouter } from "expo-router";
+import { selectNewImage } from "@/database/actions/avatar";
 
 export type UserInfo = {
   phoneNumber: string;
@@ -36,6 +37,14 @@ const OnboardingScreen = () => {
     firstName: "",
     lastName: "",
   });
+
+  const handleUploadImage = (phoneNumber: string) => {
+    try {
+      selectNewImage(phoneNumber);
+    } catch (error) {
+      console.log("🚀 ~ handleUpdateUserImage ~ error:", error);
+    }
+  };
 
   const updateFirstName = (input: string) => {
     setUserInfo((prev) => ({ ...prev, firstName: input }));
@@ -98,7 +107,7 @@ const OnboardingScreen = () => {
             resizeMode="contain"
           />
           <TouchableOpacity
-            onPress={() => {}}
+            onPress={() => handleUploadImage(phoneNumber)}
             style={tw.style(
               "absolute bottom-0 right-0 rounded-full border-[3px] border-secondary bg-undertone p-2",
             )}>

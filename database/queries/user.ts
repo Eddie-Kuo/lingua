@@ -1,4 +1,4 @@
-import { UserInfo } from "@/app/(auth)/(onboarding)/signup";
+import { UserInfo } from "@/app/(auth)/onboarding/signup";
 import { supabase } from "@/utils/supabase";
 
 //? Getting this error when making queries with Drizzle ORM - using Supabase queries instead
