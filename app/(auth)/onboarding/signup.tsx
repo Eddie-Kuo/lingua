@@ -38,6 +38,8 @@ const OnboardingScreen = () => {
     lastName: "",
   });
 
+  //Todo: need to update the placeholder image on the signup form to display the selected image
+
   const handleUploadImage = async (phoneNumber: string) => {
     try {
       // set the image path for how image is stored in bucket

@@ -36,8 +36,3 @@ export async function getPublicAvatarURL(imagePath: string) {
   const { data } = supabase.storage.from("avatars").getPublicUrl(imagePath);
   return data.publicUrl;
 }
-
-// we now have the full path to the image in our storage bucket.
-// we need to access that file in the bucket to return the public url of the image
-// with the public url of the image we then can add it into our database associated with the user in the users table
-// this all needs to happen when the user clicks submit
