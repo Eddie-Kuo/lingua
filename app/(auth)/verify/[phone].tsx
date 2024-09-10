@@ -10,6 +10,7 @@ import {
 import { supabase } from "@/utils/supabase";
 import { getUserByPhoneNumber } from "@/database/queries/user";
 import useUserStore from "@/store/userStore";
+import { useAuth } from "@/context/AuthProvider";
 
 const PhoneVerificationScreen = () => {
   const { phone } = useLocalSearchParams<{
@@ -22,6 +23,7 @@ const PhoneVerificationScreen = () => {
     setValue: setCode,
   });
   const { setPhoneNumber, phoneNumber } = useUserStore();
+  const { isFirstTimeUser } = useAuth();
 
   useEffect(() => {
     if (code.length === 6) {
@@ -46,10 +48,7 @@ const PhoneVerificationScreen = () => {
 
       // OTP was verified
       setPhoneNumber(phone);
-
-      // checks if user is in database - route to onboarding screen if new user
-      const userInDatabase = await getUserByPhoneNumber(phone);
-      if (!userInDatabase) {
+      if (isFirstTimeUser) {
         router.replace("/(auth)/onboarding/");
       }
     } catch (error) {
