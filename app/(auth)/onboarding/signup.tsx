@@ -6,14 +6,14 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import ActionButton from "@/components/ActionButton";
 import { Ionicons } from "@expo/vector-icons";
 import useUserStore from "@/store/userStore";
 import { createUser } from "@/database/queries/user";
 import { useRouter } from "expo-router";
-import { selectNewImage } from "@/database/actions/avatar";
+import { getPublicAvatarURL, selectNewImage } from "@/database/actions/avatar";
 
 export type UserInfo = {
   phoneNumber: string;
@@ -38,9 +38,19 @@ const OnboardingScreen = () => {
     lastName: "",
   });
 
-  const handleUploadImage = (phoneNumber: string) => {
+  const handleUploadImage = async (phoneNumber: string) => {
     try {
-      selectNewImage(phoneNumber);
+      // set the image path for how image is stored in bucket
+      const imagePath = await selectNewImage(phoneNumber);
+      if (!imagePath) {
+        return;
+      }
+
+      // fetch the public url of the image with the file path
+      const imagePublicUrl = await getPublicAvatarURL(imagePath as string);
+
+      // set the public image url in user info state
+      setUserInfo((prev) => ({ ...prev, picURL: imagePublicUrl }));
     } catch (error) {
       console.log("🚀 ~ handleUpdateUserImage ~ error:", error);
     }

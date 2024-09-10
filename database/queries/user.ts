@@ -7,7 +7,6 @@ import { supabase } from "@/utils/supabase";
 
 // Get user by user ID
 export const getUserByPhoneNumber = async (phoneNumber: string) => {
-  // const formattedPhoneNumber = phoneNumber.slice(0); // remove the +
   try {
     const { data, error } = await supabase
       .from("users")
@@ -32,7 +31,7 @@ export const createUser = async (user: UserInfo) => {
     phone_number: user.phoneNumber,
     first_name: user.firstName,
     last_name: user.lastName,
-    pic_url: "",
+    pic_url: user.picURL,
     selected_language: user.selectedLanguage,
   });
 

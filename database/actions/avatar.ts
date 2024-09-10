@@ -26,7 +26,15 @@ export async function selectNewImage(phoneNumber: string) {
     .from("avatars")
     .upload(filePath, decode(base64), { contentType, upsert: true });
 
-  return data;
+  if (!data) {
+    return Error("Error adding image to bucket");
+  }
+  return data.path;
+}
+
+export async function getPublicAvatarURL(imagePath: string) {
+  const { data } = supabase.storage.from("avatars").getPublicUrl(imagePath);
+  return data.publicUrl;
 }
 
 // we now have the full path to the image in our storage bucket.

@@ -1,5 +1,5 @@
 import { AuthProvider, useAuth } from "@/context/AuthProvider";
-import { Slot, Stack, useRouter, useSegments } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 
 const InitialLayout = () => {
