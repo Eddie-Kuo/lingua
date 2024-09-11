@@ -115,7 +115,11 @@ const OnboardingScreen = () => {
         <View>
           <Image
             style={tw.style("h-28 w-28 rounded-full bg-orange-200")}
-            source={require("@/assets/images/ghost.png")}
+            source={
+              userInfo.picURL
+                ? { uri: userInfo.picURL }
+                : require("@/assets/images/ghost.png")
+            }
             resizeMode="contain"
           />
           <TouchableOpacity
@@ -130,7 +134,7 @@ const OnboardingScreen = () => {
           <TextInput
             key={"firstName"}
             onChangeText={updateFirstName}
-            style={tw.style("w-full rounded-xl bg-undertone p-4 text-zinc-400")}
+            style={tw.style("w-full rounded-xl bg-undertone p-4")}
             placeholder="First Name (Required)"
             placeholderTextColor={"#a1a1aa"}
             autoCorrect={false}
