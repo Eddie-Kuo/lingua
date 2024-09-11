@@ -50,17 +50,15 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     if (!user) {
       return;
     }
-
     const getUserStatus = async () => {
       const data = await getUserByPhoneNumber(phoneNumber);
-
       // user is in database
       if (data) {
         setIsFirstTimeUser(false);
       }
     };
     getUserStatus();
-  }, [user, session]);
+  }, [user, session, phoneNumber]);
 
   // Log out the user
   const signOut = async () => {
