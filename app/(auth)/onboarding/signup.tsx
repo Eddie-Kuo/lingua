@@ -130,8 +130,9 @@ const OnboardingScreen = () => {
           <TextInput
             key={"firstName"}
             onChangeText={updateFirstName}
-            style={tw.style("w-full rounded-xl bg-undertone p-4")}
+            style={tw.style("w-full rounded-xl bg-undertone p-4 text-zinc-400")}
             placeholder="First Name (Required)"
+            placeholderTextColor={"#a1a1aa"}
             autoCorrect={false}
           />
           {formError.firstName && (
@@ -143,6 +144,7 @@ const OnboardingScreen = () => {
             onChangeText={updateLastName}
             style={tw.style("mt-5 w-full rounded-xl bg-undertone p-4")}
             placeholder="Last Name (Required)"
+            placeholderTextColor={"#a1a1aa"}
             autoCorrect={false}
           />
           {formError.lastName && (
