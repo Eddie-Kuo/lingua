@@ -1,4 +1,5 @@
 import { getUserByPhoneNumber } from "@/database/queries/user";
+import useUserStore from "@/store/userStore";
 import { supabase } from "@/utils/supabase";
 import { Session, User } from "@supabase/supabase-js";
 import {
@@ -14,7 +15,7 @@ type AuthProps = {
   session: Session | null;
   initialized?: boolean;
   signOut?: () => void;
-  isFirstTimeUser?: boolean;
+  userStatus: UserStatus;
 };
 
 // Initialize react context
@@ -25,11 +26,14 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
+type UserStatus = "New" | "Returning";
+
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>();
   const [session, setSession] = useState<Session | null>(null);
   const [initialized, setInitialized] = useState<boolean>(false);
-  const [isFirstTimeUser, setIsFirstTimeUser] = useState<boolean>(true);
+  const [userStatus, setUserStatus] = useState<UserStatus>();
+  const { phoneNumber } = useUserStore();
 
   useEffect(() => {
     // Listen for changes to authentication state
@@ -48,18 +52,18 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     if (!user) {
       return;
     }
-
     const getUserStatus = async () => {
-      const data = await getUserByPhoneNumber(user.phone!);
-
+      const data = await getUserByPhoneNumber(phoneNumber);
+      console.log("🚀 ~ getUserStatus ~ data:", data);
       // user is in database
-      if (data?.success) {
-        console.log("Returning user Information: ", data.success);
-        setIsFirstTimeUser(false);
+      if (data) {
+        setUserStatus("Returning");
+      } else {
+        setUserStatus("New");
       }
     };
     getUserStatus();
-  }, [user, session]);
+  }, [phoneNumber]);
 
   // Log out the user
   const signOut = async () => {
@@ -71,7 +75,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     session,
     initialized,
     signOut,
-    isFirstTimeUser,
+    userStatus,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
