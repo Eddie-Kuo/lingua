@@ -4,16 +4,16 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  Alert,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import ActionButton from "@/components/ActionButton";
 import { Ionicons } from "@expo/vector-icons";
 import useUserStore from "@/store/userStore";
 import { createUser } from "@/database/queries/user";
 import { useRouter } from "expo-router";
+import { getPublicAvatarURL, selectNewImage } from "@/database/actions/avatar";
 
 export type UserInfo = {
   phoneNumber: string;
@@ -37,6 +37,26 @@ const OnboardingScreen = () => {
     firstName: "",
     lastName: "",
   });
+
+  //Todo: need to update the placeholder image on the signup form to display the selected image
+
+  const handleUploadImage = async (phoneNumber: string) => {
+    try {
+      // set the image path for how image is stored in bucket
+      const imagePath = await selectNewImage(phoneNumber);
+      if (!imagePath) {
+        return;
+      }
+
+      // fetch the public url of the image with the file path
+      const imagePublicUrl = await getPublicAvatarURL(imagePath as string);
+
+      // set the public image url in user info state
+      setUserInfo((prev) => ({ ...prev, picURL: imagePublicUrl }));
+    } catch (error) {
+      console.log("🚀 ~ handleUpdateUserImage ~ error:", error);
+    }
+  };
 
   const updateFirstName = (input: string) => {
     setUserInfo((prev) => ({ ...prev, firstName: input }));
@@ -95,11 +115,15 @@ const OnboardingScreen = () => {
         <View>
           <Image
             style={tw.style("h-28 w-28 rounded-full bg-orange-200")}
-            source={require("@/assets/images/ghost.png")}
+            source={
+              userInfo.picURL
+                ? { uri: userInfo.picURL }
+                : require("@/assets/images/ghost.png")
+            }
             resizeMode="contain"
           />
           <TouchableOpacity
-            onPress={() => {}}
+            onPress={() => handleUploadImage(phoneNumber)}
             style={tw.style(
               "absolute bottom-0 right-0 rounded-full border-[3px] border-secondary bg-undertone p-2",
             )}>
@@ -112,6 +136,7 @@ const OnboardingScreen = () => {
             onChangeText={updateFirstName}
             style={tw.style("w-full rounded-xl bg-undertone p-4")}
             placeholder="First Name (Required)"
+            placeholderTextColor={"#a1a1aa"}
             autoCorrect={false}
           />
           {formError.firstName && (
@@ -123,6 +148,7 @@ const OnboardingScreen = () => {
             onChangeText={updateLastName}
             style={tw.style("mt-5 w-full rounded-xl bg-undertone p-4")}
             placeholder="Last Name (Required)"
+            placeholderTextColor={"#a1a1aa"}
             autoCorrect={false}
           />
           {formError.lastName && (

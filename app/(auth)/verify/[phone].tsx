@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React, { Fragment, useEffect, useState } from "react";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { tw } from "@/utils/tailwind";
 import {
   CodeField,
@@ -8,20 +8,18 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 import { supabase } from "@/utils/supabase";
-import { getUserByPhoneNumber } from "@/database/queries/user";
 import useUserStore from "@/store/userStore";
 
 const PhoneVerificationScreen = () => {
   const { phone } = useLocalSearchParams<{
     phone: string;
   }>();
-  const router = useRouter();
   const [code, setCode] = useState("");
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value: code,
     setValue: setCode,
   });
-  const { setPhoneNumber, phoneNumber } = useUserStore();
+  const { setPhoneNumber } = useUserStore();
 
   useEffect(() => {
     if (code.length === 6) {
@@ -44,14 +42,8 @@ const PhoneVerificationScreen = () => {
         return;
       }
 
-      // OTP was verified
+      // OTP was verified - set phone number in global store
       setPhoneNumber(phone);
-
-      // checks if user is in database - route to onboarding screen if new user
-      const userInDatabase = await getUserByPhoneNumber(phone);
-      if (!userInDatabase) {
-        router.replace("/(auth)/onboarding/");
-      }
     } catch (error) {
       if (error instanceof Error) {
         console.log("Error: ", error.message);
