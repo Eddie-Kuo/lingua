@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack, useRouter } from "expo-router";
 
-const PublicLayout = () => {
+const AuthLayout = () => {
   const router = useRouter();
   return (
     <Stack
@@ -15,8 +15,11 @@ const PublicLayout = () => {
         },
       }}>
       <Stack.Screen name="index" />
+      <Stack.Screen name="phone-signup" />
+      <Stack.Screen name="language-selection" />
+      <Stack.Screen name="onboarding" />
     </Stack>
   );
 };
 
-export default PublicLayout;
+export default AuthLayout;

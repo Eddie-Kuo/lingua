@@ -63,7 +63,7 @@ const LanguageSelection = () => {
       </View>
 
       <View style={tw.style("absolute bottom-10 w-[100%] items-center")}>
-        <ActionButton onPress={() => router.push("/(auth)/onboarding/signup")}>
+        <ActionButton onPress={() => router.push("/(auth)/onboarding")}>
           Continue
         </ActionButton>
       </View>

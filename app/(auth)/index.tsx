@@ -32,7 +32,7 @@ const Index = () => {
         </Text>
       </View>
       <View style={tw.style("absolute bottom-10 w-[100%] items-center")}>
-        <ActionButton onPress={() => router.push("/(auth)/public/")}>
+        <ActionButton onPress={() => router.push("/(auth)/phone-signup")}>
           Start Messaging
         </ActionButton>
       </View>

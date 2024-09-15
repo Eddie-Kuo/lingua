@@ -19,7 +19,7 @@ const InitialLayout = () => {
       // router.replace("/(auth)/onboarding/signup");
       router.replace("/(authenticated)");
     } else if (session && userStatus === "New") {
-      router.replace("/(auth)/onboarding");
+      router.replace("/(auth)/language-selection");
     } else if (!session) {
       router.replace("/(auth)");
     }
