@@ -53,7 +53,7 @@ const PhoneVerificationScreen = () => {
   };
 
   return (
-    <View style={tw.style("flex-1 gap-3 bg-secondary p-3")}>
+    <View style={tw.style("flex-1 gap-3 bg-primary p-3")}>
       <Text style={tw.style("text-5xl font-semibold text-highlightAccent")}>
         6-digit code
       </Text>

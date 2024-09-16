@@ -40,7 +40,7 @@ const PhoneSignUpScreen = () => {
 
   return (
     <KeyboardAvoidingView
-      style={tw.style("flex-1 items-center bg-secondary")}
+      style={tw.style("flex-1 items-center bg-primary")}
       behavior="padding"
       keyboardVerticalOffset={keyboardVerticalOffset}>
       <View style={tw.style("flex-1 gap-4 p-3")}>

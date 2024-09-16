@@ -20,13 +20,13 @@ const TabsLayout = () => {
         },
         headerStyle: {
           height: 120,
-          backgroundColor: Colors.secondary,
+          backgroundColor: Colors.primary,
         },
         tabBarStyle: {
           backgroundColor: Colors.secondary,
-          borderTopColor: Colors.undertone,
-          borderTopWidth: 2,
+          borderTopColor: Colors.secondary,
           height: 90,
+          paddingBottom: 5,
         },
       }}>
       <Tabs.Screen

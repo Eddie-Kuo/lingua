@@ -20,7 +20,7 @@ const HomeScreen = () => {
   }, []);
 
   return (
-    <View style={tw.style("flex-1 items-center justify-center bg-secondary")}>
+    <View style={tw.style("flex-1 items-center justify-center bg-primary")}>
       {session && session.user && <Text>{session.user.id}</Text>}
       <Button title="sign out" onPress={signOut}></Button>
       <Text>Hello World</Text>

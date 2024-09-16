@@ -20,7 +20,7 @@ const LanguageSelection = () => {
   const [isFocus, setIsFocus] = useState(false);
 
   return (
-    <View style={tw.style("flex-1 gap-4 bg-secondary p-3")}>
+    <View style={tw.style("flex-1 gap-4 bg-primary p-3")}>
       <Text style={tw.style("text-5xl font-semibold text-highlightAccent")}>
         Let's get started!
       </Text>

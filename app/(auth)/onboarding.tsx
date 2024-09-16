@@ -105,7 +105,7 @@ const OnboardingScreen = () => {
   };
 
   return (
-    <View style={tw.style("flex-1 gap-5 bg-secondary px-5")}>
+    <View style={tw.style("flex-1 gap-5 bg-primary px-5")}>
       <View>
         <Text style={tw.style("text-4xl font-bold text-highlightAccent")}>
           Set up your profile ✍🏻
@@ -131,7 +131,7 @@ const OnboardingScreen = () => {
           <TouchableOpacity
             onPress={() => handleUploadImage(phoneNumber)}
             style={tw.style(
-              "absolute bottom-0 right-0 rounded-full border-[3px] border-secondary bg-undertone p-2",
+              "absolute bottom-0 right-0 rounded-full border-[3px] border-primary bg-undertone p-2",
             )}>
             <Ionicons name="camera-outline" size={20} color={"grey"} />
           </TouchableOpacity>

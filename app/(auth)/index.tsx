@@ -10,7 +10,7 @@ const Index = () => {
   return (
     <View
       style={tw.style(
-        "relative flex-1 items-center justify-center bg-secondary",
+        "relative flex-1 items-center justify-center bg-primary",
       )}>
       <View style={tw.style("flex items-center justify-center gap-2")}>
         <Image
