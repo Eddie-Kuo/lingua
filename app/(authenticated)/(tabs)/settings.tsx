@@ -1,10 +1,12 @@
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 import React from "react";
+import { useAuth } from "@/context/AuthProvider";
 
 const SettingScreen = () => {
+  const { signOut } = useAuth();
   return (
     <View>
-      <Text>SettingScreen</Text>
+      <Button title="sign out" onPress={signOut}></Button>
     </View>
   );
 };
