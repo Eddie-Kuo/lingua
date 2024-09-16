@@ -16,8 +16,8 @@ const InitialLayout = () => {
     const isAuthGroup = segments[0] === "(authenticated)";
 
     if (session && !isAuthGroup && userStatus === "Returning") {
-      // router.replace("/(auth)/onboarding/signup");
-      router.replace("/(authenticated)");
+      router.replace("/(auth)/onboarding");
+      // router.replace("/(authenticated)");
     } else if (session && userStatus === "New") {
       router.replace("/(auth)/language-selection");
     } else if (!session) {

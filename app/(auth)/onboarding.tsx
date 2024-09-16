@@ -12,7 +12,7 @@ import ActionButton from "@/components/ActionButton";
 import { Ionicons } from "@expo/vector-icons";
 import useUserStore from "@/store/userStore";
 import { createUser } from "@/database/queries/user";
-import { useRouter } from "expo-router";
+import { useRootNavigationState, useRouter } from "expo-router";
 import { getPublicAvatarURL, selectNewImage } from "@/database/actions/avatar";
 
 export type UserInfo = {
@@ -20,6 +20,7 @@ export type UserInfo = {
   firstName: string;
   lastName: string;
   picURL: string;
+  hash: number;
   selectedLanguage: "English" | "Spanish" | "Mandarin";
 };
 
@@ -31,6 +32,7 @@ const OnboardingScreen = () => {
     firstName: "",
     lastName: "",
     picURL: "",
+    hash: 0,
     selectedLanguage: language.language,
   });
   const [formError, setFormError] = useState({
@@ -52,7 +54,11 @@ const OnboardingScreen = () => {
       const imagePublicUrl = await getPublicAvatarURL(imagePath as string);
 
       // set the public image url in user info state
-      setUserInfo((prev) => ({ ...prev, picURL: imagePublicUrl }));
+      setUserInfo((prev) => ({
+        ...prev,
+        picURL: imagePublicUrl,
+        hash: Date.now(),
+      }));
     } catch (error) {
       console.log("🚀 ~ handleUpdateUserImage ~ error:", error);
     }
@@ -117,7 +123,7 @@ const OnboardingScreen = () => {
             style={tw.style("h-28 w-28 rounded-full bg-orange-200")}
             source={
               userInfo.picURL
-                ? { uri: userInfo.picURL }
+                ? { uri: `${userInfo.picURL}?${userInfo.hash}` }
                 : require("@/assets/images/ghost.png")
             }
             resizeMode="contain"
