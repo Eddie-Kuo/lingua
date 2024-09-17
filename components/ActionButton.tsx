@@ -1,7 +1,6 @@
-import { Pressable, Text, TouchableOpacity } from "react-native";
+import { Pressable, Text } from "react-native";
 import React from "react";
 import { tw } from "@/utils/tailwind";
-import { router } from "expo-router";
 
 type ActionButtonProps = {
   onPress?: () => void;

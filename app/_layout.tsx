@@ -15,13 +15,17 @@ const InitialLayout = () => {
     // Check if the path is in the authenticated group
     const isAuthGroup = segments[0] === "(authenticated)";
 
+    //* Development purposes: accessing the dashboard removing authentication
     if (session && !isAuthGroup && userStatus === "Returning") {
-      router.replace("/(auth)/onboarding");
+      // router.replace("/(auth)/onboarding");
       // router.replace("/(authenticated)");
+      return;
     } else if (session && userStatus === "New") {
-      router.replace("/(auth)/language-selection");
+      // router.replace("/(auth)/language-selection");
+      return;
     } else if (!session) {
-      router.replace("/(auth)");
+      // router.replace("/(auth)");
+      router.replace("/(authenticated)");
     }
   }, [session, initialized, userStatus]);
 
