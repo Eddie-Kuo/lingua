@@ -4,6 +4,7 @@ import { Tabs } from "expo-router";
 import { Colors } from "@/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { tw } from "@/utils/tailwind";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const TabsLayout = () => {
   return (
@@ -34,6 +35,33 @@ const TabsLayout = () => {
         options={{
           tabBarIcon: ({ color, focused }) => (
             <TabIcon color={color} focused={focused} icon={"home"} />
+          ),
+          header: () => (
+            <SafeAreaView style={tw.style("relative h-28 bg-primary")}>
+              <View
+                style={tw.style(
+                  "absolute bottom-3 w-full flex-row items-center justify-between px-5",
+                )}>
+                <Text
+                  style={tw.style(
+                    "text-3xl font-semibold tracking-wider text-highlightAccent",
+                  )}>
+                  Home
+                </Text>
+                <View style={tw.style("flex-row gap-4")}>
+                  <Ionicons
+                    color={Colors.highlightAccent}
+                    name={"person-add-outline"}
+                    size={24}
+                  />
+                  <Ionicons
+                    color={Colors.highlightAccent}
+                    name={"notifications-outline"}
+                    size={24}
+                  />
+                </View>
+              </View>
+            </SafeAreaView>
           ),
         }}
       />
