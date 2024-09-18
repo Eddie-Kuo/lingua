@@ -33,55 +33,30 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="index"
         options={{
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon color={color} focused={focused} icon={"home"} />
+          tabBarIcon: ({ focused }) => (
+            <NavigationIcon focused={focused} icon={"home"} size={28} />
           ),
           header: () => (
-            <SafeAreaView style={tw.style("relative h-28 bg-primary")}>
-              <View
-                style={tw.style(
-                  "absolute bottom-3 w-full flex-row items-center justify-between px-5",
-                )}>
-                <Text
-                  style={tw.style(
-                    "text-3xl font-semibold tracking-wider text-highlightAccent",
-                  )}>
-                  Home
-                </Text>
-                <View style={tw.style("flex-row gap-4")}>
-                  <Ionicons
-                    color={Colors.highlightAccent}
-                    name={"person-add-outline"}
-                    size={24}
-                  />
-                  <Ionicons
-                    color={Colors.highlightAccent}
-                    name={"notifications-outline"}
-                    size={24}
-                  />
-                </View>
-              </View>
-            </SafeAreaView>
+            <CustomHeader
+              name={"Home"}
+              navLinks={["addFriend", "notifications"]}
+            />
           ),
         }}
       />
       <Tabs.Screen
         name="chats"
         options={{
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon
-              color={color}
-              focused={focused}
-              icon={"chatbubble-ellipses"}
-            />
+          tabBarIcon: ({ focused }) => (
+            <NavigationIcon focused={focused} icon={"chat"} size={28} />
           ),
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon color={color} focused={focused} icon={"settings"} />
+          tabBarIcon: ({ focused }) => (
+            <NavigationIcon focused={focused} icon={"settings"} size={28} />
           ),
         }}
       />
@@ -91,14 +66,69 @@ const TabsLayout = () => {
 
 export default TabsLayout;
 
-const TabIcon = ({ focused, icon }: any) => {
+const CustomHeader = ({
+  name,
+  navLinks,
+}: {
+  name: string;
+  navLinks: string[];
+}) => {
+  return (
+    <SafeAreaView style={tw.style("relative h-28 bg-primary")}>
+      <View
+        style={tw.style(
+          "absolute bottom-3 w-full flex-row items-center justify-between px-5",
+        )}>
+        <Text
+          style={tw.style(
+            "text-3xl font-semibold tracking-wider text-highlightAccent",
+          )}>
+          {name}
+        </Text>
+        <View style={tw.style("flex-row gap-4")}>
+          {navLinks.map((link) => (
+            <NavigationIcon
+              key={link}
+              icon={link}
+              href={"/"}
+              focused={false}
+              size={24}
+            />
+          ))}
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+const NavigationIcon = ({
+  focused,
+  icon,
+  size,
+  href,
+}: {
+  focused: boolean;
+  icon: string;
+  size: number;
+  href?: string;
+}) => {
+  // This has something to do with the ternary operation in the name prop with the outline ending. It works as expected but cant fix the error
+  const iconName: any = IconNames[icon];
   return (
     <View style={tw.style("items-center gap-1")}>
       <Ionicons
         color={Colors.highlightAccent}
-        size={28}
-        name={focused ? icon : `${icon}-outline`}
+        size={size}
+        name={focused ? iconName : `${iconName}-outline`}
       />
     </View>
   );
+};
+
+const IconNames: Record<string, keyof typeof Ionicons.glyphMap> = {
+  addFriend: "person-add",
+  notifications: "notifications",
+  settings: "settings",
+  home: "home",
+  chat: "chatbubble-ellipses",
 };
