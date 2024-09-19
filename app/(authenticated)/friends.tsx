@@ -3,11 +3,9 @@ import React from "react";
 import { useLocalSearchParams } from "expo-router";
 
 const Modal = () => {
-  const { modal } = useLocalSearchParams<{ modal: string }>();
-
   return (
     <View>
-      <Text>{modal}</Text>
+      <Text>Friends list modal</Text>
     </View>
   );
 };

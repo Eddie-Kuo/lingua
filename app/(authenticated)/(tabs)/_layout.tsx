@@ -1,11 +1,12 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { Link, Stack, Tabs, useRouter } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import { Colors } from "@/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { tw } from "@/utils/tailwind";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { IconNames } from "@/constants/icons";
+import { ModalRoutes } from "@/constants/routes";
 
 const TabsLayout = () => {
   return (
@@ -41,7 +42,7 @@ const TabsLayout = () => {
           header: () => (
             <CustomHeader
               name={"Home"}
-              navLinks={["addFriend", "notifications"]}
+              navLinks={["friends", "notifications"]}
             />
           ),
         }}
@@ -89,7 +90,7 @@ const CustomHeader = ({
         </Text>
         <View style={tw.style("flex-row gap-4")}>
           {navLinks.map((link) => (
-            <HeaderNavigationIcon key={link} icon={link} href={"/"} />
+            <HeaderNavigationIcon key={link} icon={link} href={link} />
           ))}
         </View>
       </View>
@@ -113,17 +114,18 @@ const HeaderNavigationIcon = ({
   href,
 }: {
   icon: string;
-  href?: string;
+  href: string;
 }) => {
   const router = useRouter();
-  // This has something to do with the ternary operation in the name prop with the outline ending. It works as expected but cant fix the error
   const iconName = IconNames[icon];
+  const route = ModalRoutes[href];
+
   return (
     <TouchableOpacity
       onPress={() =>
         router.push({
-          pathname: "/(authenticated)/[modal]",
-          params: { modal: icon },
+          pathname: route,
+          params: { modal: href },
         })
       }>
       <Ionicons color={Colors.highlightAccent} name={iconName} size={24} />
