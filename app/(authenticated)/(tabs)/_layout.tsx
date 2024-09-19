@@ -1,6 +1,6 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { Link, Stack, Tabs } from "expo-router";
+import { Link, Stack, Tabs, useRouter } from "expo-router";
 import { Colors } from "@/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { tw } from "@/utils/tailwind";
@@ -115,11 +115,18 @@ const HeaderNavigationIcon = ({
   icon: string;
   href?: string;
 }) => {
+  const router = useRouter();
   // This has something to do with the ternary operation in the name prop with the outline ending. It works as expected but cant fix the error
   const iconName = IconNames[icon];
   return (
-    <Link href={`/(authenticated)/modal`}>
+    <TouchableOpacity
+      onPress={() =>
+        router.push({
+          pathname: "/(authenticated)/[modal]",
+          params: { modal: icon },
+        })
+      }>
       <Ionicons color={Colors.highlightAccent} name={iconName} size={24} />
-    </Link>
+    </TouchableOpacity>
   );
 };
