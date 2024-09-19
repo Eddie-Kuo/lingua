@@ -5,6 +5,7 @@ import { Colors } from "@/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { tw } from "@/utils/tailwind";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { IconNames } from "@/constants/icons";
 
 const TabsLayout = () => {
   return (
@@ -34,7 +35,7 @@ const TabsLayout = () => {
         name="index"
         options={{
           tabBarIcon: ({ focused }) => (
-            <NavigationIcon focused={focused} icon={"home"} size={28} />
+            <BottomTabIcon focused={focused} icon={"home"} />
           ),
           header: () => (
             <CustomHeader
@@ -48,7 +49,7 @@ const TabsLayout = () => {
         name="chats"
         options={{
           tabBarIcon: ({ focused }) => (
-            <NavigationIcon focused={focused} icon={"chat"} size={28} />
+            <BottomTabIcon focused={focused} icon={"chat"} />
           ),
         }}
       />
@@ -56,7 +57,7 @@ const TabsLayout = () => {
         name="settings"
         options={{
           tabBarIcon: ({ focused }) => (
-            <NavigationIcon focused={focused} icon={"settings"} size={28} />
+            <BottomTabIcon focused={focused} icon={"settings"} />
           ),
         }}
       />
@@ -87,13 +88,7 @@ const CustomHeader = ({
         </Text>
         <View style={tw.style("flex-row gap-4")}>
           {navLinks.map((link) => (
-            <NavigationIcon
-              key={link}
-              icon={link}
-              href={"/"}
-              focused={false}
-              size={24}
-            />
+            <HeaderNavigationIcon key={link} icon={link} href={"/"} />
           ))}
         </View>
       </View>
@@ -101,34 +96,25 @@ const CustomHeader = ({
   );
 };
 
-const NavigationIcon = ({
-  focused,
+const BottomTabIcon = ({
   icon,
-  size,
+  focused,
+}: {
+  icon: string;
+  focused: boolean;
+}) => {
+  const iconName = focused ? IconNames[icon] : IconNames[`${icon}Outline`];
+  return <Ionicons size={28} name={iconName} color={Colors.highlightAccent} />;
+};
+
+const HeaderNavigationIcon = ({
+  icon,
   href,
 }: {
-  focused: boolean;
   icon: string;
-  size: number;
   href?: string;
 }) => {
   // This has something to do with the ternary operation in the name prop with the outline ending. It works as expected but cant fix the error
-  const iconName: any = IconNames[icon];
-  return (
-    <View style={tw.style("items-center gap-1")}>
-      <Ionicons
-        color={Colors.highlightAccent}
-        size={size}
-        name={focused ? iconName : `${iconName}-outline`}
-      />
-    </View>
-  );
-};
-
-const IconNames: Record<string, keyof typeof Ionicons.glyphMap> = {
-  addFriend: "person-add",
-  notifications: "notifications",
-  settings: "settings",
-  home: "home",
-  chat: "chatbubble-ellipses",
+  const iconName = IconNames[icon];
+  return <Ionicons color={Colors.highlightAccent} name={iconName} size={24} />;
 };
