@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { Tabs } from "expo-router";
+import { Link, Stack, Tabs } from "expo-router";
 import { Colors } from "@/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { tw } from "@/utils/tailwind";
@@ -13,17 +13,18 @@ const TabsLayout = () => {
       screenOptions={{
         headerShadowVisible: false,
         tabBarLabel: "",
-        headerTitle: "Lingua",
-        headerTitleAlign: "left", // may not with with iOS according to docs
-        headerTitleStyle: {
-          fontWeight: "bold",
-          fontSize: 32,
-          color: Colors.highlightAccent,
-        },
-        headerStyle: {
-          height: 120,
-          backgroundColor: Colors.primary,
-        },
+        // headerShown: false,
+        // headerTitle: "Lingua",
+        // headerTitleAlign: "left", // may not with with iOS according to docs
+        // headerTitleStyle: {
+        //   fontWeight: "bold",
+        //   fontSize: 32,
+        //   color: Colors.highlightAccent,
+        // },
+        // headerStyle: {
+        //   height: 120,
+        //   backgroundColor: Colors.primary,
+        // },
         tabBarStyle: {
           backgroundColor: Colors.secondary,
           borderTopColor: Colors.secondary,
@@ -116,5 +117,9 @@ const HeaderNavigationIcon = ({
 }) => {
   // This has something to do with the ternary operation in the name prop with the outline ending. It works as expected but cant fix the error
   const iconName = IconNames[icon];
-  return <Ionicons color={Colors.highlightAccent} name={iconName} size={24} />;
+  return (
+    <Link href={`/(authenticated)/modal`}>
+      <Ionicons color={Colors.highlightAccent} name={iconName} size={24} />
+    </Link>
+  );
 };
