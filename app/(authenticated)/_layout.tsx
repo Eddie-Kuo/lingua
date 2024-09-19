@@ -7,7 +7,7 @@ const AuthenticatedLayout = () => {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
       <Stack.Screen
-        name="friends"
+        name="(modals)/friends"
         options={{
           presentation: "modal",
           headerShown: true,
@@ -19,7 +19,7 @@ const AuthenticatedLayout = () => {
         }}
       />
       <Stack.Screen
-        name="notifications"
+        name="(modals)/notifications"
         options={{
           presentation: "modal",
           headerShown: true,
