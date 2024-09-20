@@ -7,4 +7,5 @@ export const Colors = {
   highlight: "#F3C82C",
   highlightAccent: "#E4871D",
   secondary: "#0D2235",
+  darkGrey: "#323232",
 };

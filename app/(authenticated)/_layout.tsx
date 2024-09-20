@@ -1,6 +1,8 @@
 import React from "react";
-import { Stack } from "expo-router";
+import { Link, Stack } from "expo-router";
 import { Colors } from "@/constants/colors";
+import { TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const AuthenticatedLayout = () => {
   return (
@@ -9,25 +11,15 @@ const AuthenticatedLayout = () => {
       <Stack.Screen
         name="(modals)/friends"
         options={{
-          presentation: "modal",
-          headerShown: true,
-          headerTitle: "friends",
-          headerShadowVisible: false,
-          headerStyle: {
-            backgroundColor: Colors.primary,
-          },
+          ...modalHeaderOptions,
+          headerTitle: "Add Friends",
         }}
       />
       <Stack.Screen
         name="(modals)/notifications"
         options={{
-          presentation: "modal",
-          headerShown: true,
-          headerTitle: "notifications",
-          headerShadowVisible: false,
-          headerStyle: {
-            backgroundColor: Colors.primary,
-          },
+          ...modalHeaderOptions,
+          headerTitle: "Notifications",
         }}
       />
     </Stack>
@@ -35,3 +27,20 @@ const AuthenticatedLayout = () => {
 };
 
 export default AuthenticatedLayout;
+
+const modalHeaderOptions: any = {
+  presentation: "modal",
+  headerShown: true,
+  headerShadowVisible: false,
+  headerStyle: {
+    backgroundColor: Colors.secondary,
+  },
+  headerTitleStyle: { color: "white" },
+  headerRight: () => (
+    <Link asChild href="../">
+      <TouchableOpacity>
+        <Ionicons name="close" color="white" size={24} />
+      </TouchableOpacity>
+    </Link>
+  ),
+};
