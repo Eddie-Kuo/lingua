@@ -6,9 +6,11 @@ import { Ionicons } from "@expo/vector-icons";
 const Modal = () => {
   //Todo: Need to account for area code stored in database
   const [number, setNumber] = useState("");
+  //Todo: Set the return of function call into state to show the user or error message user doesn't exist
 
   const handleSearchForFriend = () => {
     console.log("handleSearchForFriend Pressed");
+    // Todo: function call to db to check if phone number entered is in database
     return;
   };
 
@@ -39,6 +41,8 @@ const Modal = () => {
       </View>
 
       {/* <View style={tw.style("my-5 w-full border border-t-white")} /> */}
+      {/* Todo: Display the search result of the function call */}
+      {/* Todo: Clicking the user card will pop up a modal to confirm if you want to add the user as a friend */}
 
       {/* User returned */}
     </View>
