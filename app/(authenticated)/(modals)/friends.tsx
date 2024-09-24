@@ -1,4 +1,4 @@
-import { View, TextInput, Pressable } from "react-native";
+import { View, TextInput, Pressable, Alert } from "react-native";
 import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
@@ -6,16 +6,24 @@ import { Ionicons } from "@expo/vector-icons";
 const Modal = () => {
   //Todo: Need to account for area code stored in database
   const [number, setNumber] = useState("");
+  const [areaCode, setAreaCode] = useState("+1");
+
   //Todo: Set the return of function call into state to show the user or error message user doesn't exist
 
   const handleSearchForFriend = () => {
-    console.log("handleSearchForFriend Pressed");
+    const fullPhoneNumber = `${areaCode}${number}`;
+
+    if (fullPhoneNumber.length < 12) {
+      Alert.alert("Please enter a valid phone number");
+      return;
+    }
+
     // Todo: function call to db to check if phone number entered is in database
     return;
   };
 
   return (
-    <View style={tw.style("bg-secondary flex-1 px-5 py-5")}>
+    <View style={tw.style("flex-1 bg-secondary px-5 py-5")}>
       {/* Search bar */}
       <View style={tw.style("flex-row items-center gap-3")}>
         <TextInput
