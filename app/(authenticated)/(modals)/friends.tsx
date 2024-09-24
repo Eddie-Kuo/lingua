@@ -23,9 +23,9 @@ const Modal = () => {
   };
 
   return (
-    <View style={tw.style("flex-1 bg-secondary px-5 py-5")}>
+    <View style={tw.style("flex-1 bg-secondary py-3")}>
       {/* Search bar */}
-      <View style={tw.style("flex-row items-center gap-3")}>
+      <View style={tw.style("flex-row items-center gap-3 px-5")}>
         <TextInput
           placeholder="Enter your friend's phone number"
           placeholderTextColor={"#a1a1aa"}
@@ -38,7 +38,7 @@ const Modal = () => {
         />
         {number && (
           <Pressable
-            style={tw.style("absolute right-12")}
+            style={tw.style("absolute right-16")}
             onPress={() => setNumber("")}>
             <Ionicons name="close-circle" size={24} color={"grey"} />
           </Pressable>
@@ -48,7 +48,7 @@ const Modal = () => {
         </Pressable>
       </View>
 
-      {/* <View style={tw.style("my-5 w-full border border-t-white")} /> */}
+      <View style={tw.style("my-5 w-full border border-t-white")} />
       {/* Todo: Display the search result of the function call */}
       {/* Todo: Clicking the user card will pop up a modal to confirm if you want to add the user as a friend */}
 
