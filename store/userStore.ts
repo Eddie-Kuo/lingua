@@ -1,4 +1,4 @@
-import { Language } from "@/utils/types/type";
+import { Language } from "@/utils/types/user";
 import { create } from "zustand";
 
 type UserStore = {

@@ -2,15 +2,18 @@ import { View, TextInput, Pressable, Alert } from "react-native";
 import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
+import { getUserByPhoneNumber } from "@/database/queries/user";
+import { UserInfo } from "@/utils/types/user";
 
 const Modal = () => {
   //Todo: Need to account for area code stored in database
   const [number, setNumber] = useState("");
   const [areaCode, setAreaCode] = useState("+1");
+  const [searchedUser, setSearchedUser] = useState<UserInfo>();
 
   //Todo: Set the return of function call into state to show the user or error message user doesn't exist
 
-  const handleSearchForFriend = () => {
+  const handleSearchForFriend = async () => {
     const fullPhoneNumber = `${areaCode}${number}`;
 
     if (fullPhoneNumber.length < 12) {
@@ -18,7 +21,19 @@ const Modal = () => {
       return;
     }
 
-    // Todo: function call to db to check if phone number entered is in database
+    try {
+      const user = await getUserByPhoneNumber(fullPhoneNumber);
+      if (!user) {
+        Alert.alert(
+          "User by that phone number not found. Please check the phone number you entered and try again!",
+        );
+      }
+
+      setSearchedUser(user);
+    } catch (error) {
+      console.log("🚀 ~ handleSearchForFriend ~ error:", error);
+    }
+
     return;
   };
 

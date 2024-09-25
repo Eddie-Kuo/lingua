@@ -1,5 +1,5 @@
-import { UserInfo } from "@/app/(auth)/onboarding/signup";
 import { supabase } from "@/utils/supabase";
+import { UserInfo } from "@/utils/types/user";
 
 //? Getting this error when making queries with Drizzle ORM - using Supabase queries instead
 //! "The package at "node_modules/dotenv/lib/main.js" attempted to import the Node standard library module "path".
