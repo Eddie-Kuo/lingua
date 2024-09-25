@@ -1,15 +1,14 @@
-import { View, TextInput, Pressable, Alert } from "react-native";
+import { View, TextInput, Pressable, Alert, Text, Button } from "react-native";
 import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
 import { getUserByPhoneNumber } from "@/database/queries/user";
-import { UserInfo } from "@/utils/types/user";
 
 const Modal = () => {
   //Todo: Need to account for area code stored in database
   const [number, setNumber] = useState("");
   const [areaCode, setAreaCode] = useState("+1");
-  const [searchedUser, setSearchedUser] = useState<UserInfo>();
+  const [searchedUser, setSearchedUser] = useState<any>();
 
   //Todo: Set the return of function call into state to show the user or error message user doesn't exist
 
@@ -65,6 +64,16 @@ const Modal = () => {
 
       <View style={tw.style("my-5 w-full border border-t-white")} />
       {/* Todo: Display the search result of the function call */}
+
+      {searchedUser && (
+        <View>
+          <Text>
+            {searchedUser.first_name}, {searchedUser.last_name}
+          </Text>
+          <Text>Custom Message</Text>
+          <Button title="Action" />
+        </View>
+      )}
       {/* Todo: Clicking the user card will pop up a modal to confirm if you want to add the user as a friend */}
 
       {/* User returned */}
