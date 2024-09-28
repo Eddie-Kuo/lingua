@@ -62,18 +62,19 @@ const Modal = () => {
         </Pressable>
       </View>
 
-      <View style={tw.style("my-5 w-full border border-t-white")} />
+      {/* <View style={tw.style("mt-5 w-full border border-t-white")} /> */}
       {/* Todo: Display the search result of the function call */}
-
-      {searchedUser && (
-        <View>
-          <Text>
-            {searchedUser.first_name}, {searchedUser.last_name}
-          </Text>
-          <Text>Custom Message</Text>
-          <Button title="Action" />
-        </View>
-      )}
+      <View style={tw.style("mt-8 h-full bg-zinc-300")}>
+        {searchedUser && (
+          <View>
+            <Text>
+              {searchedUser.first_name}, {searchedUser.last_name}
+            </Text>
+            <Text>Custom Message</Text>
+            <Button title="Action" />
+          </View>
+        )}
+      </View>
       {/* Todo: Clicking the user card will pop up a modal to confirm if you want to add the user as a friend */}
 
       {/* User returned */}
