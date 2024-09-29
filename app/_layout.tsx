@@ -16,13 +16,14 @@ const InitialLayout = () => {
     const isAuthGroup = segments[0] === "(authenticated)";
 
     //* Development purposes: accessing the dashboard removing authentication
-    if (session && !isAuthGroup && userStatus === "Returning") {
+    // && userStatus === "Returning" // maybe this segment is not needed as long as we have a way to decipher a new user
+    if (session && !isAuthGroup) {
       // router.replace("/(auth)/onboarding");
-      // router.replace("/(authenticated)");
-      return;
+      router.replace("/(authenticated)");
+      // return;
     } else if (session && userStatus === "New") {
       // router.replace("/(auth)/language-selection");
-      return;
+      // return;
     } else if (!session) {
       // router.replace("/(auth)");
       router.replace("/(authenticated)");

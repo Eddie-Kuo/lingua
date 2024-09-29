@@ -14,15 +14,7 @@ import useUserStore from "@/store/userStore";
 import { createUser } from "@/database/queries/user";
 import { useRootNavigationState, useRouter } from "expo-router";
 import { getPublicAvatarURL, selectNewImage } from "@/database/actions/avatar";
-
-export type UserInfo = {
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
-  picURL: string;
-  hash: number;
-  selectedLanguage: "English" | "Spanish" | "Mandarin";
-};
+import { UserInfo } from "@/utils/types/user";
 
 const OnboardingScreen = () => {
   const router = useRouter();
