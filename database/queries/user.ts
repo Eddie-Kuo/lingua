@@ -5,11 +5,13 @@ import { InsertUser, SelectUser } from "../schemas/users";
 // Get user by user ID
 export const getUserByPhoneNumber = async (
   phoneNumber: SelectUser["phoneNumber"],
-): Promise<SelectUser> => {
+): Promise<UserInfo> => {
   const { data, error } = await supabase
     .from("users")
     .select()
     .eq("phone_number", phoneNumber);
+
+  console.log("data", data);
 
   if (error) {
     throw new Error("Error getting user by phone number");

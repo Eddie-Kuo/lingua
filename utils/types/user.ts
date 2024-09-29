@@ -3,10 +3,10 @@ export type Language = {
 };
 
 export type UserInfo = {
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
-  picURL: string;
-  hash: number;
-  selectedLanguage: "English" | "Spanish" | "Mandarin";
+  phone_number: string;
+  first_name: string;
+  last_name: string;
+  pic_url: string;
+  hash?: number;
+  selected_language: "English" | "Spanish" | "Mandarin";
 };
