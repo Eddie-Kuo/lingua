@@ -3,15 +3,15 @@ import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
 import { getUserByPhoneNumber } from "@/database/queries/user";
+import { UserInfo } from "@/utils/types/user";
 
 const Modal = () => {
   //Todo: Need to account for area code stored in database
   const [number, setNumber] = useState("");
   const [areaCode, setAreaCode] = useState("+1");
-  const [searchedUser, setSearchedUser] = useState<any>();
+  const [searchedUser, setSearchedUser] = useState<UserInfo>();
 
   //Todo: Set the return of function call into state to show the user or error message user doesn't exist
-
   const handleSearchForFriend = async () => {
     const fullPhoneNumber = `${areaCode}${number}`;
 
@@ -22,6 +22,7 @@ const Modal = () => {
 
     try {
       const user = await getUserByPhoneNumber(fullPhoneNumber);
+      console.log("user", user);
       if (!user) {
         Alert.alert(
           "User by that phone number not found. Please check the phone number you entered and try again!",
