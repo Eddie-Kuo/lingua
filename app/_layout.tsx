@@ -41,6 +41,7 @@ const InitialLayout = () => {
 const RootLayout = () => {
   return (
     <AuthProvider>
+      <StatusBar style="light" />
       <InitialLayout />
     </AuthProvider>
   );

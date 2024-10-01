@@ -9,10 +9,12 @@ import {
 import { tw } from "@/utils/tailwind";
 import { userData } from "@/constants/userData";
 import { UserInfo } from "@/utils/types/user";
-import { Colors } from "@/constants/colors";
 
 const HomeScreen = () => {
-  const handleSelectedUser = () => {};
+  const handleSelectedUser = () => {
+    // link to chat room (chatId) if there is an active room
+    // if no active room, create a new chat room and redirect to room
+  };
 
   const renderFriendsList: ListRenderItem<UserInfo> = ({ item }) => {
     return (
@@ -65,9 +67,3 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-
-//* Features this screen will be in charge of:
-//Todo: addFriend button - search and add a friend through phone number - bottom modal
-//Todo: Somewhere to show list of pending requests? - bottom modal
-//Todo: list of all friends from friends list - on screen
-//Todo: Notifications area to display list of incoming requests within the app - bottom modal
