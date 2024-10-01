@@ -1,10 +1,25 @@
-import { View, Text } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import { tw } from "@/utils/tailwind";
-
+import { userData } from "@/constants/userData";
 const HomeScreen = () => {
+  const renderFriendsList = () => {
+    return (
+      <View>
+        <Text>User</Text>
+      </View>
+    );
+  };
+
   return (
-    <View style={tw.style("flex-1 items-center justify-center bg-primary")}>
-      <Text>Hello World</Text>
+    <View style={tw.style("flex-1 bg-primary px-5")}>
+      <View style={tw.style("mt-2")}>
+        <Text style={tw.style("text-base font-semibold text-undertone")}>
+          Friends: 20
+        </Text>
+      </View>
+      <View>
+        <FlatList renderItem={renderFriendsList} data={userData} />
+      </View>
     </View>
   );
 };
