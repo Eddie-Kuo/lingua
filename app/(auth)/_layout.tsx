@@ -9,9 +9,9 @@ const AuthLayout = () => {
         title: "",
         headerBackTitle: "",
         headerShadowVisible: false,
-        headerTintColor: "#E6EFF5",
+        headerTintColor: "#131313",
         headerStyle: {
-          backgroundColor: "#274560",
+          backgroundColor: "#131313",
         },
       }}>
       <Stack.Screen name="index" />
