@@ -78,6 +78,20 @@
       "when": 1727735412084,
       "tag": "0010_abnormal_stick",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1727905111155,
+      "tag": "0011_known_bloodscream",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1727905211724,
+      "tag": "0012_empty_chamber",
+      "breakpoints": true
     }
   ]
 }
