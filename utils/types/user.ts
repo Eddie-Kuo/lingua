@@ -3,6 +3,7 @@ export type Language = {
 };
 
 export type UserInfo = {
+  id: string;
   phone_number: string;
   first_name: string;
   last_name: string;
