@@ -1,6 +1,5 @@
 import { AuthProvider, useAuth } from "@/context/AuthProvider";
 import { Stack, useRouter, useSegments } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 
 const InitialLayout = () => {
@@ -41,7 +40,6 @@ const InitialLayout = () => {
 const RootLayout = () => {
   return (
     <AuthProvider>
-      <StatusBar style="light" />
       <InitialLayout />
     </AuthProvider>
   );

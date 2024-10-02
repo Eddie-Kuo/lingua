@@ -3,6 +3,7 @@ import React from "react";
 import { tw } from "@/utils/tailwind";
 import { useRouter } from "expo-router";
 import ActionButton from "@/components/ActionButton";
+import { StatusBar } from "expo-status-bar";
 
 const Index = () => {
   const router = useRouter();
@@ -12,6 +13,7 @@ const Index = () => {
       style={tw.style(
         "relative flex-1 items-center justify-center bg-primary",
       )}>
+      <StatusBar style="light" />
       <View style={tw.style("flex items-center justify-center gap-2")}>
         <Image
           source={require("@/assets/images/icon.png")}

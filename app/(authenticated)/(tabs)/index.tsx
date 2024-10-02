@@ -9,6 +9,7 @@ import {
 import { tw } from "@/utils/tailwind";
 import { userData } from "@/constants/userData";
 import { UserInfo } from "@/utils/types/user";
+import { StatusBar } from "expo-status-bar";
 
 const HomeScreen = () => {
   const handleSelectedUser = () => {
@@ -50,6 +51,7 @@ const HomeScreen = () => {
 
   return (
     <View style={tw.style("flex-1 gap-2 bg-primary")}>
+      <StatusBar style="light" />
       <View style={tw.style("mt-2 px-5")}>
         <Text style={tw.style("text-base font-semibold text-undertone")}>
           Start Chatting
