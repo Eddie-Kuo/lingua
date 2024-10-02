@@ -7,10 +7,10 @@
     <img src="assets/images/icon.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">IntelliCourse.AI</h3>
+<h3 align="center">Lingua</h3>
 
   <p align="center">
-    This web app is built with the intention of making online learning easier. Utilizing the OpenAI API, users can have a full roadmap and course generated for them to learn any topic of choice.
+    This mobile app is built to bridge the generational gap between parents and their first generation children who are proficient in texting in different languages. Traditionally, using Google Translate has been the "go to solution" in translating text. The problem with using Google Translate is that the translated text is often too literal and sounds robotic. Using AI and specific prompt engineering, Lingua (Latin for language) translates text messages in realtime while preserving the natural way of speaking in the language of choice as if it were from a native speaker.  
     <br />
     <a href="https://github.com/Eddie-Kuo/lingua"><strong>Explore the docs »</strong></a>
     <br />
@@ -52,12 +52,10 @@
 ## About The Project
 
 _image coming soon_
-<img src="assets/images/home-screen.png" alt="preview" width="80" height="80">
-
 
 ### Built With
 
-<details>
+
   <ul>
     <li><a href="https://www.typescriptlang.org/">Typescript</a></li>
     <li><a href="https://expo.dev/">React-Native Expo</a></li>
@@ -66,7 +64,7 @@ _image coming soon_
     <li><a href="https://supabase.com/">Supabase</a></li>
     <li><a href="https://openai.com/">OpenAI</a></li>
   </ul>
-</details>
+
 
 <!-- GETTING STARTED -->
 
@@ -74,10 +72,10 @@ _image coming soon_
 
 ### Prerequisites
 
-This project uses NPM as package manager
+This project uses Bun as package manager
 
 ```sh
-npm install npm@latest -g
+npm install -g bun
 ```
 
 ### Installation
@@ -85,13 +83,15 @@ npm install npm@latest -g
 1. Clone the repo
 
    ```sh
-   git clone https://github.com/Eddie-Kuo/intellicourse-ai.git
+   git clone https://github.com/Eddie-Kuo/lingua.git
    ```
 
-2. Install NPM packages
+2. Install packages and run app via platform of choice
 
    ```sh
-   npm install
+   bun install
+   
+   bunx expo start
    ```
 
 3. To run this project, you will need to set up some environment variables. Review the'.env.example' file to set up your environment variables
@@ -100,10 +100,10 @@ npm install npm@latest -g
 
 ## Features
 
-- [ ] User can input a topic to learn more about in either a single word format like "Javascript" or in a "how to..." phrase.
-- [ ] User can navigate through the course by watching a related Youtbe video and taking an "end of chapter quiz" on what they learned.
-- [ ] Feature 3
-  - [ ] Nested Feature
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
 
 <!-- CONTRIBUTING -->
 
