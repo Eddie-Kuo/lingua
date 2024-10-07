@@ -15,14 +15,14 @@ import { useEffect, useState } from "react";
 const HomeScreen = () => {
   const [friendsList, setFriendsList] = useState<UserInfo[]>();
   console.log("🚀 ~ HomeScreen ~ friendsList:", friendsList);
-  const userId = "57"; // temp user id for development to bypass auth
+  const userId = 57; // temp user id for development to bypass auth
 
   useEffect(() => {
     const fetchFriendsList = async () => {
       const friends = await getFriendsList(userId);
 
       const friendListPromise = friends.map(async (friend) => {
-        const friendInfo = await getUserById(Number(friend.friend_user_id));
+        const friendInfo = await getUserById(friend.friend_user_id);
         return friendInfo;
       });
 

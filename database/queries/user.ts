@@ -36,8 +36,8 @@ export const createUser = async (user: InsertUser) => {
 };
 
 export const getFriendsList = async (
-  userId: string,
-): Promise<{ friend_user_id: string }[]> => {
+  userId: number,
+): Promise<{ friend_user_id: number }[]> => {
   const { data, error } = await supabase
     .from("friends")
     .select("friend_user_id")

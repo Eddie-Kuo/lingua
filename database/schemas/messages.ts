@@ -1,9 +1,9 @@
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, timestamp, integer } from "drizzle-orm/pg-core";
 
 export const messagesTable = pgTable("messages", {
   id: serial("id").primaryKey(),
   roomId: text("room_id").notNull(),
-  senderId: text("sender_id").notNull(),
+  senderId: integer("sender_id").notNull(),
   originalMessage: text("original_message").notNull(),
   originalMessageLanguage: text("original_message_language").notNull(),
   translatedMessage: text("translated_message").notNull(),
