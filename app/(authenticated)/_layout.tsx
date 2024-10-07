@@ -13,10 +13,6 @@ const AuthenticatedLayout = () => {
         options={{
           ...modalHeaderOptions,
           headerTitle: "Add Friends",
-          // contentStyle: {
-          //   borderTopColor: "white",
-          //   borderTopWidth: 1,
-          // },
         }}
       />
       <Stack.Screen

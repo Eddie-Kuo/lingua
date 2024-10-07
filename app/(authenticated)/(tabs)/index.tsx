@@ -10,9 +10,17 @@ import { tw } from "@/utils/tailwind";
 import { userData } from "@/constants/userData";
 import { UserInfo } from "@/utils/types/user";
 import { StatusBar } from "expo-status-bar";
+import { useRouter } from "expo-router";
 
 const HomeScreen = () => {
-  const handleSelectedUser = () => {
+  const router = useRouter();
+  const handleSelectedUser = (userId: string) => {
+    console.log(userId);
+
+    router.push({
+      pathname: "/(authenticated)/(tabs)/[chat]",
+      params: { chat: userId },
+    });
     // link to chat room (chatId) if there is an active room
     // if no active room, create a new chat room and redirect to room
   };
@@ -20,13 +28,12 @@ const HomeScreen = () => {
   const renderFriendsList: ListRenderItem<UserInfo> = ({ item }) => {
     return (
       <Pressable
-        onPress={handleSelectedUser}
+        onPress={() => handleSelectedUser(item.id)}
         style={({ pressed }) => [
           tw.style("flex-row items-center gap-3 px-3"),
           pressed
             ? {
                 backgroundColor: "#434446",
-                // opacity: 0.75,
               }
             : {},
         ]}>
