@@ -7,12 +7,9 @@ import {
   Pressable,
 } from "react-native";
 import { tw } from "@/utils/tailwind";
-import { userData } from "@/constants/userData";
 import { UserInfo } from "@/utils/types/user";
 import { StatusBar } from "expo-status-bar";
-import { Redirect, useRouter } from "expo-router";
 import { getFriendsList, getUserById } from "@/database/queries/user";
-import { useAuth } from "@/context/AuthProvider";
 import { useEffect, useState } from "react";
 
 const HomeScreen = () => {
@@ -88,7 +85,7 @@ const HomeScreen = () => {
       <View>
         <FlatList
           renderItem={renderFriendsList}
-          data={userData}
+          data={friendsList}
           keyExtractor={(item) => item.id}
         />
       </View>
