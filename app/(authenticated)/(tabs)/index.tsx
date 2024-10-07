@@ -10,19 +10,40 @@ import { tw } from "@/utils/tailwind";
 import { userData } from "@/constants/userData";
 import { UserInfo } from "@/utils/types/user";
 import { StatusBar } from "expo-status-bar";
-import { useRouter } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
+import { getFriendsList, getUserById } from "@/database/queries/user";
+import { useAuth } from "@/context/AuthProvider";
+import { useEffect, useState } from "react";
 
 const HomeScreen = () => {
-  const router = useRouter();
-  const handleSelectedUser = (userId: string) => {
-    console.log(userId);
+  const [friendsList, setFriendsList] = useState<UserInfo[]>();
+  console.log("🚀 ~ HomeScreen ~ friendsList:", friendsList);
+  const userId = "57"; // temp user id for development to bypass auth
 
-    router.push({
-      pathname: "/(authenticated)/(tabs)/[chat]",
-      params: { chat: userId },
-    });
-    // link to chat room (chatId) if there is an active room
-    // if no active room, create a new chat room and redirect to room
+  useEffect(() => {
+    const fetchFriendsList = async () => {
+      const friends = await getFriendsList(userId);
+
+      const friendListPromise = friends.map(async (friend) => {
+        const friendInfo = await getUserById(Number(friend.friend_user_id));
+        return friendInfo;
+      });
+
+      const friendList = await Promise.all(friendListPromise);
+      setFriendsList(friendList);
+    };
+    fetchFriendsList();
+  }, []);
+
+  const handleSelectedUser = (userId: string) => {
+    // 1. Given the userId, check if current user has an active chat with the selected user
+    // if there is a chat, redirect to the chat room
+    // if there is no chat, create a new chat room
+    // redirect to the chat room
+    // router.push({
+    //   pathname: "/(authenticated)/(tabs)/[chat]",
+    //   params: { chat: userId },
+    // });
   };
 
   const renderFriendsList: ListRenderItem<UserInfo> = ({ item }) => {
