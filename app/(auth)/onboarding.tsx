@@ -12,9 +12,8 @@ import ActionButton from "@/components/ActionButton";
 import { Ionicons } from "@expo/vector-icons";
 import useUserStore from "@/store/userStore";
 import { createUser } from "@/database/queries/user";
-import { useRootNavigationState, useRouter } from "expo-router";
-import { getPublicAvatarURL, selectNewImage } from "@/database/actions/avatar";
-// import { UserInfo } from "@/utils/types/user";
+import { useRouter } from "expo-router";
+import { getPublicAvatarURL, selectNewImage } from "@/utils/avatarImage";
 import { InsertUser } from "@/database/schemas/users";
 
 const OnboardingScreen = () => {
