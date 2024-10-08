@@ -18,18 +18,18 @@ const HomeScreen = () => {
   const userId = 57; // temp user id for development to bypass auth
 
   useEffect(() => {
-    const fetchFriendsList = async () => {
-      const friends = await getFriendsList(userId);
-
-      const friendListPromise = friends.map(async (friend) => {
-        const friendInfo = await getUserById(friend.friend_user_id);
-        return friendInfo;
+    getFriendsList(userId)
+      .then((friends) => {
+        return Promise.all(
+          friends.map((friend) => getUserById(friend.friend_user_id)),
+        );
+      })
+      .then((friendList) => {
+        setFriendsList(friendList);
+      })
+      .catch((error) => {
+        console.error("Error fetching friends list", error);
       });
-
-      const friendList = await Promise.all(friendListPromise);
-      setFriendsList(friendList);
-    };
-    fetchFriendsList();
   }, []);
 
   const handleSelectedUser = (userId: string) => {
