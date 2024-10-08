@@ -3,8 +3,8 @@ import React from "react";
 import { useLocalSearchParams } from "expo-router";
 
 const ChatScreen = () => {
-  const { chat: conversationId } = useLocalSearchParams<{
-    chat: string;
+  const { conversation: conversationId } = useLocalSearchParams<{
+    conversation: string;
   }>();
   return (
     <View>

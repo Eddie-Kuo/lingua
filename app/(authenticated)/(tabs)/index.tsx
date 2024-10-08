@@ -30,8 +30,8 @@ const HomeScreen = () => {
     }
 
     router.push({
-      pathname: "/(authenticated)/(tabs)/[chat]",
-      params: { chat: conversationId },
+      pathname: "/(authenticated)/(chat)/[conversation]",
+      params: { conversation: conversationId },
     });
   };
 
