@@ -92,6 +92,13 @@
       "when": 1727905211724,
       "tag": "0012_empty_chamber",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1728337052600,
+      "tag": "0013_first_darkstar",
+      "breakpoints": true
     }
   ]
 }

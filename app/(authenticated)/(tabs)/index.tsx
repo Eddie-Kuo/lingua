@@ -7,26 +7,51 @@ import {
   Pressable,
 } from "react-native";
 import { tw } from "@/utils/tailwind";
-import { userData } from "@/constants/userData";
 import { UserInfo } from "@/utils/types/user";
 import { StatusBar } from "expo-status-bar";
+import { getFriendsList, getUserById } from "@/database/queries/user";
+import { useEffect, useState } from "react";
 
 const HomeScreen = () => {
-  const handleSelectedUser = () => {
-    // link to chat room (chatId) if there is an active room
-    // if no active room, create a new chat room and redirect to room
+  const [friendsList, setFriendsList] = useState<UserInfo[]>();
+  console.log("🚀 ~ HomeScreen ~ friendsList:", friendsList);
+  const userId = 57; // temp user id for development to bypass auth
+
+  useEffect(() => {
+    getFriendsList(userId)
+      .then((friends) => {
+        return Promise.all(
+          friends.map((friend) => getUserById(friend.friend_user_id)),
+        );
+      })
+      .then((friendList) => {
+        setFriendsList(friendList);
+      })
+      .catch((error) => {
+        console.error("Error fetching friends list", error);
+      });
+  }, []);
+
+  const handleSelectedUser = (userId: string) => {
+    // 1. Given the userId, check if current user has an active chat with the selected user
+    // if there is a chat, redirect to the chat room
+    // if there is no chat, create a new chat room
+    // redirect to the chat room
+    // router.push({
+    //   pathname: "/(authenticated)/(tabs)/[chat]",
+    //   params: { chat: userId },
+    // });
   };
 
   const renderFriendsList: ListRenderItem<UserInfo> = ({ item }) => {
     return (
       <Pressable
-        onPress={handleSelectedUser}
+        onPress={() => handleSelectedUser(item.id)}
         style={({ pressed }) => [
           tw.style("flex-row items-center gap-3 px-3"),
           pressed
             ? {
                 backgroundColor: "#434446",
-                // opacity: 0.75,
               }
             : {},
         ]}>
@@ -60,7 +85,7 @@ const HomeScreen = () => {
       <View>
         <FlatList
           renderItem={renderFriendsList}
-          data={userData}
+          data={friendsList}
           keyExtractor={(item) => item.id}
         />
       </View>
