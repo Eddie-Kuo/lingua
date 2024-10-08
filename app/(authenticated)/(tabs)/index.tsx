@@ -11,21 +11,27 @@ import { UserInfo } from "@/types/user";
 import { StatusBar } from "expo-status-bar";
 import { useRouter } from "expo-router";
 import { useFriendsList } from "@/hooks/user";
+import {
+  createConversation,
+  getConversationByUserId,
+} from "@/database/queries/conversations";
 
 const HomeScreen = () => {
   const userId = 57; // temp user id for development to bypass auth
   const { data: friendsList } = useFriendsList(userId);
   const router = useRouter();
-  console.log("🚀 ~ HomeScreen ~ friendsList:", friendsList);
 
-  const handleSelectedUser = (userId: string) => {
-    // 1. Given the userId, check if current user has an active chat with the selected user
-    // if there is a chat, redirect to the chat room
-    // if there is no chat, create a new chat room
-    // redirect to the chat room
+  const handleSelectedUser = async (friendId: number) => {
+    let conversationId = await getConversationByUserId(userId);
+    console.log("🚀 ~ handleSelectedUser ~ conversationId:", conversationId);
+
+    if (!conversationId) {
+      conversationId = await createConversation(userId, friendId);
+    }
+
     router.push({
       pathname: "/(authenticated)/(tabs)/[chat]",
-      params: { chat: userId },
+      params: { chat: conversationId },
     });
   };
 
@@ -72,7 +78,7 @@ const HomeScreen = () => {
         <FlatList
           renderItem={renderFriendsList}
           data={friendsList}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id.toString()}
         />
       </View>
     </View>

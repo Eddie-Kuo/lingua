@@ -3,12 +3,12 @@ import React from "react";
 import { useLocalSearchParams } from "expo-router";
 
 const ChatScreen = () => {
-  const { chat: userId } = useLocalSearchParams<{
+  const { chat: conversationId } = useLocalSearchParams<{
     chat: string;
   }>();
   return (
     <View>
-      <Text>userId: {userId}</Text>
+      <Text>conversationId: {conversationId}</Text>
     </View>
   );
 };
