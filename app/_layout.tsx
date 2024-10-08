@@ -1,4 +1,6 @@
 import { AuthProvider, useAuth } from "@/context/AuthProvider";
+import Providers from "@/context/providers";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 
@@ -37,11 +39,13 @@ const InitialLayout = () => {
   );
 };
 
+const queryClient = new QueryClient();
+
 const RootLayout = () => {
   return (
-    <AuthProvider>
+    <Providers>
       <InitialLayout />
-    </AuthProvider>
+    </Providers>
   );
 };
 
