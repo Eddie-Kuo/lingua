@@ -63,7 +63,6 @@ const TabsLayout = () => {
           ),
         }}
       />
-      <Tabs.Screen name="[conversation]" options={{ href: null }} />
     </Tabs>
   );
 };
