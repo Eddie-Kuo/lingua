@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
 import { getUserByPhoneNumber } from "@/database/queries/user";
-import { UserInfo } from "@/utils/types/user";
+import { UserInfo } from "@/types/user";
 
 const Modal = () => {
   //Todo: Need to account for area code stored in database
