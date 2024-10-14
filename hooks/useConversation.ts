@@ -9,10 +9,8 @@ export const useConversationDetails = (conversationId: string) => {
       console.log("hello");
       const conversation =
         await getConversationByConversationId(conversationId);
-      console.log("🚀 ~ queryFn: ~ conversation:", conversation);
 
       const otherUser = await getUserById(conversation.friend_user_id);
-      console.log("🚀 ~ queryFn: ~ otherUser:", otherUser);
 
       return otherUser;
     },
