@@ -1,24 +1,27 @@
-import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
-import React from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Link, useLocalSearchParams } from "expo-router";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
+import { useConversationDetails } from "@/hooks/useConversation";
+import { UserInfo } from "@/types/user";
 
 const ChatScreen = () => {
-  const { conversation: conversationId } = useLocalSearchParams<{
+  const { conversation } = useLocalSearchParams<{
     conversation: string;
   }>();
+  const { data: otherUser } = useConversationDetails(conversation);
+
   return (
     <View>
-      <ChatHeader />
-      <Text>conversationId: {conversationId}</Text>
+      <ChatHeader otherUser={otherUser} />
+      <Text>conversationId: {conversation}</Text>
     </View>
   );
 };
 
 export default ChatScreen;
 
-const ChatHeader = () => {
+const ChatHeader = ({ otherUser }: { otherUser: UserInfo | undefined }) => {
   return (
     <View
       style={tw.style(
@@ -30,7 +33,9 @@ const ChatHeader = () => {
             <Ionicons name="chevron-back" size={24} color="white" />
           </TouchableOpacity>
         </Link>
-        <Text style={tw.style("text-xl font-bold text-white")}>Other User</Text>
+        <Text style={tw.style("text-xl font-bold text-white")}>
+          {otherUser?.first_name} {otherUser?.last_name}
+        </Text>
       </View>
       <TouchableOpacity>
         <Ionicons name="menu" size={24} color="white" />
