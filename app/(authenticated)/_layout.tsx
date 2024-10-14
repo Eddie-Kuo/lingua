@@ -22,6 +22,7 @@ const AuthenticatedLayout = () => {
           headerTitle: "Notifications",
         }}
       />
+      <Stack.Screen name="(chat)/[conversation]" />
     </Stack>
   );
 };

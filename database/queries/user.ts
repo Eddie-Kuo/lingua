@@ -1,7 +1,6 @@
 import { supabase } from "@/utils/supabase";
-import { UserInfo } from "@/utils/types/user";
+import { UserInfo } from "@/types/user";
 import { InsertUser, SelectUser } from "../schemas/users";
-
 // Get user by user phoneNumber
 export const getUserByPhoneNumber = async (
   phoneNumber: SelectUser["phoneNumber"],
