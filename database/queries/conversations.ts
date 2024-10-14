@@ -4,17 +4,20 @@ import { nanoid } from "nanoid";
 
 export const getConversationByUserId = async (
   userId: number,
+  friendId: number,
 ): Promise<string> => {
   const { data, error } = await supabase
     .from("conversations")
-    .select()
-    .eq("my_user_id", userId);
+    .select("room_id")
+    .eq("my_user_id", userId)
+    .eq("friend_user_id", friendId);
+  console.log("🚀 ~ data:", data);
 
   if (error) {
     throw new Error("Error getting conversation by userId");
   }
 
-  return data[0].room_id;
+  return data[0]?.room_id;
 };
 
 export const createConversation = async (

@@ -22,17 +22,22 @@ const HomeScreen = () => {
   const router = useRouter();
 
   const handleSelectedUser = async (friendId: number) => {
-    let conversationId = await getConversationByUserId(userId);
-    console.log("🚀 ~ handleSelectedUser ~ conversationId:", conversationId);
+    try {
+      let conversationId = await getConversationByUserId(userId, friendId);
+      console.log("🚀 ~ handleSelectedUser ~ conversationId:", conversationId);
 
-    if (!conversationId) {
-      conversationId = await createConversation(userId, friendId);
+      if (!conversationId) {
+        conversationId = await createConversation(userId, friendId);
+      }
+      router.push({
+        pathname: "/(authenticated)/(chat)/[conversation]",
+        params: { conversation: conversationId },
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
     }
-
-    router.push({
-      pathname: "/(authenticated)/(chat)/[conversation]",
-      params: { conversation: conversationId },
-    });
   };
 
   const renderFriendsList: ListRenderItem<UserInfo> = ({ item }) => {

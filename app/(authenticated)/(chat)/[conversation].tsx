@@ -22,7 +22,7 @@ const ChatHeader = () => {
   return (
     <View
       style={tw.style(
-        "h-28 flex-row items-end justify-between bg-[#1F1F1F] p-2.5",
+        "h-28 flex-row items-end justify-between bg-[#1F1F1F] p-3",
       )}>
       <View style={tw.style("flex-row items-center gap-2")}>
         <Link href="../" asChild>
