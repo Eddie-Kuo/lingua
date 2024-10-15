@@ -13,3 +13,14 @@ export const useFriendsList = (userId: number): UseQueryResult<UserInfo[]> => {
     },
   });
 };
+export const useOtherUserDetails = (
+  userId: number,
+): UseQueryResult<UserInfo> => {
+  return useQuery({
+    queryKey: ["otherUserDetails"],
+    queryFn: async () => {
+      const user = await getUserById(userId);
+      return user;
+    },
+  });
+};

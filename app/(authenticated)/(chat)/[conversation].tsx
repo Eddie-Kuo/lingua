@@ -10,18 +10,17 @@ import {
 import { Link, useLocalSearchParams } from "expo-router";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
-import { useConversationDetails } from "@/hooks/useConversation";
-import { UserInfo } from "@/types/user";
+import { useOtherUserDetails } from "@/hooks/useUser";
 
 const ChatScreen = () => {
-  const { conversation } = useLocalSearchParams<{
+  const { conversation: conversationId, otherUserId } = useLocalSearchParams<{
     conversation: string;
+    otherUserId: string;
   }>();
-  const { data: otherUser } = useConversationDetails(conversation);
 
   return (
     <SafeAreaView style={tw.style("flex-1 bg-[#1f1f1f]")}>
-      <ChatHeader otherUser={otherUser} />
+      <ChatHeader otherUserId={otherUserId} />
 
       <KeyboardAvoidingView
         style={tw.style("flex-1 bg-primary")}
@@ -49,7 +48,8 @@ const ChatScreen = () => {
 
 export default ChatScreen;
 
-const ChatHeader = ({ otherUser }: { otherUser: UserInfo | undefined }) => {
+const ChatHeader = ({ otherUserId }: { otherUserId: string }) => {
+  const { data: otherUser } = useOtherUserDetails(Number(otherUserId));
   return (
     <View
       style={tw.style(
