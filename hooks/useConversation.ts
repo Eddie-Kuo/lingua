@@ -6,7 +6,6 @@ export const useConversationDetails = (conversationId: string) => {
   return useQuery({
     queryKey: ["conversation"],
     queryFn: async () => {
-      console.log("hello");
       const conversation =
         await getConversationByConversationId(conversationId);
 
