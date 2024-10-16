@@ -6,11 +6,13 @@ import {
   Pressable,
   SafeAreaView,
   KeyboardAvoidingView,
+  FlatList,
 } from "react-native";
 import { Link, useLocalSearchParams } from "expo-router";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
 import { useOtherUserDetails } from "@/hooks/useUser";
+import { MockMessages } from "@/constants/mockMessageData";
 
 const ChatScreen = () => {
   const { conversation: conversationId, otherUserId } = useLocalSearchParams<{
@@ -27,7 +29,8 @@ const ChatScreen = () => {
         behavior="padding"
         keyboardVerticalOffset={0}>
         {/* chat messages */}
-        <View style={tw.style("flex-1")}></View>
+
+        <ChatMessages />
 
         {/* chat input */}
         <View style={tw.style("flex-row gap-4 bg-[#1f1f1f] p-4")}>
@@ -68,6 +71,29 @@ const ChatHeader = ({ otherUserId }: { otherUserId: string }) => {
       <TouchableOpacity>
         <Ionicons name="menu" size={24} color="white" />
       </TouchableOpacity>
+    </View>
+  );
+};
+
+const ChatMessages = () => {
+  return (
+    <View style={tw.style("mb-3 flex-1 px-3")}>
+      <FlatList
+        inverted
+        data={[...MockMessages].reverse()}
+        renderItem={({ item }) => (
+          // Todo: make chat bubbles more chat bubbly
+          <View
+            style={tw.style(
+              "my-1.5 flex max-w-72 rounded-xl bg-zinc-700/70 p-2.5",
+              item.sender_id === 57 && "self-end bg-sky-600",
+            )}>
+            <Text style={tw.style("text-base text-white")}>
+              {item.original_message}
+            </Text>
+          </View>
+        )}
+      />
     </View>
   );
 };

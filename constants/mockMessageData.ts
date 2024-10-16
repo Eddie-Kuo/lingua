@@ -64,7 +64,7 @@ export const MockMessages: Message[] = [
   {
     id: 6,
     room_id: "9y4gP6F5sl",
-    sender_id: 57,
+    sender_id: 55,
     original_message:
       "Did you catch the latest episode of that TV series we've been watching? The plot twist at the end was completely unexpected!",
     original_message_language: "English",
@@ -76,7 +76,7 @@ export const MockMessages: Message[] = [
   {
     id: 7,
     room_id: "9y4gP6F5sl",
-    sender_id: 55,
+    sender_id: 57,
     original_message:
       "I'm planning a surprise party for my friend's birthday next month. Would you be able to help me with some of the preparations?",
     original_message_language: "English",
@@ -112,7 +112,7 @@ export const MockMessages: Message[] = [
   {
     id: 10,
     room_id: "9y4gP6F5sl",
-    sender_id: 57,
+    sender_id: 55,
     original_message:
       "Have you heard about the upcoming music festival? I'm considering getting tickets, but I'm not sure if it's worth the price.",
     original_message_language: "English",
@@ -160,7 +160,7 @@ export const MockMessages: Message[] = [
   {
     id: 14,
     room_id: "9y4gP6F5sl",
-    sender_id: 57,
+    sender_id: 55,
     original_message:
       "The local art gallery is hosting a new exhibition next week. It features works from up-and-coming artists. Want to check it out together?",
     original_message_language: "English",
@@ -172,7 +172,7 @@ export const MockMessages: Message[] = [
   {
     id: 15,
     room_id: "9y4gP6F5sl",
-    sender_id: 55,
+    sender_id: 57,
     original_message:
       "The traffic in the city has been getting worse lately. I'm considering switching to cycling for my daily commute. What do you think?",
     original_message_language: "English",
@@ -184,7 +184,7 @@ export const MockMessages: Message[] = [
   {
     id: 16,
     room_id: "9y4gP6F5sl",
-    sender_id: 57,
+    sender_id: 55,
     original_message:
       "I'm trying to reduce my carbon footprint. Do you have any tips for living a more environmentally friendly lifestyle?",
     original_message_language: "English",
@@ -220,7 +220,7 @@ export const MockMessages: Message[] = [
   {
     id: 19,
     room_id: "9y4gP6F5sl",
-    sender_id: 55,
+    sender_id: 57,
     original_message:
       "I just discovered a great podcast about true crime stories. It's both fascinating and a bit scary. Let me know if you want the details!",
     original_message_language: "English",
@@ -239,6 +239,6 @@ export const MockMessages: Message[] = [
     translated_message:
       "I've been thinking about taking a vacation next month. Do you have any recommendations for good destinations?",
     translated_message_language: "English",
-    timestamp: "2023-04-13T15:45:30.123Z",
+    timestamp: "2023-04-13T15:46:30.123Z",
   },
 ];
