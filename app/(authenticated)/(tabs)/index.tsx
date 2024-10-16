@@ -10,7 +10,7 @@ import { tw } from "@/utils/tailwind";
 import { UserInfo } from "@/types/user";
 import { StatusBar } from "expo-status-bar";
 import { useRouter } from "expo-router";
-import { useFriendsList } from "@/hooks/user";
+import { useFriendsList } from "@/hooks/useUser";
 import {
   createConversation,
   getConversationByUserId,
@@ -22,17 +22,24 @@ const HomeScreen = () => {
   const router = useRouter();
 
   const handleSelectedUser = async (friendId: number) => {
-    let conversationId = await getConversationByUserId(userId);
-    console.log("🚀 ~ handleSelectedUser ~ conversationId:", conversationId);
+    try {
+      let conversationId = await getConversationByUserId(userId, friendId);
 
-    if (!conversationId) {
-      conversationId = await createConversation(userId, friendId);
+      if (!conversationId) {
+        conversationId = await createConversation(userId, friendId);
+      }
+      router.push({
+        pathname: "/(authenticated)/(chat)/[conversation]",
+        params: {
+          conversation: conversationId.room_id,
+          otherUserId: conversationId.friend_user_id,
+        },
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
     }
-
-    router.push({
-      pathname: "/(authenticated)/(chat)/[conversation]",
-      params: { conversation: conversationId },
-    });
   };
 
   const renderFriendsList: ListRenderItem<UserInfo> = ({ item }) => {
