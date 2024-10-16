@@ -2,7 +2,7 @@ import { UserInfo } from "@/types/user";
 
 export const userData: UserInfo[] = [
   {
-    id: "1",
+    id: 1,
     first_name: "Viv",
     last_name: "Hughesdon",
     phone_number: "+93-700-837-0454",
@@ -10,7 +10,7 @@ export const userData: UserInfo[] = [
     selected_language: "Spanish",
   },
   {
-    id: "2",
+    id: 2,
     first_name: "Gayleen",
     last_name: "Isley",
     phone_number: "+86-568-575-2259",
@@ -18,7 +18,7 @@ export const userData: UserInfo[] = [
     selected_language: "English",
   },
   {
-    id: "3",
+    id: 3,
     first_name: "Mordy",
     last_name: "Stride",
     phone_number: "+27-797-358-4611",
@@ -26,7 +26,7 @@ export const userData: UserInfo[] = [
     selected_language: "English",
   },
   {
-    id: "4",
+    id: 4,
     first_name: "Ruthanne",
     last_name: "Mattacks",
     phone_number: "+54-835-193-4703",
@@ -34,7 +34,7 @@ export const userData: UserInfo[] = [
     selected_language: "Spanish",
   },
   {
-    id: "5",
+    id: 5,
     first_name: "Wildon",
     last_name: "Pate",
     phone_number: "+225-383-517-9003",
@@ -42,7 +42,7 @@ export const userData: UserInfo[] = [
     selected_language: "Mandarin",
   },
   {
-    id: " 6",
+    id: 6,
     first_name: "Wyatt",
     last_name: "Chatenet",
     phone_number: "+351-408-616-5944",
@@ -50,7 +50,7 @@ export const userData: UserInfo[] = [
     selected_language: "Mandarin",
   },
   {
-    id: " 7",
+    id: 7,
     first_name: "Joyan",
     last_name: "Retchless",
     phone_number: "+51-407-555-1471",
@@ -58,7 +58,7 @@ export const userData: UserInfo[] = [
     selected_language: "English",
   },
   {
-    id: "8",
+    id: 8,
     first_name: "Henka",
     last_name: "Hastin",
     phone_number: "+63-989-823-7741",
@@ -66,7 +66,7 @@ export const userData: UserInfo[] = [
     selected_language: "English",
   },
   {
-    id: "9",
+    id: 9,
     first_name: "Elias",
     last_name: "Capinetti",
     phone_number: "+64-608-254-8372",
@@ -74,7 +74,7 @@ export const userData: UserInfo[] = [
     selected_language: "Spanish",
   },
   {
-    id: "10",
+    id: 10,
     first_name: "Charmine",
     last_name: "Krook",
     phone_number: "+63-814-845-5621",
