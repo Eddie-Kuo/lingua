@@ -82,7 +82,6 @@ const ChatMessages = () => {
         inverted
         data={[...MockMessages].reverse()}
         renderItem={({ item }) => (
-          // Todo: make chat bubbles more chat bubbly
           <View
             style={tw.style(
               "my-1.5 flex max-w-72 rounded-xl bg-zinc-700/70 p-2.5",
