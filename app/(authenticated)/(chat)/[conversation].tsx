@@ -17,6 +17,7 @@ import { MockMessages } from "@/constants/mockMessageData";
 import { useState } from "react";
 import { sendMessage } from "@/api/message";
 import { Language, UserInfo } from "@/types/user";
+import { createMessage } from "@/database/queries/messages";
 
 const ChatScreen = () => {
   const { conversation: conversationId, otherUserId } = useLocalSearchParams<{
@@ -33,7 +34,22 @@ const ChatScreen = () => {
         return;
       }
 
-      await sendMessage(message, otherUser!.selected_language);
+      sendMessage(message, otherUser!.selected_language)
+        .then((translatedMessage) => {
+          createMessage({
+            roomId: conversationId,
+            senderId: 57,
+            originalMessage: message,
+            originalMessageLanguage: "English",
+            translatedMessage: translatedMessage,
+            translatedMessageLanguage: otherUser!.selected_language,
+            timeStamp: new Date(),
+          });
+        })
+        .catch((error) => {
+          // Handle any errors here
+          console.error("Error sending message", error.message);
+        });
     } catch (error) {}
     setMessage("");
   };

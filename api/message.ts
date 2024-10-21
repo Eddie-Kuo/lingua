@@ -1,6 +1,9 @@
 import { openai } from "@/utils/gpt";
 
-export const sendMessage = async (message: string, targetLanguage: string) => {
+export const sendMessage = async (
+  message: string,
+  targetLanguage: string,
+): Promise<string> => {
   // 1. send the message to chatgpt to translate
   try {
     const response = await openai.chat.completions.create({
@@ -16,7 +19,7 @@ export const sendMessage = async (message: string, targetLanguage: string) => {
           content: `Translate the following message into ${targetLanguage}: "${message}". 
           
           Guidelines:
-          1. Feel free to completely rephrase the sentence if necessary.
+          1. Only rephrase the sentence where necessary but do not change the meaning of the overall message.
           2. Use native slang, idioms, or expressions where appropriate.
           3. Adjust the tone and style to match how a native speaker would naturally express this idea.
           4. While you have the freedom to make significant changes, ensure that the core meaning and intent of the original message is preserved.
@@ -25,26 +28,10 @@ export const sendMessage = async (message: string, targetLanguage: string) => {
           Your goal is to make the translation sound as if it was originally conceived and expressed by a native ${targetLanguage} speaker.`,
         },
       ],
-      response_format: {
-        type: "json_schema",
-        json_schema: {
-          name: "translatedMessage",
-          schema: {
-            type: "object",
-            properties: {
-              translatedMessage: {
-                description: "The translated message",
-                type: "string",
-              },
-            },
-            additionalProperties: false,
-          },
-        },
-      },
     });
 
     const translatedMessage = response.choices[0].message.content;
-    if (translatedMessage) {
+    if (!translatedMessage) {
       throw new Error("Error translating message");
     }
 
@@ -54,5 +41,7 @@ export const sendMessage = async (message: string, targetLanguage: string) => {
       console.log("🚀 ~ sendMessage ~ error:", error.message);
       throw new Error(error.message);
     }
+    // if all fails, return the original message
+    return message;
   }
 };
