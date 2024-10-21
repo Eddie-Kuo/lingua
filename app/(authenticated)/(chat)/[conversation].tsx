@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   FlatList,
+  Alert,
 } from "react-native";
 import { Link, useLocalSearchParams } from "expo-router";
 import { tw } from "@/utils/tailwind";
@@ -14,6 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useOtherUserDetails } from "@/hooks/useUser";
 import { MockMessages } from "@/constants/mockMessageData";
 import { useState } from "react";
+import { sendMessage } from "@/api/message";
 
 const ChatScreen = () => {
   const { conversation: conversationId, otherUserId } = useLocalSearchParams<{
@@ -23,6 +25,14 @@ const ChatScreen = () => {
   const [message, setMessage] = useState<string>("");
 
   const handleSubmitMessage = async () => {
+    try {
+      if (message.length === 0) {
+        Alert.alert("Please enter a message");
+        return;
+      }
+
+      await sendMessage(message);
+    } catch (error) {}
     setMessage("");
   };
 
