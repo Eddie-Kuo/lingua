@@ -1,11 +1,7 @@
-import { Language } from "@/types/user";
 import { openai } from "@/utils/gpt";
 
 export const sendMessage = async (message: string, targetLanguage: string) => {
   // 1. send the message to chatgpt to translate
-
-  console.log(targetLanguage);
-
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
@@ -47,8 +43,16 @@ export const sendMessage = async (message: string, targetLanguage: string) => {
       },
     });
 
-    console.log(response.choices[0].message.content);
-  } catch (error) {}
+    const translatedMessage = response.choices[0].message.content;
+    if (translatedMessage) {
+      throw new Error("Error translating message");
+    }
 
-  // 2. take the translated message and send to database
+    return translatedMessage;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log("🚀 ~ sendMessage ~ error:", error.message);
+      throw new Error(error.message);
+    }
+  }
 };
