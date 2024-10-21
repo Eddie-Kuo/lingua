@@ -13,12 +13,18 @@ import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
 import { useOtherUserDetails } from "@/hooks/useUser";
 import { MockMessages } from "@/constants/mockMessageData";
+import { useState } from "react";
 
 const ChatScreen = () => {
   const { conversation: conversationId, otherUserId } = useLocalSearchParams<{
     conversation: string;
     otherUserId: string;
   }>();
+  const [message, setMessage] = useState<string>("");
+
+  const handleSubmitMessage = async () => {
+    setMessage("");
+  };
 
   return (
     <SafeAreaView style={tw.style("flex-1 bg-[#1f1f1f]")}>
@@ -39,8 +45,12 @@ const ChatScreen = () => {
             placeholderTextColor={"white"}
             style={tw.style("flex-1 rounded-xl bg-[#3a3a3a] p-3 text-white")}
             multiline
+            value={message}
+            onChangeText={setMessage}
           />
-          <Pressable style={tw.style("justify-center")}>
+          <Pressable
+            style={tw.style("justify-center")}
+            onPress={handleSubmitMessage}>
             <Ionicons name="send" size={24} color="white" />
           </Pressable>
         </View>
