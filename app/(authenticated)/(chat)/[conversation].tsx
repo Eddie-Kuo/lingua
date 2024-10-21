@@ -16,12 +16,14 @@ import { useOtherUserDetails } from "@/hooks/useUser";
 import { MockMessages } from "@/constants/mockMessageData";
 import { useState } from "react";
 import { sendMessage } from "@/api/message";
+import { Language, UserInfo } from "@/types/user";
 
 const ChatScreen = () => {
   const { conversation: conversationId, otherUserId } = useLocalSearchParams<{
     conversation: string;
     otherUserId: string;
   }>();
+  const { data: otherUser } = useOtherUserDetails(Number(otherUserId));
   const [message, setMessage] = useState<string>("");
 
   const handleSubmitMessage = async () => {
@@ -31,14 +33,14 @@ const ChatScreen = () => {
         return;
       }
 
-      await sendMessage(message);
+      await sendMessage(message, otherUser!.selected_language);
     } catch (error) {}
     setMessage("");
   };
 
   return (
     <SafeAreaView style={tw.style("flex-1 bg-[#1f1f1f]")}>
-      <ChatHeader otherUserId={otherUserId} />
+      <ChatHeader otherUser={otherUser} />
 
       <KeyboardAvoidingView
         style={tw.style("flex-1 bg-primary")}
@@ -71,8 +73,7 @@ const ChatScreen = () => {
 
 export default ChatScreen;
 
-const ChatHeader = ({ otherUserId }: { otherUserId: string }) => {
-  const { data: otherUser } = useOtherUserDetails(Number(otherUserId));
+const ChatHeader = ({ otherUser }: { otherUser: UserInfo | undefined }) => {
   return (
     <View
       style={tw.style(
