@@ -10,8 +10,6 @@ export const getUserByPhoneNumber = async (
     .select()
     .eq("phone_number", phoneNumber);
 
-  console.log("data", data);
-
   if (error) {
     throw new Error("Error getting user by phone number");
   }

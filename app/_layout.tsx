@@ -13,6 +13,9 @@ const InitialLayout = () => {
       return;
     }
 
+    // Todo: Remove when adding back authentication
+    let devSession = true;
+
     // Check if the path is in the authenticated group
     const isAuthGroup = segments[0] === "(authenticated)";
 
@@ -26,8 +29,8 @@ const InitialLayout = () => {
       // router.replace("/(auth)/language-selection");
       // return;
     } else if (!session) {
-      // router.replace("/(auth)");
-      router.replace("/(authenticated)");
+      router.replace("/(auth)");
+      // router.replace("/(authenticated)");
     }
   }, [session, initialized, userStatus]);
 
