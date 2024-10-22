@@ -6,13 +6,13 @@ import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useRouter } from "expo-router";
 import useUserStore from "@/store/userStore";
-import { Language } from "@/utils/types/type";
+import { Language } from "@/types/user";
 
 const languages: Language[] = [
   { language: "English" },
   { language: "Spanish" },
   { language: "Mandarin" },
-];
+]; 
 
 const LanguageSelection = () => {
   const router = useRouter();

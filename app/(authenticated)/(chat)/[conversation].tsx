@@ -6,28 +6,73 @@ import {
   Pressable,
   SafeAreaView,
   KeyboardAvoidingView,
+  FlatList,
+  Alert,
 } from "react-native";
 import { Link, useLocalSearchParams } from "expo-router";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
 import { useOtherUserDetails } from "@/hooks/useUser";
+import { MockMessages } from "@/constants/mockMessageData";
+import { useState } from "react";
+import { sendMessage } from "@/api/message";
+import { Language, UserInfo } from "@/types/user";
+import { createMessage } from "@/database/queries/messages";
+import { Message } from "@/types/conversation";
 
 const ChatScreen = () => {
   const { conversation: conversationId, otherUserId } = useLocalSearchParams<{
     conversation: string;
     otherUserId: string;
   }>();
+  const { data: otherUser } = useOtherUserDetails(Number(otherUserId));
+  const [message, setMessage] = useState<string>("");
+
+  const handleSubmitMessage = async () => {
+    console.log("🚀 ~ handleSubmitMessage ~ message:", message);
+    try {
+      if (message.length === 0) {
+        Alert.alert("Please enter a message");
+        return;
+      }
+
+      sendMessage(message, otherUser!.selected_language)
+        .then((translatedMessage: string) => {
+          console.log(
+            "🚀 ~ handleSubmitMessage ~ translatedMessage:",
+            translatedMessage,
+          );
+          createMessage({
+            roomId: conversationId,
+            senderId: 57,
+            originalMessage: message,
+            originalMessageLanguage: "English",
+            translatedMessage: translatedMessage,
+            translatedMessageLanguage: otherUser!.selected_language,
+            timeStamp: new Date(),
+          });
+        })
+        .catch((error: Error) => {
+          // Handle any errors here
+          console.error("Error sending message", error.message);
+        });
+    } catch (error) {
+      console.error("Error sending message", error);
+    }
+    setMessage("");
+  };
 
   return (
     <SafeAreaView style={tw.style("flex-1 bg-[#1f1f1f]")}>
-      <ChatHeader otherUserId={otherUserId} />
+      <ChatHeader otherUser={otherUser} />
 
       <KeyboardAvoidingView
         style={tw.style("flex-1 bg-primary")}
         behavior="padding"
         keyboardVerticalOffset={0}>
         {/* chat messages */}
-        <View style={tw.style("flex-1")}></View>
+
+        <ChatMessages />
 
         {/* chat input */}
         <View style={tw.style("flex-row gap-4 bg-[#1f1f1f] p-4")}>
@@ -36,8 +81,12 @@ const ChatScreen = () => {
             placeholderTextColor={"white"}
             style={tw.style("flex-1 rounded-xl bg-[#3a3a3a] p-3 text-white")}
             multiline
+            value={message}
+            onChangeText={setMessage}
           />
-          <Pressable style={tw.style("justify-center")}>
+          <Pressable
+            style={tw.style("justify-center")}
+            onPress={handleSubmitMessage}>
             <Ionicons name="send" size={24} color="white" />
           </Pressable>
         </View>
@@ -48,8 +97,7 @@ const ChatScreen = () => {
 
 export default ChatScreen;
 
-const ChatHeader = ({ otherUserId }: { otherUserId: string }) => {
-  const { data: otherUser } = useOtherUserDetails(Number(otherUserId));
+const ChatHeader = ({ otherUser }: { otherUser: UserInfo | undefined }) => {
   return (
     <View
       style={tw.style(
@@ -68,6 +116,28 @@ const ChatHeader = ({ otherUserId }: { otherUserId: string }) => {
       <TouchableOpacity>
         <Ionicons name="menu" size={24} color="white" />
       </TouchableOpacity>
+    </View>
+  );
+};
+
+const ChatMessages = () => {
+  return (
+    <View style={tw.style("mb-3 flex-1 px-3")}>
+      <FlatList
+        inverted
+        data={[...MockMessages].reverse()}
+        renderItem={({ item }: { item: Message }) => (
+          <View
+            style={tw.style(
+              "my-1.5 flex max-w-72 rounded-xl bg-zinc-700/70 p-2.5",
+              item.sender_id === 57 && "self-end bg-sky-600",
+            )}>
+            <Text style={tw.style("text-base text-white")}>
+              {item.original_message}
+            </Text>
+          </View>
+        )}
+      />
     </View>
   );
 };

@@ -23,16 +23,15 @@ const HomeScreen = () => {
 
   const handleSelectedUser = async (friendId: number) => {
     try {
-      let conversationId = await getConversationByUserId(userId, friendId);
-
-      if (!conversationId) {
-        conversationId = await createConversation(userId, friendId);
+      let conversation = await getConversationByUserId(userId, friendId);
+      if (!conversation) {
+        conversation = await createConversation(userId, friendId);
       }
       router.push({
         pathname: "/(authenticated)/(chat)/[conversation]",
         params: {
-          conversation: conversationId.room_id,
-          otherUserId: conversationId.friend_user_id,
+          conversation: conversation.room_id,
+          otherUserId: conversation.friend_user_id,
         },
       });
     } catch (error) {
@@ -42,11 +41,15 @@ const HomeScreen = () => {
     }
   };
 
-  const renderFriendsList: ListRenderItem<UserInfo> = ({ item }) => {
+  const renderFriendsList: ListRenderItem<UserInfo> = ({
+    item,
+  }: {
+    item: UserInfo;
+  }) => {
     return (
       <Pressable
         onPress={() => handleSelectedUser(item.id)}
-        style={({ pressed }) => [
+        style={({ pressed }: { pressed: boolean }) => [
           tw.style("flex-row items-center gap-3 px-3"),
           pressed
             ? {
@@ -85,7 +88,7 @@ const HomeScreen = () => {
         <FlatList
           renderItem={renderFriendsList}
           data={friendsList}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item: UserInfo) => item.id.toString()}
         />
       </View>
     </View>
