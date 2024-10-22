@@ -14,18 +14,6 @@ const TabsLayout = () => {
       screenOptions={{
         headerShadowVisible: false,
         tabBarLabel: "",
-        // headerShown: false,
-        // headerTitle: "Lingua",
-        // headerTitleAlign: "left", // may not with with iOS according to docs
-        // headerTitleStyle: {
-        //   fontWeight: "bold",
-        //   fontSize: 32,
-        //   color: Colors.highlightAccent,
-        // },
-        // headerStyle: {
-        //   height: 120,
-        //   backgroundColor: Colors.primary,
-        // },
         tabBarStyle: {
           backgroundColor: Colors.secondary,
           borderTopColor: Colors.secondary,
@@ -36,7 +24,7 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="index"
         options={{
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({ focused }: { focused: boolean }) => (
             <BottomTabIcon focused={focused} icon={"home"} />
           ),
           header: () => (
@@ -50,7 +38,7 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="chats"
         options={{
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({ focused }: { focused: boolean }) => (
             <BottomTabIcon focused={focused} icon={"chat"} />
           ),
         }}
@@ -58,7 +46,7 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="settings"
         options={{
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({ focused }: { focused: boolean }) => (
             <BottomTabIcon focused={focused} icon={"settings"} />
           ),
         }}

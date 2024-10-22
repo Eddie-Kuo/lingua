@@ -18,6 +18,7 @@ import { useState } from "react";
 import { sendMessage } from "@/api/message";
 import { Language, UserInfo } from "@/types/user";
 import { createMessage } from "@/database/queries/messages";
+import { Message } from "@/types/conversation";
 
 const ChatScreen = () => {
   const { conversation: conversationId, otherUserId } = useLocalSearchParams<{
@@ -28,6 +29,7 @@ const ChatScreen = () => {
   const [message, setMessage] = useState<string>("");
 
   const handleSubmitMessage = async () => {
+    console.log("🚀 ~ handleSubmitMessage ~ message:", message);
     try {
       if (message.length === 0) {
         Alert.alert("Please enter a message");
@@ -35,7 +37,11 @@ const ChatScreen = () => {
       }
 
       sendMessage(message, otherUser!.selected_language)
-        .then((translatedMessage) => {
+        .then((translatedMessage: string) => {
+          console.log(
+            "🚀 ~ handleSubmitMessage ~ translatedMessage:",
+            translatedMessage,
+          );
           createMessage({
             roomId: conversationId,
             senderId: 57,
@@ -46,11 +52,13 @@ const ChatScreen = () => {
             timeStamp: new Date(),
           });
         })
-        .catch((error) => {
+        .catch((error: Error) => {
           // Handle any errors here
           console.error("Error sending message", error.message);
         });
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error sending message", error);
+    }
     setMessage("");
   };
 
@@ -118,7 +126,7 @@ const ChatMessages = () => {
       <FlatList
         inverted
         data={[...MockMessages].reverse()}
-        renderItem={({ item }) => (
+        renderItem={({ item }: { item: Message }) => (
           <View
             style={tw.style(
               "my-1.5 flex max-w-72 rounded-xl bg-zinc-700/70 p-2.5",
