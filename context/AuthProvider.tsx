@@ -2,7 +2,7 @@ import { getUserByPhoneNumber } from "@/database/queries/user";
 import useUserStore from "@/store/userStore";
 import { supabase } from "@/utils/supabase";
 import { Session, User } from "@supabase/supabase-js";
-import { useRouter } from "expo-router";
+
 import {
   createContext,
   PropsWithChildren,
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [session, setSession] = useState<Session | null>(null);
   const [initialized, setInitialized] = useState<boolean>(false);
   const [userStatus, setUserStatus] = useState<UserStatus>();
-  const { phoneNumber } = useUserStore();
+  const { phoneNumber, setUserInfo } = useUserStore();
 
   useEffect(() => {
     // Listen for changes to authentication state
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     }
     const getUserStatus = async () => {
       const data = await getUserByPhoneNumber(phoneNumber);
-      console.log("🚀 ~ getUserStatus ~ data:", data);
+      setUserInfo(data);
       // user is in database
       if (data) {
         setUserStatus("Returning");

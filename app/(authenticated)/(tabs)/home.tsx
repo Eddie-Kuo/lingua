@@ -15,11 +15,15 @@ import {
   createConversation,
   getConversationByUserId,
 } from "@/database/queries/conversations";
+import useUserStore from "@/store/userStore";
 
 const HomeScreen = () => {
   const userId = 57; // temp user id for development to bypass auth
   const { data: friendsList } = useFriendsList(userId);
   const router = useRouter();
+  const { userInfo } = useUserStore();
+
+  console.log("🚀 ~ HomeScreen ~ userInfo:", userInfo);
 
   const handleSelectedUser = async (friendId: number) => {
     try {

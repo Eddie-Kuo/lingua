@@ -83,7 +83,7 @@ const OnboardingScreen = () => {
         return;
       }
       // create user instance in database
-      createUser(userInfo);
+      const user = createUser(userInfo);
       router.replace("/(authenticated)");
     } catch (error) {
       if (error instanceof Error) {

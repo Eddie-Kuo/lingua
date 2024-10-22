@@ -13,11 +13,6 @@ const InitialLayout = () => {
       return;
     }
 
-    // Todo: Remove when adding back authentication
-    let devSession = true;
-
-    console.log(session);
-
     // Check if the path is in the authenticated group
     const isAuthGroup = segments[0] === "(authenticated)";
 
@@ -25,7 +20,7 @@ const InitialLayout = () => {
     // && userStatus === "Returning" // maybe this segment is not needed as long as we have a way to decipher a new user
     if (session && !isAuthGroup) {
       // router.replace("/(auth)/onboarding");
-      router.replace("/(authenticated)/(tabs)/home");
+      router.navigate("/(authenticated)/(tabs)/home");
       // return;
     } else if (session && userStatus === "New") {
       // router.replace("/(auth)/language-selection");
