@@ -2,6 +2,7 @@ import { getUserByPhoneNumber } from "@/database/queries/user";
 import useUserStore from "@/store/userStore";
 import { supabase } from "@/utils/supabase";
 import { Session, User } from "@supabase/supabase-js";
+import { useRouter } from "expo-router";
 import {
   createContext,
   PropsWithChildren,
