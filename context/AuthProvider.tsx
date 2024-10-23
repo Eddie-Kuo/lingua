@@ -1,5 +1,4 @@
 import { getUserByPhoneNumber } from "@/database/queries/user";
-import { usePersonalDetails } from "@/hooks/useUser";
 import useUserStore from "@/store/userStore";
 import { supabase } from "@/utils/supabase";
 import { Session, User } from "@supabase/supabase-js";
@@ -34,14 +33,13 @@ type UserStatus = "New" | "Returning";
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>();
   const [session, setSession] = useState<Session | null>(null);
-  console.log("🚀 ~ AuthProvider ~ session:", session);
   const [initialized, setInitialized] = useState<boolean>(false);
   const [userStatus, setUserStatus] = useState<UserStatus>("New");
+  const { setUserInfo, userInfo } = useUserStore();
 
   useEffect(() => {
     const loadUserStatus = async () => {
       const storedStatus = await AsyncStorage.getItem("userStatus");
-      console.log("🚀 ~ loadUserStatus ~ storedStatus:", storedStatus);
       if (storedStatus) {
         setUserStatus(storedStatus as UserStatus);
       }
@@ -59,8 +57,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         const userData = await getUserByPhoneNumber(`+${session.user.phone!}`);
         const status = userData ? "Returning" : "New";
         setUserStatus(status);
+        setUserInfo(userData);
         await AsyncStorage.setItem("userStatus", status);
-        // Redirect logic here
       }
     });
 
@@ -68,23 +66,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       data.subscription.unsubscribe();
     };
   }, []);
-
-  // useEffect(() => {
-  //   if (!user) {
-  //     return;
-  //   }
-  //   const getUserStatus = async () => {
-  //     const data = await getUserByPhoneNumber(phoneNumber);
-  //     setUserInfo(data);
-  //     // user is in database
-  //     if (data) {
-  //       setUserStatus("Returning");
-  //     } else {
-  //       setUserStatus("New");
-  //     }
-  //   };
-  //   getUserStatus();
-  // }, [phoneNumber]);
 
   // Log out the user
   const signOut = async () => {

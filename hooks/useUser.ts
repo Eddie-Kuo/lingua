@@ -28,14 +28,3 @@ export const useOtherUserDetails = (
     },
   });
 };
-export const usePersonalDetails = (
-  phoneNumber: string,
-): UseQueryResult<UserInfo> => {
-  return useQuery({
-    queryKey: ["personalDetails"],
-    queryFn: async () => {
-      const user = await getUserByPhoneNumber(phoneNumber);
-      return user;
-    },
-  });
-};
