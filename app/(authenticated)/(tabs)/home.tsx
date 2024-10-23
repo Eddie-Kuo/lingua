@@ -16,14 +16,13 @@ import {
   getConversationByUserId,
 } from "@/database/queries/conversations";
 import useUserStore from "@/store/userStore";
+import { useAuth } from "@/context/AuthProvider";
 
 const HomeScreen = () => {
   const userId = 57; // temp user id for development to bypass auth
   const { data: friendsList } = useFriendsList(userId);
   const router = useRouter();
   const { userInfo } = useUserStore();
-
-  console.log("🚀 ~ HomeScreen ~ userInfo:", userInfo);
 
   const handleSelectedUser = async (friendId: number) => {
     try {
@@ -89,11 +88,13 @@ const HomeScreen = () => {
         </Text>
       </View>
       <View>
-        <FlatList
-          renderItem={renderFriendsList}
-          data={friendsList}
-          keyExtractor={(item: UserInfo) => item.id.toString()}
-        />
+        {friendsList && (
+          <FlatList
+            renderItem={renderFriendsList}
+            data={friendsList}
+            keyExtractor={(item: UserInfo) => item.id.toString()}
+          />
+        )}
       </View>
     </View>
   );

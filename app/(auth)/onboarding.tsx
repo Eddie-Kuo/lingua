@@ -19,7 +19,9 @@ import { InsertUser } from "@/database/schemas/users";
 const OnboardingScreen = () => {
   const router = useRouter();
   const { language, phoneNumber } = useUserStore();
-  const [userInfo, setUserInfo] = useState<InsertUser & { hash: number }>({
+  const [onboardingUserInfo, setOnboardingUserInfo] = useState<
+    InsertUser & { hash: number }
+  >({
     phoneNumber: phoneNumber,
     firstName: "",
     lastName: "",
@@ -31,6 +33,7 @@ const OnboardingScreen = () => {
     firstName: "",
     lastName: "",
   });
+  const { setUserInfo } = useUserStore();
 
   //Todo: need to update the placeholder image on the signup form to display the selected image
 
@@ -46,7 +49,7 @@ const OnboardingScreen = () => {
       const imagePublicUrl = await getPublicAvatarURL(imagePath as string);
 
       // set the public image url in user info state
-      setUserInfo((prev) => ({
+      setOnboardingUserInfo((prev) => ({
         ...prev,
         picURL: imagePublicUrl,
         hash: Date.now(),
@@ -57,25 +60,25 @@ const OnboardingScreen = () => {
   };
 
   const updateFirstName = (input: string) => {
-    setUserInfo((prev) => ({ ...prev, firstName: input }));
+    setOnboardingUserInfo((prev) => ({ ...prev, firstName: input }));
   };
   const updateLastName = (input: string) => {
-    setUserInfo((prev) => ({ ...prev, lastName: input }));
+    setOnboardingUserInfo((prev) => ({ ...prev, lastName: input }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // clear any existing errors from previous submission
     setFormError({ firstName: "", lastName: "" });
 
     try {
-      if (!userInfo.firstName) {
+      if (!onboardingUserInfo.firstName) {
         setFormError((prev) => ({
           ...prev,
           firstName: "Please enter your first name!",
         }));
         return;
       }
-      if (!userInfo.lastName) {
+      if (!onboardingUserInfo.lastName) {
         setFormError((prev) => ({
           ...prev,
           lastName: "Please enter your last name!",
@@ -83,15 +86,12 @@ const OnboardingScreen = () => {
         return;
       }
       // create user instance in database
-      const user = createUser(userInfo);
-      router.replace("/(authenticated)");
+      const user = await createUser(onboardingUserInfo);
+      setUserInfo(user);
+      router.replace("/(authenticated)/(tabs)/home");
     } catch (error) {
       if (error instanceof Error) {
         console.log("🚀 ~ handleSubmit ~ error:", error.message);
-      } else {
-        console.log(
-          "🚀 ~ handleSubmit ~ error: Some other type of unknown error",
-        );
       }
     }
   };
@@ -114,8 +114,10 @@ const OnboardingScreen = () => {
           <Image
             style={tw.style("h-28 w-28 rounded-full bg-orange-200")}
             source={
-              userInfo.picURL
-                ? { uri: `${userInfo.picURL}?${userInfo.hash}` }
+              onboardingUserInfo.picURL
+                ? {
+                    uri: `${onboardingUserInfo.picURL}?${onboardingUserInfo.hash}`,
+                  }
                 : require("@/assets/images/ghost.png")
             }
             resizeMode="contain"
