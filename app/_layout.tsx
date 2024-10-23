@@ -12,22 +12,22 @@ const InitialLayout = () => {
     if (!initialized) {
       return;
     }
-
     // Check if the path is in the authenticated group
-    const isAuthGroup = segments[0] === "(authenticated)";
+    const inAuthGroup = segments[0] === "(authenticated)";
 
-    //* Development purposes: accessing the dashboard removing authentication
-    // && userStatus === "Returning" // maybe this segment is not needed as long as we have a way to decipher a new user
-    if (session && !isAuthGroup) {
-      // router.replace("/(auth)/onboarding");
-      router.replace("/(authenticated)");
-      // return;
-    } else if (session && userStatus === "New") {
-      // router.replace("/(auth)/language-selection");
-      // return;
-    } else if (!session) {
-      // router.replace("/(auth)");
-      router.replace("/(authenticated)");
+    // perform a check to see if user is in the database
+    if (session && !inAuthGroup) {
+      if (userStatus === "Returning") {
+        router.navigate("/(authenticated)/(tabs)/home");
+      }
+
+      if (userStatus === "New") {
+        router.navigate("/(auth)/language-selection");
+      }
+    }
+
+    if (!session) {
+      router.navigate("/");
     }
   }, [session, initialized, userStatus]);
 

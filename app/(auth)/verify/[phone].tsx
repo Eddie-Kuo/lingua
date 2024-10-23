@@ -14,7 +14,6 @@ const PhoneVerificationScreen = () => {
   const { phone } = useLocalSearchParams<{
     phone: string;
   }>();
-  console.log("🚀 ~ PhoneVerificationScreen ~ phone:", phone);
   const [code, setCode] = useState("");
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value: code,
