@@ -57,7 +57,9 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         const userData = await getUserByPhoneNumber(`+${session.user.phone!}`);
         const status = userData ? "Returning" : "New";
         setUserStatus(status);
-        setUserInfo(userData);
+        if (status === "Returning") {
+          setUserInfo(userData);
+        }
         await AsyncStorage.setItem("userStatus", status);
       }
     });
