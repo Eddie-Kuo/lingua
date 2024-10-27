@@ -19,7 +19,7 @@ const PhoneVerificationScreen = () => {
     value: code,
     setValue: setCode,
   });
-  const { setPhoneNumber } = useUserStore();
+  const { updateUserInfo } = useUserStore();
 
   useEffect(() => {
     if (code.length === 6) {
@@ -43,7 +43,7 @@ const PhoneVerificationScreen = () => {
       }
 
       // OTP was verified - set phone number in global store
-      setPhoneNumber(phone);
+      updateUserInfo({ phone_number: phone });
     } catch (error) {
       if (error instanceof Error) {
         console.log("Error: ", error.message);

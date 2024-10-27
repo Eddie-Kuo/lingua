@@ -34,8 +34,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>();
   const [session, setSession] = useState<Session | null>(null);
   const [initialized, setInitialized] = useState<boolean>(false);
-  const [userStatus, setUserStatus] = useState<UserStatus>("New");
-  const { setUserInfo, userInfo } = useUserStore();
+  const [userStatus, setUserStatus] = useState<UserStatus>();
+  const { setUserInfo } = useUserStore();
 
   useEffect(() => {
     const loadUserStatus = async () => {
@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       if (session && session.user) {
         const userData = await getUserByPhoneNumber(`+${session.user.phone!}`);
         const status = userData ? "Returning" : "New";
+
         setUserStatus(status);
         if (status === "Returning") {
           setUserInfo(userData);
@@ -77,7 +78,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   // Clear the user info when the user signs out
   const clearUserInfo = async () => {
-    await AsyncStorage.removeItem("userInfo");
+    await AsyncStorage.clear();
   };
 
   const value = {

@@ -23,29 +23,30 @@ const loadData = async (key: string) => {
 };
 
 type UserStore = {
-  language: Language;
-  phoneNumber: string;
-  userInfo: UserInfo | null;
+  userInfo: UserInfo;
   setUserInfo: (user: UserInfo) => void;
-  setLanguage: (language: Language) => void;
-  setPhoneNumber: (phone: string) => void;
+  updateUserInfo: (user: Partial<UserInfo>) => void;
 };
 
 const useUserStore = create<UserStore>((set) => ({
-  language: { language: "English" },
-  phoneNumber: "",
-  userInfo: null,
+  userInfo: {
+    id: Infinity,
+    phone_number: "",
+    selected_language: "English",
+    first_name: "",
+    last_name: "",
+    pic_url: "",
+  },
   setUserInfo: (user: UserInfo) => {
     set({ userInfo: user });
     persistData("userInfo", user);
   },
-  setLanguage: (lang: Language) => {
-    set({ language: lang });
-    persistData("language", lang);
-  },
-  setPhoneNumber: (phone: string) => {
-    set({ phoneNumber: phone });
-    persistData("phoneNumber", phone);
+  updateUserInfo: (updatedUserProperty: Partial<UserInfo>) => {
+    set((state) => {
+      const updatedUserInfo = { ...state.userInfo, ...updatedUserProperty };
+      persistData("userInfo", updatedUserInfo);
+      return { userInfo: updatedUserInfo };
+    });
   },
 }));
 
@@ -53,13 +54,9 @@ const useUserStore = create<UserStore>((set) => ({
 // IIFE Immediately Invoked Function Expression - defined and executed immediately after it is created
 (async () => {
   const userInfo = await loadData("userInfo");
-  const language = await loadData("language");
-  const phoneNumber = await loadData("phoneNumber");
 
   useUserStore.setState({
-    userInfo: userInfo || null,
-    language: language || { language: "English" },
-    phoneNumber: phoneNumber || "",
+    userInfo: userInfo,
   });
 })();
 
