@@ -56,7 +56,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       if (session && session.user) {
         const userData = await getUserByPhoneNumber(`+${session.user.phone!}`);
         const status = userData ? "Returning" : "New";
-
         setUserStatus(status);
         if (status === "Returning") {
           setUserInfo(userData);

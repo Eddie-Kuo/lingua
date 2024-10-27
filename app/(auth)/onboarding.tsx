@@ -33,6 +33,7 @@ const OnboardingScreen = () => {
     firstName: "",
     lastName: "",
   });
+  const { setUserInfo } = useUserStore();
 
   //Todo: need to update the placeholder image on the signup form to display the selected image
 

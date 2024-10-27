@@ -4,7 +4,6 @@ import { tw } from "@/utils/tailwind";
 import { useRouter } from "expo-router";
 import ActionButton from "@/components/ActionButton";
 import { StatusBar } from "expo-status-bar";
-import useUserStore from "@/store/userStore";
 
 const Index = () => {
   const router = useRouter();
