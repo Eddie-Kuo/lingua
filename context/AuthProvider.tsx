@@ -2,6 +2,8 @@ import { getUserByPhoneNumber } from "@/database/queries/user";
 import useUserStore from "@/store/userStore";
 import { supabase } from "@/utils/supabase";
 import { Session, User } from "@supabase/supabase-js";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import {
   createContext,
   PropsWithChildren,
@@ -32,38 +34,40 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>();
   const [session, setSession] = useState<Session | null>(null);
   const [initialized, setInitialized] = useState<boolean>(false);
-  const [userStatus, setUserStatus] = useState<UserStatus>();
-  const { phoneNumber } = useUserStore();
+  const [userStatus, setUserStatus] = useState<UserStatus>("New");
+  const { setUserInfo, userInfo } = useUserStore();
 
   useEffect(() => {
+    const loadUserStatus = async () => {
+      const storedStatus = await AsyncStorage.getItem("userStatus");
+      if (storedStatus) {
+        setUserStatus(storedStatus as UserStatus);
+      }
+    };
+
+    loadUserStatus();
+
     // Listen for changes to authentication state
     const { data } = supabase.auth.onAuthStateChange(async (_, session) => {
       setSession(session);
       setUser(session ? session.user : null);
       setInitialized(true);
+
+      if (session && session.user) {
+        const userData = await getUserByPhoneNumber(`+${session.user.phone!}`);
+        const status = userData ? "Returning" : "New";
+        setUserStatus(status);
+        if (status === "Returning") {
+          setUserInfo(userData);
+        }
+        await AsyncStorage.setItem("userStatus", status);
+      }
     });
 
     return () => {
       data.subscription.unsubscribe();
     };
   }, []);
-
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-    const getUserStatus = async () => {
-      const data = await getUserByPhoneNumber(phoneNumber);
-      console.log("🚀 ~ getUserStatus ~ data:", data);
-      // user is in database
-      if (data) {
-        setUserStatus("Returning");
-      } else {
-        setUserStatus("New");
-      }
-    };
-    getUserStatus();
-  }, [phoneNumber]);
 
   // Log out the user
   const signOut = async () => {

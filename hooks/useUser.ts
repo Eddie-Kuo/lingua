@@ -1,6 +1,10 @@
 import { UserInfo } from "@/types/user";
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
-import { getFriendsList, getUserById } from "../database/queries/user";
+import {
+  getFriendsList,
+  getUserById,
+  getUserByPhoneNumber,
+} from "../database/queries/user";
 
 export const useFriendsList = (userId: number): UseQueryResult<UserInfo[]> => {
   return useQuery({

@@ -14,7 +14,6 @@ const AuthLayout = () => {
           backgroundColor: "#131313",
         },
       }}>
-      <Stack.Screen name="index" />
       <Stack.Screen name="phone-signup" />
       <Stack.Screen name="language-selection" />
       <Stack.Screen name="onboarding" />
