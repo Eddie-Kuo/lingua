@@ -72,6 +72,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   // Log out the user
   const signOut = async () => {
     await supabase.auth.signOut();
+    await clearUserInfo();
+  };
+
+  // Clear the user info when the user signs out
+  const clearUserInfo = async () => {
+    await AsyncStorage.removeItem("userInfo");
   };
 
   const value = {
