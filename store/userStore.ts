@@ -47,6 +47,7 @@ const useUserStore = create<UserStore>((set) => ({
       persistData("userInfo", updatedUserInfo);
       return { userInfo: updatedUserInfo };
     });
+
   },
 }));
 
@@ -54,7 +55,6 @@ const useUserStore = create<UserStore>((set) => ({
 // IIFE Immediately Invoked Function Expression - defined and executed immediately after it is created
 (async () => {
   const userInfo = await loadData("userInfo");
-
   useUserStore.setState({
     userInfo: userInfo,
   });
