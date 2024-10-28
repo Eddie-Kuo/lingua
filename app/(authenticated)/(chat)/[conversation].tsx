@@ -142,9 +142,15 @@ const ChatMessages = ({
               "my-1.5 flex max-w-72 rounded-xl bg-zinc-700/70 p-2.5",
               item.sender_id === userId && "self-end bg-sky-600",
             )}>
-            <Text style={tw.style("text-base text-white")}>
-              {item.original_message}
-            </Text>
+            {item.sender_id === userId ? (
+              <Text style={tw.style("text-base text-white")}>
+                {item.original_message}
+              </Text>
+            ) : (
+              <Text style={tw.style("text-base text-white")}>
+                {item.translated_message}
+              </Text>
+            )}
           </View>
         )}
       />
