@@ -30,8 +30,6 @@ export const getMessagesByConversationId = async (conversationId: string) => {
     .eq("room_id", conversationId)
     .order("timestamp", { ascending: false });
 
-  console.log("🚀 ~ getMessagesByConversationId ~ data:", data);
-
   if (error) {
     console.log("🚀 ~ getMessagesByConversationId ~ error:", error);
     throw new Error("Error fetching messages");
