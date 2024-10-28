@@ -20,6 +20,7 @@ import { Language, UserInfo } from "@/types/user";
 import { createMessage } from "@/database/queries/messages";
 import { Message } from "@/types/conversation";
 import useUserStore from "@/store/userStore";
+import { useMessages } from "@/hooks/useConversation";
 
 const ChatScreen = () => {
   const { conversation: conversationId, otherUserId } = useLocalSearchParams<{
@@ -28,6 +29,7 @@ const ChatScreen = () => {
   }>();
   const { data: otherUser } = useOtherUserDetails(Number(otherUserId));
   const [message, setMessage] = useState<string>("");
+  const { data: messages } = useMessages(conversationId);
   const { userInfo } = useUserStore();
 
   const handleSubmitMessage = async () => {
@@ -74,7 +76,7 @@ const ChatScreen = () => {
         keyboardVerticalOffset={0}>
         {/* chat messages */}
 
-        <ChatMessages userId={userInfo.id} />
+        <ChatMessages userId={userInfo.id} messages={messages} />
 
         {/* chat input */}
         <View style={tw.style("flex-row gap-4 bg-[#1f1f1f] p-4")}>
@@ -122,12 +124,18 @@ const ChatHeader = ({ otherUser }: { otherUser: UserInfo | undefined }) => {
   );
 };
 
-const ChatMessages = ({ userId }: { userId: number }) => {
+const ChatMessages = ({
+  userId,
+  messages,
+}: {
+  userId: number;
+  messages: Message[] | undefined;
+}) => {
   return (
     <View style={tw.style("mb-3 flex-1 px-3")}>
       <FlatList
         inverted
-        data={[...MockMessages].reverse()}
+        data={messages}
         renderItem={({ item }: { item: Message }) => (
           <View
             style={tw.style(

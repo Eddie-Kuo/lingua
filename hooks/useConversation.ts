@@ -1,22 +1,15 @@
-import { getConversationByConversationId } from "@/database/queries/conversations";
-import { getUserById } from "@/database/queries/user";
-import { UserInfo } from "@/types/user";
+import { getMessagesByConversationId } from "@/database/queries/messages";
+import { Message } from "@/types/conversation";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
-// export const useConversationDetails = (
-//   conversationId: string,
-// ): UseQueryResult<UserInfo> => {
-//   return useQuery({
-//     queryKey: ["conversationDetails"],
-//     queryFn: async () => {
-//       const conversation =
-//         await getConversationByConversationId(conversationId);
-
-//       const otherUser = await getUserById(conversation.friend_user_id);
-
-//       return otherUser;
-//     },
-//   });
-// };
-
-// conversation query - useSuspenseQuery for better performance
+export const useMessages = (
+  conversationId: string,
+): UseQueryResult<Message[]> => {
+  return useQuery({
+    queryKey: ["messages", conversationId],
+    queryFn: async () => {
+      const messages = await getMessagesByConversationId(conversationId);
+      return messages;
+    },
+  });
+};

@@ -20,7 +20,6 @@ import useUserStore from "@/store/userStore";
 const HomeScreen = () => {
   const router = useRouter();
   const { userInfo } = useUserStore();
-  console.log("🚀 ~ HomeScreen ~ userInfo:", userInfo);
   const { data: friendsList } = useFriendsList(userInfo.id);
 
   const handleSelectedUser = async (friendId: number) => {
