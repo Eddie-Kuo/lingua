@@ -18,16 +18,16 @@ import { InsertUser } from "@/database/schemas/users";
 
 const OnboardingScreen = () => {
   const router = useRouter();
-  const { language, phoneNumber } = useUserStore();
+  const { userInfo, setUserInfo } = useUserStore();
   const [onboardingUserInfo, setOnboardingUserInfo] = useState<
     InsertUser & { hash: number }
   >({
-    phoneNumber: phoneNumber,
+    phoneNumber: userInfo.phone_number,
     firstName: "",
     lastName: "",
     picURL: "",
     hash: 0,
-    selectedLanguage: language.language,
+    selectedLanguage: userInfo.selected_language,
   });
   const [formError, setFormError] = useState({
     firstName: "",
@@ -123,7 +123,7 @@ const OnboardingScreen = () => {
             resizeMode="contain"
           />
           <TouchableOpacity
-            onPress={() => handleUploadImage(phoneNumber)}
+            onPress={() => handleUploadImage(userInfo.phone_number)}
             style={tw.style(
               "absolute bottom-0 right-0 rounded-full border-[3px] border-primary bg-undertone p-2",
             )}>

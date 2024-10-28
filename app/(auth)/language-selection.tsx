@@ -12,11 +12,11 @@ const languages: Language[] = [
   { language: "English" },
   { language: "Spanish" },
   { language: "Mandarin" },
-]; 
+];
 
 const LanguageSelection = () => {
   const router = useRouter();
-  const { language, setLanguage } = useUserStore();
+  const { updateUserInfo, userInfo } = useUserStore();
   const [isFocus, setIsFocus] = useState(false);
 
   return (
@@ -45,11 +45,11 @@ const LanguageSelection = () => {
           maxHeight={300}
           labelField="language"
           valueField="language"
-          value={language}
+          value={{ language: userInfo?.selected_language || "English" }}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={(item: Language) => {
-            setLanguage({ language: item.language });
+            updateUserInfo({ selected_language: item.language });
           }}
           renderLeftIcon={() => (
             <AntDesign

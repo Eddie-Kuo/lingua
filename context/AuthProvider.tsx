@@ -34,8 +34,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>();
   const [session, setSession] = useState<Session | null>(null);
   const [initialized, setInitialized] = useState<boolean>(false);
-  const [userStatus, setUserStatus] = useState<UserStatus>("New");
-  const { setUserInfo, userInfo } = useUserStore();
+  const [userStatus, setUserStatus] = useState<UserStatus>();
+  const { setUserInfo } = useUserStore();
 
   useEffect(() => {
     const loadUserStatus = async () => {
@@ -72,6 +72,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   // Log out the user
   const signOut = async () => {
     await supabase.auth.signOut();
+    await clearUserInfo();
+  };
+
+  // Clear the user info when the user signs out
+  const clearUserInfo = async () => {
+    await AsyncStorage.clear();
   };
 
   const value = {
