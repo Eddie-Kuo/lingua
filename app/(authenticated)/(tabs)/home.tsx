@@ -18,18 +18,16 @@ import {
 import useUserStore from "@/store/userStore";
 
 const HomeScreen = () => {
-  const userId = 57; // temp user id for development to bypass auth
-  const { data: friendsList } = useFriendsList(userId);
   const router = useRouter();
   const { userInfo } = useUserStore();
-
   console.log("🚀 ~ HomeScreen ~ userInfo:", userInfo);
+  const { data: friendsList } = useFriendsList(userInfo.id);
 
   const handleSelectedUser = async (friendId: number) => {
     try {
-      let conversation = await getConversationByUserId(userId, friendId);
+      let conversation = await getConversationByUserId(userInfo.id, friendId);
       if (!conversation) {
-        conversation = await createConversation(userId, friendId);
+        conversation = await createConversation(userInfo.id, friendId);
       }
       router.push({
         pathname: "/(authenticated)/(chat)/[conversation]",
