@@ -13,12 +13,13 @@ import { Link, useLocalSearchParams } from "expo-router";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
 import { useOtherUserDetails } from "@/hooks/useUser";
-import { MockMessages } from "@/constants/mockMessageData";
 import { useState } from "react";
 import { sendMessage } from "@/api/message";
-import { Language, UserInfo } from "@/types/user";
+import { UserInfo } from "@/types/user";
 import { createMessage } from "@/database/queries/messages";
 import { Message } from "@/types/conversation";
+import useUserStore from "@/store/userStore";
+import { useMessages } from "@/hooks/useConversation";
 
 const ChatScreen = () => {
   const { conversation: conversationId, otherUserId } = useLocalSearchParams<{
@@ -27,6 +28,8 @@ const ChatScreen = () => {
   }>();
   const { data: otherUser } = useOtherUserDetails(Number(otherUserId));
   const [message, setMessage] = useState<string>("");
+  const { data: messages } = useMessages(conversationId);
+  const { userInfo } = useUserStore();
 
   const handleSubmitMessage = async () => {
     console.log("🚀 ~ handleSubmitMessage ~ message:", message);
@@ -44,7 +47,7 @@ const ChatScreen = () => {
           );
           createMessage({
             roomId: conversationId,
-            senderId: 57,
+            senderId: userInfo.id,
             originalMessage: message,
             originalMessageLanguage: "English",
             translatedMessage: translatedMessage,
@@ -72,7 +75,7 @@ const ChatScreen = () => {
         keyboardVerticalOffset={0}>
         {/* chat messages */}
 
-        <ChatMessages />
+        <ChatMessages userId={userInfo.id} messages={messages} />
 
         {/* chat input */}
         <View style={tw.style("flex-row gap-4 bg-[#1f1f1f] p-4")}>
@@ -120,21 +123,33 @@ const ChatHeader = ({ otherUser }: { otherUser: UserInfo | undefined }) => {
   );
 };
 
-const ChatMessages = () => {
+const ChatMessages = ({
+  userId,
+  messages,
+}: {
+  userId: number;
+  messages: Message[] | undefined;
+}) => {
   return (
     <View style={tw.style("mb-3 flex-1 px-3")}>
       <FlatList
         inverted
-        data={[...MockMessages].reverse()}
+        data={messages}
         renderItem={({ item }: { item: Message }) => (
           <View
             style={tw.style(
               "my-1.5 flex max-w-72 rounded-xl bg-zinc-700/70 p-2.5",
-              item.sender_id === 57 && "self-end bg-sky-600",
+              item.sender_id === userId && "self-end bg-sky-600",
             )}>
-            <Text style={tw.style("text-base text-white")}>
-              {item.original_message}
-            </Text>
+            {item.sender_id === userId ? (
+              <Text style={tw.style("text-base text-white")}>
+                {item.original_message}
+              </Text>
+            ) : (
+              <Text style={tw.style("text-base text-white")}>
+                {item.translated_message}
+              </Text>
+            )}
           </View>
         )}
       />
