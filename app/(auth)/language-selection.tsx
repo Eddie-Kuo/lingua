@@ -6,7 +6,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useRouter } from "expo-router";
 import useUserStore from "@/store/userStore";
-import { Language } from "@/types/user";
+import { Language, Languages } from "@/types/user";
 
 const languages: Language[] = [
   { language: "English" },
@@ -45,11 +45,13 @@ const LanguageSelection = () => {
           maxHeight={300}
           labelField="language"
           valueField="language"
-          value={{ language: userInfo?.selected_language || "English" }}
+          value={{
+            language: userInfo?.selected_language.language || Languages.English,
+          }}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={(item: Language) => {
-            updateUserInfo({ selected_language: item.language });
+            updateUserInfo({ selected_language: { language: item.language } });
           }}
           renderLeftIcon={() => (
             <AntDesign

@@ -27,7 +27,7 @@ const OnboardingScreen = () => {
     lastName: "",
     picURL: "",
     hash: 0,
-    selectedLanguage: userInfo.selected_language,
+    selectedLanguage: userInfo.selected_language.language,
   });
   const [formError, setFormError] = useState({
     firstName: "",

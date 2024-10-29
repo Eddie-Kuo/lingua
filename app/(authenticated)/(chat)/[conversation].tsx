@@ -15,7 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useOtherUserDetails } from "@/hooks/useUser";
 import { useState } from "react";
 import { sendMessage } from "@/api/message";
-import { UserInfo } from "@/types/user";
+import { Language, UserInfo } from "@/types/user";
 import { createMessage } from "@/database/queries/messages";
 import { Message } from "@/types/conversation";
 import useUserStore from "@/store/userStore";
@@ -51,7 +51,7 @@ const ChatScreen = () => {
             originalMessage: message,
             originalMessageLanguage: "English",
             translatedMessage: translatedMessage,
-            translatedMessageLanguage: otherUser!.selected_language,
+            translatedMessageLanguage: otherUser!.selected_language.language,
             timeStamp: new Date(),
           });
         })
