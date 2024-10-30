@@ -1,8 +1,8 @@
-export type Language = {
-  language: "English" | "Spanish" | "Mandarin";
-};
+// export type Language = {
+//   language: "English" | "Spanish" | "Mandarin";
+// };
 
-export enum Languages {
+export enum Language {
   English = "English",
   Spanish = "Spanish",
   Mandarin = "Mandarin",

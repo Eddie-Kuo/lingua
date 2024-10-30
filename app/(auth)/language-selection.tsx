@@ -6,14 +6,13 @@ import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useRouter } from "expo-router";
 import useUserStore from "@/store/userStore";
-import { Language, Languages } from "@/types/user";
+import { Language } from "@/types/user";
 
-const languages: Language[] = [
-  { language: "English" },
-  { language: "Spanish" },
-  { language: "Mandarin" },
+const languages = [
+  { language: Language.English },
+  { language: Language.Spanish },
+  { language: Language.Mandarin },
 ];
-
 const LanguageSelection = () => {
   const router = useRouter();
   const { updateUserInfo, userInfo } = useUserStore();
@@ -46,12 +45,12 @@ const LanguageSelection = () => {
           labelField="language"
           valueField="language"
           value={{
-            language: userInfo?.selected_language.language || Languages.English,
+            language: userInfo?.selected_language || Language.English,
           }}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
-          onChange={(item: Language) => {
-            updateUserInfo({ selected_language: { language: item.language } });
+          onChange={(item: any) => {
+            updateUserInfo({ selected_language: item });
           }}
           renderLeftIcon={() => (
             <AntDesign

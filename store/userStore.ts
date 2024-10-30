@@ -1,4 +1,4 @@
-import { Language, Languages, UserInfo } from "@/types/user";
+import { Language, UserInfo } from "@/types/user";
 import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -32,7 +32,7 @@ const useUserStore = create<UserStore>((set) => ({
   userInfo: {
     id: Infinity,
     phone_number: "",
-    selected_language: { language: Languages.English },
+    selected_language: Language.English,
     first_name: "",
     last_name: "",
     pic_url: "",

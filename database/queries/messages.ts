@@ -4,19 +4,24 @@ import { supabase } from "@/utils/supabase";
 import { InsertMessage } from "../schemas/messages";
 
 export const createMessage = async (message: InsertMessage) => {
-  const { error } = await supabase.from("messages").insert({
-    room_id: message.roomId,
-    sender_id: message.senderId,
-    original_message: message.originalMessage,
-    original_message_language: message.originalMessageLanguage,
-    translated_message: message.translatedMessage,
-    translated_message_language: message.translatedMessageLanguage,
-  });
+  const { data, error } = await supabase
+    .from("messages")
+    .insert({
+      room_id: message.roomId,
+      sender_id: message.senderId,
+      original_message: message.originalMessage,
+      original_message_language: message.originalMessageLanguage,
+      translated_message: message.translatedMessage,
+      translated_message_language: message.translatedMessageLanguage,
+    })
+    .select();
 
   if (error) {
     console.log("🚀 ~ createMessage ~ error:", error.message);
     throw new Error("Error creating message");
   }
+
+  return data[0];
 };
 
 export const getMessagesByConversationId = async (conversationId: string) => {

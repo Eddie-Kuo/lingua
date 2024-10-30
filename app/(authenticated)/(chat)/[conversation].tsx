@@ -13,13 +13,18 @@ import { Link, useLocalSearchParams } from "expo-router";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
 import { useOtherUserDetails } from "@/hooks/useUser";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { sendMessage } from "@/api/message";
 import { Language, UserInfo } from "@/types/user";
 import { createMessage } from "@/database/queries/messages";
 import { Message } from "@/types/conversation";
 import useUserStore from "@/store/userStore";
-import { useMessages } from "@/hooks/useConversation";
+import {
+  useMessages,
+  useRealtimeMessages,
+  useSendMessage,
+} from "@/hooks/useConversation";
+import { supabase } from "@/utils/supabase";
 
 const ChatScreen = () => {
   const { conversation: conversationId, otherUserId } = useLocalSearchParams<{
@@ -28,8 +33,21 @@ const ChatScreen = () => {
   }>();
   const { data: otherUser } = useOtherUserDetails(Number(otherUserId));
   const [message, setMessage] = useState<string>("");
-  const { data: messages } = useMessages(conversationId);
+  const [messageList, setMessageList] = useState<Message[]>();
   const { userInfo } = useUserStore();
+  const { data: messages } = useMessages(conversationId);
+  const { mutate: sendMessage } = useSendMessage(conversationId);
+
+  useEffect(() => {
+    if (messages) {
+      setMessageList(messages);
+    }
+  }, [messages]);
+  useRealtimeMessages(conversationId, (newMessage) => {
+    setMessageList((prevMessages) =>
+      prevMessages ? [newMessage, ...prevMessages] : [newMessage],
+    );
+  });
 
   const handleSubmitMessage = async () => {
     console.log("🚀 ~ handleSubmitMessage ~ message:", message);
@@ -39,26 +57,33 @@ const ChatScreen = () => {
         return;
       }
 
-      sendMessage(message, otherUser!.selected_language)
-        .then((translatedMessage: string) => {
-          console.log(
-            "🚀 ~ handleSubmitMessage ~ translatedMessage:",
-            translatedMessage,
-          );
-          createMessage({
-            roomId: conversationId,
-            senderId: userInfo.id,
-            originalMessage: message,
-            originalMessageLanguage: "English",
-            translatedMessage: translatedMessage,
-            translatedMessageLanguage: otherUser!.selected_language.language,
-            timeStamp: new Date(),
-          });
-        })
-        .catch((error: Error) => {
-          // Handle any errors here
-          console.error("Error sending message", error.message);
-        });
+      sendMessage({
+        message: message,
+        conversationId: conversationId,
+        userInfo: userInfo,
+        otherUser: otherUser!,
+      });
+
+      // sendMessage(message, otherUser!.selected_language)
+      //   .then((translatedMessage: string) => {
+      //     console.log(
+      //       "🚀 ~ handleSubmitMessage ~ translatedMessage:",
+      //       translatedMessage,
+      //     );
+      //     createMessage({
+      //       roomId: conversationId,
+      //       senderId: userInfo.id,
+      //       originalMessage: message,
+      //       originalMessageLanguage: "English",
+      //       translatedMessage: translatedMessage,
+      //       translatedMessageLanguage: otherUser!.selected_language,
+      //       timeStamp: new Date(),
+      //     });
+      //   })
+      //   .catch((error: Error) => {
+      //     // Handle any errors here
+      //     console.error("Error sending message", error.message);
+      //   });
     } catch (error) {
       console.error("Error sending message", error);
     }
@@ -75,7 +100,7 @@ const ChatScreen = () => {
         keyboardVerticalOffset={0}>
         {/* chat messages */}
 
-        <ChatMessages userId={userInfo.id} messages={messages} />
+        <ChatMessages userId={userInfo.id} messages={messageList} />
 
         {/* chat input */}
         <View style={tw.style("flex-row gap-4 bg-[#1f1f1f] p-4")}>
