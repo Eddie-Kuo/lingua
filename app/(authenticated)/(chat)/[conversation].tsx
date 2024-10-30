@@ -14,16 +14,10 @@ import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
 import { useOtherUserDetails } from "@/hooks/useUser";
 import { useEffect, useState } from "react";
-import { sendMessage } from "@/api/message";
-import { Language, UserInfo } from "@/types/user";
-import { createMessage } from "@/database/queries/messages";
+import { UserInfo } from "@/types/user";
 import { Message } from "@/types/conversation";
 import useUserStore from "@/store/userStore";
-import {
-  useMessages,
-  useRealtimeMessages,
-  useSendMessage,
-} from "@/hooks/useConversation";
+import { useMessages, useSendMessage } from "@/hooks/useConversation";
 import { supabase } from "@/utils/supabase";
 
 const ChatScreen = () => {
@@ -43,11 +37,6 @@ const ChatScreen = () => {
       setMessageList(messages);
     }
   }, [messages]);
-  // useRealtimeMessages(conversationId, (newMessage) => {
-  //   setMessageList((prevMessages) =>
-  //     prevMessages ? [newMessage, ...prevMessages] : [newMessage],
-  //   );
-  // });
 
   useEffect(() => {
     const messageListener = supabase

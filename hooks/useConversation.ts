@@ -1,4 +1,4 @@
-import { Language, UserInfo } from "@/types/user";
+import { UserInfo } from "@/types/user";
 import {
   createMessage,
   getMessagesByConversationId,
@@ -11,8 +11,6 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { sendMessage } from "@/api/message";
-import { useEffect } from "react";
-import { supabase } from "@/utils/supabase";
 
 export const useMessages = (
   conversationId: string,
@@ -68,31 +66,4 @@ export const useSendMessage = (conversationId: string) => {
       });
     },
   });
-};
-
-export const useRealtimeMessages = (
-  conversationId: string,
-  onNewMessage: (message: Message) => void,
-) => {
-  useEffect(() => {
-    const messageListener = supabase
-      .channel(`messages:room_id=eq.${conversationId}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "messages",
-        },
-        (payload) => {
-          console.log("🚀 ~ messageListener ~ payload:", payload);
-          onNewMessage(payload.new as Message);
-        },
-      )
-      .subscribe();
-
-    return () => {
-      messageListener.unsubscribe();
-    };
-  }, [conversationId, onNewMessage]);
 };
