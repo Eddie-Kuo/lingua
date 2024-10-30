@@ -83,28 +83,41 @@ npm install -g bun
 
 1. Clone the repo
 
-   ```sh
-   git clone https://github.com/Eddie-Kuo/lingua.git
-   ```
+ ```sh
+ git clone https://github.com/Eddie-Kuo/lingua.git
+ ```
 
 2. Install packages and run app via platform of choice
 
-   ```sh
-   bun install
-   
-   bunx expo start
-   ```
+ ```sh
+ bun install
+ ```
 
-3. To run this project, you will need to set up some environment variables. Review the'.env.example' file to set up your environment variables
+3. To run this project, you can either use the Expo Go App or Expo pre build. (Recommended pre build)
+   
+Pre building the app will require additional setup such as installing and setting up Cocoapods and Xcode configurations <br/>
+- Cocoapods Installation: https://guides.cocoapods.org/using/getting-started.html <br/>
+- Expo Documentation: https://docs.expo.dev/get-started/set-up-your-environment/ <br/>
+
+ ```sh
+ // Expo Go
+ bunx expo start
+
+ // pre build
+ bunx expo run:ios
+ ```
+
+
+   
+5. To set up the environment variables, review the'.env.example' file
 
 <!-- ROADMAP -->
 
 ## Features
 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
+- [ ] Add other users and immediately start chatting
+- [ ] Select a language from the supported list of languages and witness the whole app reflect the selected language
+- [ ] Messages received from other users in other languages will be automatically translated to your selected language
 
 <!-- CONTRIBUTING -->
 
