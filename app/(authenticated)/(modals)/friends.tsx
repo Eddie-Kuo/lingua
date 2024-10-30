@@ -6,9 +6,8 @@ import { getUserByPhoneNumber } from "@/database/queries/user";
 import { UserInfo } from "@/types/user";
 
 const Modal = () => {
-  //Todo: Need to account for area code stored in database
   const [number, setNumber] = useState("");
-  const [areaCode, setAreaCode] = useState("+1");
+  const [areaCode] = useState("+1");
   const [searchedUser, setSearchedUser] = useState<UserInfo>();
 
   //Todo: Set the return of function call into state to show the user or error message user doesn't exist

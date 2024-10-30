@@ -62,7 +62,7 @@ const ChatScreen = () => {
     return () => {
       messageListener.unsubscribe();
     };
-  }, [conversationId, setMessageList]);
+  }, [conversationId]);
 
   const handleSubmitMessage = async () => {
     console.log("🚀 ~ handleSubmitMessage ~ message:", message);
