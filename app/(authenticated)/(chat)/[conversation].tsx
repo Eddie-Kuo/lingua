@@ -78,27 +78,6 @@ const ChatScreen = () => {
         userInfo: userInfo,
         otherUser: otherUser!,
       });
-
-      // sendMessage(message, otherUser!.selected_language)
-      //   .then((translatedMessage: string) => {
-      //     console.log(
-      //       "🚀 ~ handleSubmitMessage ~ translatedMessage:",
-      //       translatedMessage,
-      //     );
-      //     createMessage({
-      //       roomId: conversationId,
-      //       senderId: userInfo.id,
-      //       originalMessage: message,
-      //       originalMessageLanguage: "English",
-      //       translatedMessage: translatedMessage,
-      //       translatedMessageLanguage: otherUser!.selected_language,
-      //       timeStamp: new Date(),
-      //     });
-      //   })
-      //   .catch((error: Error) => {
-      //     // Handle any errors here
-      //     console.error("Error sending message", error.message);
-      //   });
     } catch (error) {
       console.error("Error sending message", error);
     }
@@ -141,6 +120,7 @@ const ChatScreen = () => {
 export default ChatScreen;
 
 const ChatHeader = ({ otherUser }: { otherUser: UserInfo | undefined }) => {
+  // Todo: Make header transparent
   return (
     <View
       style={tw.style(
