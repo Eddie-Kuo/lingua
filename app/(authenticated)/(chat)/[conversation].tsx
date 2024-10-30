@@ -179,17 +179,13 @@ const ChatMessages = ({
           <View
             style={tw.style(
               "my-1.5 flex max-w-72 rounded-xl bg-zinc-700/70 p-2.5",
-              item.sender_id === userId && "self-end bg-sky-600",
+              item.sender_id === userId ? "self-end bg-sky-600" : "self-start",
             )}>
-            {item.sender_id === userId ? (
-              <Text style={tw.style("text-base text-white")}>
-                {item.original_message}
-              </Text>
-            ) : (
-              <Text style={tw.style("text-base text-white")}>
-                {item.translated_message}
-              </Text>
-            )}
+            <Text style={tw.style("text-base text-white")}>
+              {item.sender_id === userId
+                ? item.original_message
+                : item.translated_message}
+            </Text>
           </View>
         )}
       />
