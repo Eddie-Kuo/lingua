@@ -1,6 +1,12 @@
-export type Language = {
-  language: "English" | "Spanish" | "Mandarin";
-};
+// export type Language = {
+//   language: "English" | "Spanish" | "Mandarin";
+// };
+
+export enum Language {
+  English = "English",
+  Spanish = "Spanish",
+  Mandarin = "Mandarin",
+}
 
 export type UserInfo = {
   id: number;
@@ -9,5 +15,5 @@ export type UserInfo = {
   last_name: string;
   pic_url: string;
   hash?: number;
-  selected_language: "English" | "Spanish" | "Mandarin";
+  selected_language: Language;
 };

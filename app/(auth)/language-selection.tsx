@@ -8,12 +8,11 @@ import { useRouter } from "expo-router";
 import useUserStore from "@/store/userStore";
 import { Language } from "@/types/user";
 
-const languages: Language[] = [
-  { language: "English" },
-  { language: "Spanish" },
-  { language: "Mandarin" },
+const languages = [
+  { language: Language.English },
+  { language: Language.Spanish },
+  { language: Language.Mandarin },
 ];
-
 const LanguageSelection = () => {
   const router = useRouter();
   const { updateUserInfo, userInfo } = useUserStore();
@@ -45,11 +44,13 @@ const LanguageSelection = () => {
           maxHeight={300}
           labelField="language"
           valueField="language"
-          value={{ language: userInfo?.selected_language || "English" }}
+          value={{
+            language: userInfo?.selected_language || Language.English,
+          }}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
-          onChange={(item: Language) => {
-            updateUserInfo({ selected_language: item.language });
+          onChange={(item: any) => {
+            updateUserInfo({ selected_language: item });
           }}
           renderLeftIcon={() => (
             <AntDesign

@@ -1,8 +1,9 @@
+import { Language } from "@/types/user";
 import { openai } from "@/utils/gpt";
 
 export const sendMessage = async (
   message: string,
-  targetLanguage: string,
+  targetLanguage: Language,
 ): Promise<string> => {
   // 1. send the message to chatgpt to translate
   try {

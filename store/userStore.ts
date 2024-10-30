@@ -32,7 +32,7 @@ const useUserStore = create<UserStore>((set) => ({
   userInfo: {
     id: Infinity,
     phone_number: "",
-    selected_language: "English",
+    selected_language: Language.English,
     first_name: "",
     last_name: "",
     pic_url: "",
@@ -47,7 +47,6 @@ const useUserStore = create<UserStore>((set) => ({
       persistData("userInfo", updatedUserInfo);
       return { userInfo: updatedUserInfo };
     });
-
   },
 }));
 
