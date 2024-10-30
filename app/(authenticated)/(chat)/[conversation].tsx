@@ -43,11 +43,37 @@ const ChatScreen = () => {
       setMessageList(messages);
     }
   }, [messages]);
-  useRealtimeMessages(conversationId, (newMessage) => {
-    setMessageList((prevMessages) =>
-      prevMessages ? [newMessage, ...prevMessages] : [newMessage],
-    );
-  });
+  // useRealtimeMessages(conversationId, (newMessage) => {
+  //   setMessageList((prevMessages) =>
+  //     prevMessages ? [newMessage, ...prevMessages] : [newMessage],
+  //   );
+  // });
+
+  useEffect(() => {
+    const messageListener = supabase
+      .channel(`messages:room_id=eq.${conversationId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+        },
+        (payload) => {
+          console.log("🚀 ~ messageListener ~ payload:", payload);
+          setMessageList((prevMessages) =>
+            prevMessages
+              ? [payload.new as Message, ...prevMessages]
+              : [payload.new as Message],
+          );
+        },
+      )
+      .subscribe();
+
+    return () => {
+      messageListener.unsubscribe();
+    };
+  }, [conversationId, setMessageList]);
 
   const handleSubmitMessage = async () => {
     console.log("🚀 ~ handleSubmitMessage ~ message:", message);
