@@ -34,7 +34,7 @@ const modalHeaderOptions: any = {
   headerShown: true,
   headerShadowVisible: false,
   headerStyle: {
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.primary,
   },
   headerTitleStyle: { color: "white" },
   headerRight: () => (

@@ -1,4 +1,12 @@
-import { View, TextInput, Pressable, Alert, Text, Button } from "react-native";
+import {
+  View,
+  TextInput,
+  Pressable,
+  Alert,
+  Text,
+  Button,
+  Image,
+} from "react-native";
 import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
@@ -37,9 +45,9 @@ const Modal = () => {
   };
 
   return (
-    <View style={tw.style("flex-1 bg-secondary py-3")}>
+    <View style={tw.style("flex-1 bg-primary py-3")}>
       {/* Search bar */}
-      <View style={tw.style("flex-row items-center gap-3 px-5")}>
+      <View style={tw.style("mb-8 flex-row items-center gap-3 px-5")}>
         <TextInput
           placeholder="Enter your friend's phone number"
           placeholderTextColor={"#a1a1aa"}
@@ -64,14 +72,30 @@ const Modal = () => {
 
       {/* <View style={tw.style("mt-5 w-full border border-t-white")} /> */}
       {/* Todo: Display the search result of the function call */}
-      <View style={tw.style("mt-8 h-full bg-zinc-300")}>
+      <View style={tw.style("h-full items-center bg-zinc-300 pt-56")}>
         {searchedUser && (
-          <View>
-            <Text>
-              {searchedUser.first_name}, {searchedUser.last_name}
+          <View style={tw.style("items-center")}>
+            <Image
+              source={{ uri: searchedUser.pic_url }}
+              style={tw.style("mb-4 h-24 w-24 rounded-full")}
+            />
+            <Text style={tw.style("text-lg font-bold")}>
+              {searchedUser.first_name} {searchedUser.last_name}
             </Text>
-            <Text>Custom Message</Text>
-            <Button title="Action" />
+            <Text style={tw.style("text-sm text-zinc-500")}>
+              Custom Message
+            </Text>
+            <Pressable
+              onPress={() => {}}
+              style={({ pressed }) => [
+                tw.style("mt-4 items-center rounded-md border border-primary"),
+                pressed ? { opacity: 0.75 } : {},
+              ]}>
+              <Text
+                style={tw.style("p-2 text-base font-semibold text-primary")}>
+                Chat
+              </Text>
+            </Pressable>
           </View>
         )}
       </View>
