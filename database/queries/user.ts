@@ -64,3 +64,16 @@ export const getUserById = async (
   }
   return data[0];
 };
+
+export const isFriend = async (userId: number, friendId: number) => {
+  const { data, error } = await supabase
+    .from("friends")
+    .select()
+    .eq("my_user_id", userId)
+    .eq("friend_user_id", friendId);
+
+  if (error) {
+    throw new Error("Error checking if friend");
+  }
+  return data.length > 0;
+};
