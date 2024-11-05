@@ -23,15 +23,24 @@ const nonExitingUser = {
   selected_language: "English",
 };
 
-const Modal = () => {
+type SearchedUserStatus = {
+  message: string;
+  buttonText: string;
+  isFriend: null | boolean;
+};
+
+const SearchFriendModal = () => {
   const { userInfo } = useUserStore();
   const [number, setNumber] = useState("");
-  const [areaCode] = useState("+1");
   const [searchedUser, setSearchedUser] = useState<UserInfo>();
-  const [userMessage, setUserMessage] = useState({
-    message: "",
-    buttonText: "",
-  });
+  const [searchedUserStatus, setSearchedUserStatus] =
+    useState<SearchedUserStatus>({
+      message: "",
+      buttonText: "",
+      isFriend: null,
+    });
+
+  const areaCode = "+1";
 
   const nonExitingUser: UserInfo = {
     id: 0,
@@ -53,9 +62,10 @@ const Modal = () => {
     getUserByPhoneNumber(fullPhoneNumber).then(async (user) => {
       console.log("🚀 ~ getUserByPhoneNumber ~ user:", user);
       if (!user) {
-        setUserMessage({
+        setSearchedUserStatus({
           message: "No user by that phone number found.",
           buttonText: "",
+          isFriend: false,
         });
         setSearchedUser(nonExitingUser);
         return;
@@ -64,20 +74,30 @@ const Modal = () => {
       // check if searchedUser is already a friend
       const isAlreadyFriends = await isFriend(userInfo.id, user.id);
       if (isAlreadyFriends) {
-        setUserMessage({
+        setSearchedUserStatus({
           message: "is already your friend!",
           buttonText: "Chat",
+          isFriend: true,
         });
       } else {
-        setUserMessage({
+        setSearchedUserStatus({
           message: "add to start chatting!",
           buttonText: "Add Friend",
+          isFriend: false,
         });
       }
 
       // regardless if searchedUser is a friend, set info to see user profile
       setSearchedUser(user);
     });
+  };
+
+  const handleStartConversation = async () => {
+    console.log("Starting a conversation/ rerouting to existing conversation");
+  };
+
+  const handleAddFriend = async () => {
+    console.log("Add friend clicked");
   };
 
   return (
@@ -126,11 +146,15 @@ const Modal = () => {
 
             <Text
               style={tw.style("max-w-64 text-center text-sm text-zinc-500")}>
-              {userMessage.message}
+              {searchedUserStatus.message}
             </Text>
-            {userMessage.buttonText && (
+            {searchedUserStatus.buttonText && (
               <Pressable
-                onPress={() => {}}
+                onPress={
+                  searchedUserStatus.isFriend
+                    ? handleStartConversation
+                    : handleAddFriend
+                }
                 style={({ pressed }) => [
                   tw.style(
                     "mt-4 items-center rounded-md border border-primary",
@@ -139,7 +163,7 @@ const Modal = () => {
                 ]}>
                 <Text
                   style={tw.style("p-2 text-base font-semibold text-primary")}>
-                  {userMessage.buttonText}
+                  {searchedUserStatus.buttonText}
                 </Text>
               </Pressable>
             )}
@@ -151,4 +175,4 @@ const Modal = () => {
   );
 };
 
-export default Modal;
+export default SearchFriendModal;
