@@ -29,9 +29,7 @@ const Modal = () => {
       return;
     }
 
-    try {
-      const user = await getUserByPhoneNumber(fullPhoneNumber);
-
+    getUserByPhoneNumber(fullPhoneNumber).then(async (user) => {
       if (!user) {
         setCustomMessage(
           "No user by that phone number found. Please check the phone number you entered and try again!",
@@ -39,18 +37,17 @@ const Modal = () => {
         return;
       }
 
-      const alreadyFriends = await isFriend(userInfo.id, user.id);
-
-      if (alreadyFriends) {
+      // check if searchedUser is already a friend
+      const isAlreadyFriends = await isFriend(userInfo.id, user.id);
+      if (isAlreadyFriends) {
         setCustomMessage("is already your friend!");
       } else {
         setCustomMessage("add to start chatting!");
       }
 
+      // regardless if searchedUser is a friend, set info to see user profile
       setSearchedUser(user);
-    } catch (error) {
-      console.log("🚀 ~ handleSearchForFriend ~ error:", error);
-    }
+    });
   };
 
   return (
