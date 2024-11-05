@@ -21,7 +21,6 @@ const Modal = () => {
   const [searchedUser, setSearchedUser] = useState<UserInfo>();
   const [customMessage, setCustomMessage] = useState("");
 
-  //Todo: Set the return of function call into state to show the user or error message user doesn't exist
   const handleSearchForFriend = async () => {
     const fullPhoneNumber = `${areaCode}${number}`;
 
@@ -31,12 +30,6 @@ const Modal = () => {
     }
 
     try {
-      // 1. check if the searched user is in the database
-      // if the user is in the database, then we need to check if they're already a friend
-      // if not, set custom message
-
-      // 2. if the user is not in the database, set custom message
-
       const user = await getUserByPhoneNumber(fullPhoneNumber);
 
       if (!user) {
@@ -92,8 +85,13 @@ const Modal = () => {
         {searchedUser && (
           <View style={tw.style("items-center")}>
             <Image
-              source={{ uri: searchedUser.pic_url }}
-              style={tw.style("mb-4 h-24 w-24 rounded-full")}
+              resizeMode="contain"
+              source={
+                searchedUser.pic_url
+                  ? { uri: searchedUser.pic_url }
+                  : require("@/assets/images/ghost.png")
+              }
+              style={tw.style("mb-4 h-24 w-24 rounded-full border bg-accent")}
             />
             <Text style={tw.style("text-lg font-bold")}>
               {searchedUser.first_name} {searchedUser.last_name}
