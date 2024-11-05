@@ -10,13 +10,16 @@ import {
 import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
-import { getUserByPhoneNumber } from "@/database/queries/user";
+import { getUserByPhoneNumber, isFriend } from "@/database/queries/user";
 import { UserInfo } from "@/types/user";
+import useUserStore from "@/store/userStore";
 
 const Modal = () => {
+  const { userInfo } = useUserStore();
   const [number, setNumber] = useState("");
   const [areaCode] = useState("+1");
   const [searchedUser, setSearchedUser] = useState<UserInfo>();
+  const [customMessage, setCustomMessage] = useState("");
 
   //Todo: Set the return of function call into state to show the user or error message user doesn't exist
   const handleSearchForFriend = async () => {
@@ -28,20 +31,33 @@ const Modal = () => {
     }
 
     try {
+      // 1. check if the searched user is in the database
+      // if the user is in the database, then we need to check if they're already a friend
+      // if not, set custom message
+
+      // 2. if the user is not in the database, set custom message
+
       const user = await getUserByPhoneNumber(fullPhoneNumber);
-      console.log("user", user);
+
       if (!user) {
-        Alert.alert(
-          "User by that phone number not found. Please check the phone number you entered and try again!",
+        setCustomMessage(
+          "No user by that phone number found. Please check the phone number you entered and try again!",
         );
+        return;
+      }
+
+      const alreadyFriends = await isFriend(userInfo.id, user.id);
+
+      if (alreadyFriends) {
+        setCustomMessage("is already your friend!");
+      } else {
+        setCustomMessage("add to start chatting!");
       }
 
       setSearchedUser(user);
     } catch (error) {
       console.log("🚀 ~ handleSearchForFriend ~ error:", error);
     }
-
-    return;
   };
 
   return (
@@ -83,7 +99,7 @@ const Modal = () => {
               {searchedUser.first_name} {searchedUser.last_name}
             </Text>
             <Text style={tw.style("text-sm text-zinc-500")}>
-              Custom Message
+              {customMessage}
             </Text>
             <Pressable
               onPress={() => {}}
