@@ -49,7 +49,6 @@ const ChatScreen = () => {
           table: "messages",
         },
         (payload) => {
-          console.log("🚀 ~ messageListener ~ payload:", payload);
           setMessageList((prevMessages) =>
             prevMessages
               ? [payload.new as Message, ...prevMessages]

@@ -1,3 +1,4 @@
+import { SelectMessage } from "./../database/schemas/messages";
 import { UserInfo } from "@/types/user";
 import {
   createMessage,
@@ -16,7 +17,7 @@ export const useMessages = (
   conversationId: string,
 ): UseQueryResult<Message[]> => {
   return useQuery({
-    queryKey: ["messages"],
+    queryKey: ["messages", conversationId],
     queryFn: async () => {
       const messages = await getMessagesByConversationId(conversationId);
       return messages;
@@ -41,10 +42,6 @@ export const useSendMessage = (conversationId: string) => {
     }) => {
       sendMessage(message, otherUser.selected_language)
         .then((translatedMessage: string) => {
-          console.log(
-            "🚀 ~ handleSubmitMessage ~ translatedMessage:",
-            translatedMessage,
-          );
           createMessage({
             roomId: conversationId,
             senderId: userInfo.id,
@@ -60,9 +57,9 @@ export const useSendMessage = (conversationId: string) => {
           console.error("Error sending message", error.message);
         });
     },
-    async onSuccess() {
-      await queryClient.invalidateQueries({
-        queryKey: ["messages"],
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["messages", conversationId],
       });
     },
   });
