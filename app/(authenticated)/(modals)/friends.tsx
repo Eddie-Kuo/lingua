@@ -6,12 +6,14 @@ import {
   Text,
   Button,
   Image,
-  ActivityIndicator,
+   ActivityIndicator,
+
 } from "react-native";
 import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
 import { getUserByPhoneNumber, isFriend } from "@/database/queries/user";
+
 import { UserInfo } from "@/types/user";
 import useUserStore from "@/store/userStore";
 import { Colors } from "@/constants/colors";
@@ -48,6 +50,7 @@ const SearchFriendModal = () => {
 
   const areaCode = "+1";
 
+
   const handleSearchForFriend = async () => {
     // reset the searchedUser if there was a search done prior
     setSearchedUser(null);
@@ -69,6 +72,7 @@ const SearchFriendModal = () => {
           relationship: Relationship.notFound,
         });
         setIsLoading(false);
+
         return;
       }
 
@@ -117,6 +121,7 @@ const SearchFriendModal = () => {
 
   const handleAddFriend = async () => {
     console.log("Add friend clicked");
+
   };
 
   return (
@@ -181,6 +186,7 @@ const SearchFriendModal = () => {
                 {searchedUserStatus.buttonText}
               </Text>
             </Pressable>
+
           </View>
         )}
 
