@@ -15,6 +15,11 @@ import { getUserByPhoneNumber, isFriend } from "@/database/queries/user";
 import { UserInfo } from "@/types/user";
 import useUserStore from "@/store/userStore";
 import { Colors } from "@/constants/colors";
+import {
+  createConversation,
+  getConversationByUserId,
+} from "@/database/queries/conversations";
+import { useRouter } from "expo-router";
 
 type SearchedUserStatus = {
   message: string;
@@ -39,6 +44,7 @@ const SearchFriendModal = () => {
       relationship: Relationship.notFound,
     });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const areaCode = "+1";
 
@@ -90,8 +96,23 @@ const SearchFriendModal = () => {
     });
   };
 
-  const handleStartConversation = async () => {
-    console.log("Starting a conversation/ rerouting to existing conversation");
+  const handleStartConversation = async (searchedUser: UserInfo) => {
+    let conversation = await getConversationByUserId(
+      userInfo.id,
+      searchedUser.id,
+    );
+
+    if (!conversation) {
+      conversation = await createConversation(userInfo.id, searchedUser.id);
+    }
+
+    router.replace({
+      pathname: "/(authenticated)/(chat)/[conversation]",
+      params: {
+        conversation: conversation.room_id,
+        otherUserId: conversation.friend_user_id,
+      },
+    });
   };
 
   const handleAddFriend = async () => {
@@ -148,7 +169,7 @@ const SearchFriendModal = () => {
             <Pressable
               onPress={
                 searchedUserStatus.relationship === Relationship.friend
-                  ? handleStartConversation
+                  ? () => handleStartConversation(searchedUser)
                   : handleAddFriend
               }
               style={({ pressed }) => [
