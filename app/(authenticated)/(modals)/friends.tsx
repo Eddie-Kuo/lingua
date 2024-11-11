@@ -6,43 +6,54 @@ import {
   Text,
   Button,
   Image,
+   ActivityIndicator,
+
 } from "react-native";
 import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
 import { Ionicons } from "@expo/vector-icons";
 import { getUserByPhoneNumber, isFriend } from "@/database/queries/user";
-import { Language, UserInfo } from "@/types/user";
-import useUserStore from "@/store/userStore";
 
-const nonExitingUser = {
-  id: 0,
-  phone_number: "",
-  first_name: "",
-  last_name: "",
-  pic_url: "",
-  selected_language: "English",
+import { UserInfo } from "@/types/user";
+import useUserStore from "@/store/userStore";
+import { Colors } from "@/constants/colors";
+import {
+  createConversation,
+  getConversationByUserId,
+} from "@/database/queries/conversations";
+import { useRouter } from "expo-router";
+
+type SearchedUserStatus = {
+  message: string;
+  buttonText: string;
+  relationship: Relationship;
 };
 
-const Modal = () => {
+enum Relationship {
+  friend = "friend",
+  notFriend = "notFriend",
+  notFound = "notFound",
+}
+
+const SearchFriendModal = () => {
   const { userInfo } = useUserStore();
   const [number, setNumber] = useState("");
-  const [areaCode] = useState("+1");
-  const [searchedUser, setSearchedUser] = useState<UserInfo>();
-  const [userMessage, setUserMessage] = useState({
-    message: "",
-    buttonText: "",
-  });
+  const [searchedUser, setSearchedUser] = useState<UserInfo | null>(null);
+  const [searchedUserStatus, setSearchedUserStatus] =
+    useState<SearchedUserStatus>({
+      message: "",
+      buttonText: "",
+      relationship: Relationship.notFound,
+    });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
 
-  const nonExitingUser: UserInfo = {
-    id: 0,
-    phone_number: "",
-    first_name: "",
-    last_name: "",
-    pic_url: "",
-    selected_language: Language.English,
-  };
+  const areaCode = "+1";
+
 
   const handleSearchForFriend = async () => {
+    // reset the searchedUser if there was a search done prior
+    setSearchedUser(null);
     const fullPhoneNumber = `${areaCode}${number}`;
 
     if (fullPhoneNumber.length < 12) {
@@ -50,34 +61,67 @@ const Modal = () => {
       return;
     }
 
+    setIsLoading(true);
+
     getUserByPhoneNumber(fullPhoneNumber).then(async (user) => {
       console.log("🚀 ~ getUserByPhoneNumber ~ user:", user);
       if (!user) {
-        setUserMessage({
+        setSearchedUserStatus({
           message: "No user by that phone number found.",
           buttonText: "",
+          relationship: Relationship.notFound,
         });
-        setSearchedUser(nonExitingUser);
+        setIsLoading(false);
+
         return;
       }
 
       // check if searchedUser is already a friend
       const isAlreadyFriends = await isFriend(userInfo.id, user.id);
       if (isAlreadyFriends) {
-        setUserMessage({
+        setSearchedUserStatus({
           message: "is already your friend!",
           buttonText: "Chat",
+
+          relationship: Relationship.friend,
         });
       } else {
-        setUserMessage({
+        setSearchedUserStatus({
           message: "add to start chatting!",
           buttonText: "Add Friend",
+
+          relationship: Relationship.notFriend,
         });
       }
 
       // regardless if searchedUser is a friend, set info to see user profile
       setSearchedUser(user);
+      setIsLoading(false);
     });
+  };
+
+  const handleStartConversation = async (searchedUser: UserInfo) => {
+    let conversation = await getConversationByUserId(
+      userInfo.id,
+      searchedUser.id,
+    );
+
+    if (!conversation) {
+      conversation = await createConversation(userInfo.id, searchedUser.id);
+    }
+
+    router.replace({
+      pathname: "/(authenticated)/(chat)/[conversation]",
+      params: {
+        conversation: conversation.room_id,
+        otherUserId: conversation.friend_user_id,
+      },
+    });
+  };
+
+  const handleAddFriend = async () => {
+    console.log("Add friend clicked");
+
   };
 
   return (
@@ -107,6 +151,8 @@ const Modal = () => {
       </View>
 
       <View style={tw.style("h-full items-center bg-zinc-300 pt-56")}>
+        {isLoading && <ActivityIndicator size="large" color={Colors.primary} />}
+
         {searchedUser && (
           <View style={tw.style("items-center")}>
             <Image
@@ -118,32 +164,36 @@ const Modal = () => {
               }
               style={tw.style("mb-4 h-24 w-24 rounded-full border bg-accent")}
             />
-            {searchedUser.first_name && (
-              <Text style={tw.style("text-lg font-bold")}>
-                {searchedUser.first_name} {searchedUser.last_name}
-              </Text>
-            )}
-
+            <Text style={tw.style("text-lg font-bold")}>
+              {searchedUser.first_name} {searchedUser.last_name}
+            </Text>
             <Text
               style={tw.style("max-w-64 text-center text-sm text-zinc-500")}>
-              {userMessage.message}
+              {searchedUserStatus.message}
             </Text>
-            {userMessage.buttonText && (
-              <Pressable
-                onPress={() => {}}
-                style={({ pressed }) => [
-                  tw.style(
-                    "mt-4 items-center rounded-md border border-primary",
-                  ),
-                  pressed ? { opacity: 0.75 } : {},
-                ]}>
-                <Text
-                  style={tw.style("p-2 text-base font-semibold text-primary")}>
-                  {userMessage.buttonText}
-                </Text>
-              </Pressable>
-            )}
+            <Pressable
+              onPress={
+                searchedUserStatus.relationship === Relationship.friend
+                  ? () => handleStartConversation(searchedUser)
+                  : handleAddFriend
+              }
+              style={({ pressed }) => [
+                tw.style("mt-4 items-center rounded-md border border-primary"),
+                pressed ? { opacity: 0.75 } : {},
+              ]}>
+              <Text
+                style={tw.style("p-2 text-base font-semibold text-primary")}>
+                {searchedUserStatus.buttonText}
+              </Text>
+            </Pressable>
+
           </View>
+        )}
+
+        {searchedUserStatus.relationship === Relationship.notFound && (
+          <Text style={tw.style("max-w-64 text-center text-sm text-zinc-500")}>
+            {searchedUserStatus.message}
+          </Text>
         )}
       </View>
       {/* Todo: Clicking the user card will pop up a modal to confirm if you want to add the user as a friend */}
@@ -151,4 +201,4 @@ const Modal = () => {
   );
 };
 
-export default Modal;
+export default SearchFriendModal;
