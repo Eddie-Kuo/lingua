@@ -6,8 +6,7 @@ import {
   Text,
   Button,
   Image,
-   ActivityIndicator,
-
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
@@ -49,7 +48,6 @@ const SearchFriendModal = () => {
   const router = useRouter();
 
   const areaCode = "+1";
-
 
   const handleSearchForFriend = async () => {
     // reset the searchedUser if there was a search done prior
@@ -121,7 +119,6 @@ const SearchFriendModal = () => {
 
   const handleAddFriend = async () => {
     console.log("Add friend clicked");
-
   };
 
   return (
@@ -162,7 +159,7 @@ const SearchFriendModal = () => {
                   ? { uri: searchedUser.pic_url }
                   : require("@/assets/images/ghost.png")
               }
-              style={tw.style("mb-4 h-24 w-24 rounded-full border bg-accent")}
+              style={tw.style("mb-4 h-24 w-24 rounded-full border bg-gray-600")}
             />
             <Text style={tw.style("text-lg font-bold")}>
               {searchedUser.first_name} {searchedUser.last_name}
@@ -186,7 +183,6 @@ const SearchFriendModal = () => {
                 {searchedUserStatus.buttonText}
               </Text>
             </Pressable>
-
           </View>
         )}
 
