@@ -4,7 +4,6 @@ import {
   Pressable,
   Alert,
   Text,
-  Button,
   Image,
   ActivityIndicator,
 } from "react-native";
@@ -26,32 +25,62 @@ import {
   createFriendRequest,
 } from "@/database/queries/friend-requests";
 
-type SearchedUserStatus = {
-  message: string;
-  buttonText: string;
-  relationship: Relationship;
-};
-
 enum Relationship {
   friend = "friend",
   notFriend = "notFriend",
   notFound = "notFound",
+  pendingRequest = "pendingRequest",
+  null = "null",
 }
+
+type SearchedUserUIConfig = {
+  [key in Relationship]: {
+    message: string;
+    buttonText: string;
+    onPress: () => void;
+  };
+};
 
 const SearchFriendModal = () => {
   const { userInfo } = useUserStore();
   const [number, setNumber] = useState("");
-  const [searchedUser, setSearchedUser] = useState<UserInfo | null>(null);
-  const [searchedUserStatus, setSearchedUserStatus] =
-    useState<SearchedUserStatus>({
-      message: "",
-      buttonText: "",
-      relationship: Relationship.notFound,
-    });
+  const [searchedUser, setSearchedUser] = useState<UserInfo | null>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-
   const areaCode = "+1";
+
+  const uiConfigurations: SearchedUserUIConfig = {
+    [Relationship.friend]: {
+      message: "is already your friend!",
+      buttonText: "Chat",
+      onPress: handleStartConversation,
+    },
+    [Relationship.notFriend]: {
+      message: "add to start chatting!",
+      buttonText: "Add Friend",
+      onPress: handleAddFriend,
+    },
+    [Relationship.notFound]: {
+      message: "No user by that phone number found.",
+      buttonText: "",
+      onPress: () => {},
+    },
+    [Relationship.pendingRequest]: {
+      message: "Already sent a request to this user.",
+      buttonText: "Cancel Request",
+      onPress: () => {}, // Todo: implement cancelling of request
+    },
+    [Relationship.null]: {
+      message: "",
+      buttonText: "",
+      onPress: () => {},
+    },
+  };
+
+  const [searchedUserUIConfig, setSearchedUserUIConfig] = useState({
+    ...uiConfigurations[Relationship.null],
+    relationship: Relationship.null,
+  });
 
   const handleSearchForFriend = async () => {
     // reset the searchedUser if there was a search done prior
@@ -68,9 +97,8 @@ const SearchFriendModal = () => {
     getUserByPhoneNumber(fullPhoneNumber).then(async (user) => {
       console.log("🚀 ~ getUserByPhoneNumber ~ user:", user);
       if (!user) {
-        setSearchedUserStatus({
-          message: "No user by that phone number found.",
-          buttonText: "",
+        setSearchedUserUIConfig({
+          ...uiConfigurations[Relationship.notFound],
           relationship: Relationship.notFound,
         });
         setIsLoading(false);
@@ -80,19 +108,29 @@ const SearchFriendModal = () => {
 
       // check if searchedUser is already a friend
       const isAlreadyFriends = await isFriend(userInfo.id, user.id);
-      if (isAlreadyFriends) {
-        setSearchedUserStatus({
-          message: "is already your friend!",
-          buttonText: "Chat",
+      const hasPendingFriendRequest = await checkForFriendRequest(
+        userInfo.id,
+        user.id,
+      );
 
-          relationship: Relationship.friend,
-        });
+      if (!isAlreadyFriends) {
+        // if not friends - check if there is already a sent friend request
+        if (hasPendingFriendRequest) {
+          setSearchedUserUIConfig({
+            ...uiConfigurations[Relationship.pendingRequest],
+            relationship: Relationship.pendingRequest,
+          });
+        } else {
+          setSearchedUserUIConfig({
+            ...uiConfigurations[Relationship.notFriend],
+            relationship: Relationship.notFriend,
+          });
+        }
       } else {
-        setSearchedUserStatus({
-          message: "add to start chatting!",
-          buttonText: "Add Friend",
-
-          relationship: Relationship.notFriend,
+        // is already friends
+        setSearchedUserUIConfig({
+          ...uiConfigurations[Relationship.friend],
+          relationship: Relationship.friend,
         });
       }
 
@@ -102,16 +140,19 @@ const SearchFriendModal = () => {
     });
   };
 
-  const handleStartConversation = async () => {
+  async function handleStartConversation() {
+    // check if we already have an active conversation with this user
     let conversation = await getConversationByUserId(
       userInfo.id,
       searchedUser!.id,
     );
 
+    // if we don't, create a new room
     if (!conversation) {
       conversation = await createConversation(userInfo.id, searchedUser!.id);
     }
 
+    // navigate to the room
     router.replace({
       pathname: "/(authenticated)/(chat)/[conversation]",
       params: {
@@ -119,20 +160,17 @@ const SearchFriendModal = () => {
         otherUserId: conversation.friend_user_id,
       },
     });
-  };
+  }
 
-  const handleAddFriend = async () => {
-    // check if user already has an active friend request with the searched user
-    const activeFriendRequest = await checkForFriendRequest(
-      userInfo.id,
-      searchedUser!.id,
-    );
-
-    // no active friend requests - create entry in database
-    if (!activeFriendRequest) {
-      await createFriendRequest(userInfo.id, searchedUser!.id);
-    }
-  };
+  async function handleAddFriend() {
+    // the check if there is a pending friend request is already performed when the user is searched
+    // so we can just create a new request
+    await createFriendRequest(userInfo.id, searchedUser!.id);
+    setSearchedUserUIConfig({
+      ...uiConfigurations[Relationship.pendingRequest],
+      relationship: Relationship.pendingRequest,
+    });
+  }
 
   return (
     <View style={tw.style("flex-1 bg-primary py-3")}>
@@ -179,11 +217,11 @@ const SearchFriendModal = () => {
             </Text>
             <Text
               style={tw.style("max-w-64 text-center text-sm text-zinc-500")}>
-              {searchedUserStatus.message}
+              {searchedUserUIConfig.message}
             </Text>
             <Pressable
               onPress={
-                searchedUserStatus.relationship === Relationship.friend
+                searchedUserUIConfig.relationship === Relationship.friend
                   ? handleStartConversation
                   : handleAddFriend
               }
@@ -193,15 +231,15 @@ const SearchFriendModal = () => {
               ]}>
               <Text
                 style={tw.style("p-2 text-base font-semibold text-primary")}>
-                {searchedUserStatus.buttonText}
+                {searchedUserUIConfig.buttonText}
               </Text>
             </Pressable>
           </View>
         )}
 
-        {searchedUserStatus.relationship === Relationship.notFound && (
+        {searchedUserUIConfig.relationship === Relationship.notFound && (
           <Text style={tw.style("max-w-64 text-center text-sm text-zinc-500")}>
-            {searchedUserStatus.message}
+            {searchedUserUIConfig.message}
           </Text>
         )}
       </View>
