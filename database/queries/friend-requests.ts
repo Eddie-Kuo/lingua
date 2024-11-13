@@ -13,8 +13,7 @@ export const checkForFriendRequest = async (
     .eq("receiver_id", receiverId);
 
   if (error) {
-    console.log("🚀 ~ error:", error);
-    throw new Error("Error checking for friend request");
+    throw new Error("Error checking for friend request:", error);
   }
 
   return data[0];
@@ -30,7 +29,7 @@ export const createFriendRequest = async (
     .select();
 
   if (error) {
-    throw new Error("Error creating friend request");
+    throw new Error("Error creating friend request:", error);
   }
   return data[0].id;
 };
