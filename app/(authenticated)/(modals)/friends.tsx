@@ -118,7 +118,10 @@ const SearchFriendModal = () => {
   };
 
   const handleAddFriend = async () => {
-    console.log("Add friend clicked");
+    // check if the user already has sent a friend request to this user
+    // 1. modal to confirm adding selected person as a friend
+    // 2. function to add relationship to friend_requests in database
+    // 3. redirect the user back to home or close modal?
   };
 
   return (
