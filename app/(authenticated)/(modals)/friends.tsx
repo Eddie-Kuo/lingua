@@ -68,7 +68,7 @@ const SearchFriendModal = () => {
     [Relationship.pendingRequest]: {
       message: "Already sent a request to this user.",
       buttonText: "Cancel Request",
-      onPress: () => {}, // Todo: implement cancelling of request
+      onPress: () => console.log("Cancelled request"), // Todo: implement cancelling of request
     },
     [Relationship.null]: {
       message: "",
@@ -220,8 +220,9 @@ const SearchFriendModal = () => {
               {searchedUserUIConfig.message}
             </Text>
             <Pressable
+              // Todo: Refactor
               onPress={
-                searchedUserUIConfig.relationship === Relationship.friend
+                searchedUserUIConfig.relationship === "friend"
                   ? handleStartConversation
                   : handleAddFriend
               }
