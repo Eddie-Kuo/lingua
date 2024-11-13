@@ -6,8 +6,7 @@ import {
   Text,
   Button,
   Image,
-   ActivityIndicator,
-
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import { tw } from "@/utils/tailwind";
@@ -22,6 +21,10 @@ import {
   getConversationByUserId,
 } from "@/database/queries/conversations";
 import { useRouter } from "expo-router";
+import {
+  checkForFriendRequest,
+  createFriendRequest,
+} from "@/database/queries/friend-requests";
 
 type SearchedUserStatus = {
   message: string;
@@ -49,7 +52,6 @@ const SearchFriendModal = () => {
   const router = useRouter();
 
   const areaCode = "+1";
-
 
   const handleSearchForFriend = async () => {
     // reset the searchedUser if there was a search done prior
@@ -100,14 +102,14 @@ const SearchFriendModal = () => {
     });
   };
 
-  const handleStartConversation = async (searchedUser: UserInfo) => {
+  const handleStartConversation = async () => {
     let conversation = await getConversationByUserId(
       userInfo.id,
-      searchedUser.id,
+      searchedUser!.id,
     );
 
     if (!conversation) {
-      conversation = await createConversation(userInfo.id, searchedUser.id);
+      conversation = await createConversation(userInfo.id, searchedUser!.id);
     }
 
     router.replace({
@@ -120,8 +122,16 @@ const SearchFriendModal = () => {
   };
 
   const handleAddFriend = async () => {
-    console.log("Add friend clicked");
+    // check if user already has an active friend request with the searched user
+    const activeFriendRequest = await checkForFriendRequest(
+      userInfo.id,
+      searchedUser!.id,
+    );
 
+    // no active friend requests - create entry in database
+    if (!activeFriendRequest) {
+      await createFriendRequest(userInfo.id, searchedUser!.id);
+    }
   };
 
   return (
@@ -162,7 +172,7 @@ const SearchFriendModal = () => {
                   ? { uri: searchedUser.pic_url }
                   : require("@/assets/images/ghost.png")
               }
-              style={tw.style("mb-4 h-24 w-24 rounded-full border bg-accent")}
+              style={tw.style("mb-4 h-24 w-24 rounded-full border bg-gray-600")}
             />
             <Text style={tw.style("text-lg font-bold")}>
               {searchedUser.first_name} {searchedUser.last_name}
@@ -174,7 +184,7 @@ const SearchFriendModal = () => {
             <Pressable
               onPress={
                 searchedUserStatus.relationship === Relationship.friend
-                  ? () => handleStartConversation(searchedUser)
+                  ? handleStartConversation
                   : handleAddFriend
               }
               style={({ pressed }) => [
@@ -186,7 +196,6 @@ const SearchFriendModal = () => {
                 {searchedUserStatus.buttonText}
               </Text>
             </Pressable>
-
           </View>
         )}
 
