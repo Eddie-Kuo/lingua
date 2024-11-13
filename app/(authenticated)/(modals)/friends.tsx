@@ -21,6 +21,10 @@ import {
   getConversationByUserId,
 } from "@/database/queries/conversations";
 import { useRouter } from "expo-router";
+import {
+  checkForFriendRequest,
+  createFriendRequest,
+} from "@/database/queries/friend-requests";
 
 type SearchedUserStatus = {
   message: string;
@@ -98,14 +102,14 @@ const SearchFriendModal = () => {
     });
   };
 
-  const handleStartConversation = async (searchedUser: UserInfo) => {
+  const handleStartConversation = async () => {
     let conversation = await getConversationByUserId(
       userInfo.id,
-      searchedUser.id,
+      searchedUser!.id,
     );
 
     if (!conversation) {
-      conversation = await createConversation(userInfo.id, searchedUser.id);
+      conversation = await createConversation(userInfo.id, searchedUser!.id);
     }
 
     router.replace({
@@ -118,10 +122,16 @@ const SearchFriendModal = () => {
   };
 
   const handleAddFriend = async () => {
-    // check if the user already has sent a friend request to this user
-    // 1. modal to confirm adding selected person as a friend
-    // 2. function to add relationship to friend_requests in database
-    // 3. redirect the user back to home or close modal?
+    // check if user already has an active friend request with the searched user
+    const activeFriendRequest = await checkForFriendRequest(
+      userInfo.id,
+      searchedUser!.id,
+    );
+
+    // no active friend requests - create entry in database
+    if (!activeFriendRequest) {
+      await createFriendRequest(userInfo.id, searchedUser!.id);
+    }
   };
 
   return (
@@ -174,7 +184,7 @@ const SearchFriendModal = () => {
             <Pressable
               onPress={
                 searchedUserStatus.relationship === Relationship.friend
-                  ? () => handleStartConversation(searchedUser)
+                  ? handleStartConversation
                   : handleAddFriend
               }
               style={({ pressed }) => [
