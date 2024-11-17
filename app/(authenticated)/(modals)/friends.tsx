@@ -37,7 +37,6 @@ type SearchedUserUIConfig = {
   [key in Relationship]: {
     message: string;
     buttonText: string;
-    onPress: () => void;
   };
 };
 
@@ -53,27 +52,22 @@ const SearchFriendModal = () => {
     [Relationship.friend]: {
       message: "is already your friend!",
       buttonText: "Chat",
-      onPress: handleStartConversation,
     },
     [Relationship.notFriend]: {
       message: "add to start chatting!",
       buttonText: "Add Friend",
-      onPress: handleAddFriend,
     },
     [Relationship.notFound]: {
       message: "No user by that phone number found.",
       buttonText: "",
-      onPress: () => {},
     },
     [Relationship.pendingRequest]: {
       message: "Already sent a request to this user.",
       buttonText: "Cancel Request",
-      onPress: () => console.log("Cancelled request"), // Todo: implement cancelling of request
     },
     [Relationship.null]: {
       message: "",
       buttonText: "",
-      onPress: () => {},
     },
   };
 
