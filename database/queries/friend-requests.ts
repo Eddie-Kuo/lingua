@@ -25,11 +25,9 @@ export const createFriendRequest = async (
 ) => {
   const { data, error } = await supabase
     .from("friend_requests")
-    .insert({ sender_id: senderId, receiver_id: receiverId })
-    .select();
+    .insert({ sender_id: senderId, receiver_id: receiverId });
 
   if (error) {
     throw new Error("Error creating friend request:", error);
   }
-  return data[0].id;
 };
