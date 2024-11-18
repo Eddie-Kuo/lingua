@@ -21,6 +21,7 @@ import {
 } from "@/database/queries/conversations";
 import { useRouter } from "expo-router";
 import {
+  cancelFriendRequest,
   checkForFriendRequest,
   createFriendRequest,
 } from "@/database/queries/friend-requests";
@@ -37,6 +38,7 @@ type SearchedUserUIConfig = {
   [key in Relationship]: {
     message: string;
     buttonText: string;
+    requestId?: number;
   };
 };
 
@@ -113,6 +115,7 @@ const SearchFriendModal = () => {
           setSearchedUserUIConfig({
             ...uiConfigurations[Relationship.pendingRequest],
             relationship: Relationship.pendingRequest,
+            requestId: hasPendingFriendRequest.id,
           });
         } else {
           setSearchedUserUIConfig({
@@ -166,6 +169,15 @@ const SearchFriendModal = () => {
     });
   }
 
+  async function handleCancelRequest() {
+    if (!searchedUserUIConfig.requestId) {
+      return;
+    }
+
+    await cancelFriendRequest(searchedUserUIConfig.requestId);
+    console.log("Friend Request Cancelled");
+  }
+
   return (
     <View style={tw.style("flex-1 bg-primary py-3")}>
       {/* Search bar */}
@@ -216,9 +228,10 @@ const SearchFriendModal = () => {
             <Pressable
               // Todo: Refactor
               onPress={
-                searchedUserUIConfig.relationship === "friend"
-                  ? handleStartConversation
-                  : handleAddFriend
+                // searchedUserUIConfig.relationship === "friend"
+                //   ? handleStartConversation
+                //   : handleAddFriend
+                handleCancelRequest
               }
               style={({ pressed }) => [
                 tw.style("mt-4 items-center rounded-md border border-primary"),

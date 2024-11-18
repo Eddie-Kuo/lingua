@@ -31,3 +31,16 @@ export const createFriendRequest = async (
     throw new Error("Error creating friend request:", error);
   }
 };
+
+export const cancelFriendRequest = async (
+  requestId: SelectFriendRequest["id"],
+) => {
+  const { error } = await supabase
+    .from("friend_requests")
+    .delete()
+    .eq("id", requestId);
+
+  if (error) {
+    throw new Error("Error deleting friend request", error);
+  }
+};
