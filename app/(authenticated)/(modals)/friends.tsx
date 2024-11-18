@@ -34,11 +34,14 @@ enum Relationship {
   null = "null",
 }
 
+type ActionFunction = () => Promise<void>;
+
 type SearchedUserUIConfig = {
   [key in Relationship]: {
     message: string;
     buttonText: string;
     requestId?: number;
+    action?: ActionFunction;
   };
 };
 
@@ -54,10 +57,12 @@ const SearchFriendModal = () => {
     [Relationship.friend]: {
       message: "is already your friend!",
       buttonText: "Chat",
+      action: handleStartConversation,
     },
     [Relationship.notFriend]: {
       message: "add to start chatting!",
       buttonText: "Add Friend",
+      action: handleAddFriend,
     },
     [Relationship.notFound]: {
       message: "No user by that phone number found.",
@@ -66,6 +71,7 @@ const SearchFriendModal = () => {
     [Relationship.pendingRequest]: {
       message: "Already sent a request to this user.",
       buttonText: "Cancel Request",
+      action: handleCancelRequest,
     },
     [Relationship.null]: {
       message: "",
@@ -231,7 +237,10 @@ const SearchFriendModal = () => {
                 // searchedUserUIConfig.relationship === "friend"
                 //   ? handleStartConversation
                 //   : handleAddFriend
-                handleCancelRequest
+                // handleCancelRequest
+                searchedUserUIConfig.action
+                  ? searchedUserUIConfig.action
+                  : () => {}
               }
               style={({ pressed }) => [
                 tw.style("mt-4 items-center rounded-md border border-primary"),
