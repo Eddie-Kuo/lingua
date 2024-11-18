@@ -21,6 +21,7 @@ import {
 } from "@/database/queries/conversations";
 import { useRouter } from "expo-router";
 import {
+  cancelFriendRequest,
   checkForFriendRequest,
   createFriendRequest,
 } from "@/database/queries/friend-requests";
@@ -37,6 +38,7 @@ type SearchedUserUIConfig = {
   [key in Relationship]: {
     message: string;
     buttonText: string;
+    requestId?: number;
   };
 };
 
@@ -89,7 +91,6 @@ const SearchFriendModal = () => {
     setIsLoading(true);
 
     getUserByPhoneNumber(fullPhoneNumber).then(async (user) => {
-      console.log("🚀 ~ getUserByPhoneNumber ~ user:", user);
       if (!user) {
         setSearchedUserUIConfig({
           ...uiConfigurations[Relationship.notFound],
@@ -113,6 +114,7 @@ const SearchFriendModal = () => {
           setSearchedUserUIConfig({
             ...uiConfigurations[Relationship.pendingRequest],
             relationship: Relationship.pendingRequest,
+            requestId: hasPendingFriendRequest.id,
           });
         } else {
           setSearchedUserUIConfig({
@@ -134,7 +136,18 @@ const SearchFriendModal = () => {
     });
   };
 
-  async function handleStartConversation() {
+  const handleAddFriend = async () => {
+    // the check if there is a pending friend request is already performed when the user is searched
+    // so we can just create a new request
+    createFriendRequest(userInfo.id, searchedUser!.id).then(() => {
+      setSearchedUserUIConfig({
+        ...uiConfigurations[Relationship.pendingRequest],
+        relationship: Relationship.pendingRequest,
+      });
+    });
+  };
+
+  const handleStartConversation = async () => {
     // check if we already have an active conversation with this user
     let conversation = await getConversationByUserId(
       userInfo.id,
@@ -154,17 +167,37 @@ const SearchFriendModal = () => {
         otherUserId: conversation.friend_user_id,
       },
     });
-  }
+  };
 
-  async function handleAddFriend() {
-    // the check if there is a pending friend request is already performed when the user is searched
-    // so we can just create a new request
-    await createFriendRequest(userInfo.id, searchedUser!.id);
-    setSearchedUserUIConfig({
-      ...uiConfigurations[Relationship.pendingRequest],
-      relationship: Relationship.pendingRequest,
-    });
-  }
+  const handleCancelRequest = async () => {
+    if (!searchedUserUIConfig.requestId) {
+      return;
+    }
+
+    cancelFriendRequest(searchedUserUIConfig.requestId)
+      .then(() => {
+        setSearchedUserUIConfig({
+          ...uiConfigurations[Relationship.notFriend],
+          relationship: Relationship.notFriend,
+        });
+      })
+      .finally(() => {
+        router.back();
+      });
+  };
+
+  const determineAction = () => {
+    switch (searchedUserUIConfig.relationship) {
+      case Relationship.friend:
+        return handleStartConversation;
+      case Relationship.notFriend:
+        return handleAddFriend;
+      case Relationship.pendingRequest:
+        return handleCancelRequest;
+      default:
+        return () => {};
+    }
+  };
 
   return (
     <View style={tw.style("flex-1 bg-primary py-3")}>
@@ -215,11 +248,7 @@ const SearchFriendModal = () => {
             </Text>
             <Pressable
               // Todo: Refactor
-              onPress={
-                searchedUserUIConfig.relationship === "friend"
-                  ? handleStartConversation
-                  : handleAddFriend
-              }
+              onPress={determineAction()}
               style={({ pressed }) => [
                 tw.style("mt-4 items-center rounded-md border border-primary"),
                 pressed ? { opacity: 0.75 } : {},

@@ -120,6 +120,13 @@
       "when": 1730770070645,
       "tag": "0016_neat_giant_man",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1731958253752,
+      "tag": "0017_curvy_warlock",
+      "breakpoints": true
     }
   ]
 }
