@@ -5,6 +5,7 @@ import {
   ListRenderItem,
   Image,
   Pressable,
+  Button,
 } from "react-native";
 import { tw } from "@/utils/tailwind";
 import { UserInfo } from "@/types/user";
