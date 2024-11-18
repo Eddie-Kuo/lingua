@@ -39,7 +39,6 @@ type SearchedUserUIConfig = {
     message: string;
     buttonText: string;
     requestId?: number;
-    // action: () => Promise<void>;
   };
 };
 
@@ -55,27 +54,22 @@ const SearchFriendModal = () => {
     [Relationship.friend]: {
       message: "is already your friend!",
       buttonText: "Chat",
-      // action: async () => handleStartConversation(),
     },
     [Relationship.notFriend]: {
       message: "add to start chatting!",
       buttonText: "Add Friend",
-      // action: async () => handleAddFriend(),
     },
     [Relationship.notFound]: {
       message: "No user by that phone number found.",
       buttonText: "",
-      // action: async () => {},
     },
     [Relationship.pendingRequest]: {
       message: "Already sent a request to this user.",
       buttonText: "Cancel Request",
-      // action: async () => handleCancelRequest(),
     },
     [Relationship.null]: {
       message: "",
       buttonText: "",
-      // action: async () => {},
     },
   };
 
@@ -254,16 +248,7 @@ const SearchFriendModal = () => {
             </Text>
             <Pressable
               // Todo: Refactor
-              onPress={
-                // searchedUserUIConfig.relationship === "friend"
-                //   ? handleStartConversation
-                //   : handleAddFriend
-                // handleCancelRequest
-                // searchedUserUIConfig.action
-                //   ? searchedUserUIConfig.action
-                //   : () => {}
-                determineAction()
-              }
+              onPress={determineAction()}
               style={({ pressed }) => [
                 tw.style("mt-4 items-center rounded-md border border-primary"),
                 pressed ? { opacity: 0.75 } : {},
