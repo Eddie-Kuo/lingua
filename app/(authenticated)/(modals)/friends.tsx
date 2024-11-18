@@ -25,6 +25,7 @@ import {
   checkForFriendRequest,
   createFriendRequest,
 } from "@/database/queries/friend-requests";
+import Toast from "react-native-toast-message";
 
 enum Relationship {
   friend = "friend",
@@ -183,6 +184,13 @@ const SearchFriendModal = () => {
       })
       .finally(() => {
         router.back();
+
+        Toast.show({
+          type: "success",
+          text1: "Friend request successfully cancelled",
+          topOffset: 70,
+          visibilityTime: 3000,
+        });
       });
   };
 
