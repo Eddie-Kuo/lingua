@@ -34,14 +34,12 @@ enum Relationship {
   null = "null",
 }
 
-type ActionFunction = () => Promise<void>;
-
 type SearchedUserUIConfig = {
   [key in Relationship]: {
     message: string;
     buttonText: string;
     requestId?: number;
-    action?: ActionFunction;
+    // action: () => Promise<void>;
   };
 };
 
@@ -57,25 +55,27 @@ const SearchFriendModal = () => {
     [Relationship.friend]: {
       message: "is already your friend!",
       buttonText: "Chat",
-      action: handleStartConversation,
+      // action: async () => handleStartConversation(),
     },
     [Relationship.notFriend]: {
       message: "add to start chatting!",
       buttonText: "Add Friend",
-      action: handleAddFriend,
+      // action: async () => handleAddFriend(),
     },
     [Relationship.notFound]: {
       message: "No user by that phone number found.",
       buttonText: "",
+      // action: async () => {},
     },
     [Relationship.pendingRequest]: {
       message: "Already sent a request to this user.",
       buttonText: "Cancel Request",
-      action: handleCancelRequest,
+      // action: async () => handleCancelRequest(),
     },
     [Relationship.null]: {
       message: "",
       buttonText: "",
+      // action: async () => {},
     },
   };
 
@@ -97,7 +97,6 @@ const SearchFriendModal = () => {
     setIsLoading(true);
 
     getUserByPhoneNumber(fullPhoneNumber).then(async (user) => {
-      console.log("🚀 ~ getUserByPhoneNumber ~ user:", user);
       if (!user) {
         setSearchedUserUIConfig({
           ...uiConfigurations[Relationship.notFound],
@@ -143,7 +142,18 @@ const SearchFriendModal = () => {
     });
   };
 
-  async function handleStartConversation() {
+  const handleAddFriend = async () => {
+    // the check if there is a pending friend request is already performed when the user is searched
+    // so we can just create a new request
+    createFriendRequest(userInfo.id, searchedUser!.id).then(() => {
+      setSearchedUserUIConfig({
+        ...uiConfigurations[Relationship.pendingRequest],
+        relationship: Relationship.pendingRequest,
+      });
+    });
+  };
+
+  const handleStartConversation = async () => {
     // check if we already have an active conversation with this user
     let conversation = await getConversationByUserId(
       userInfo.id,
@@ -163,26 +173,37 @@ const SearchFriendModal = () => {
         otherUserId: conversation.friend_user_id,
       },
     });
-  }
+  };
 
-  async function handleAddFriend() {
-    // the check if there is a pending friend request is already performed when the user is searched
-    // so we can just create a new request
-    await createFriendRequest(userInfo.id, searchedUser!.id);
-    setSearchedUserUIConfig({
-      ...uiConfigurations[Relationship.pendingRequest],
-      relationship: Relationship.pendingRequest,
-    });
-  }
-
-  async function handleCancelRequest() {
+  const handleCancelRequest = async () => {
     if (!searchedUserUIConfig.requestId) {
       return;
     }
 
-    await cancelFriendRequest(searchedUserUIConfig.requestId);
-    console.log("Friend Request Cancelled");
-  }
+    cancelFriendRequest(searchedUserUIConfig.requestId)
+      .then(() => {
+        setSearchedUserUIConfig({
+          ...uiConfigurations[Relationship.notFriend],
+          relationship: Relationship.notFriend,
+        });
+      })
+      .finally(() => {
+        router.back();
+      });
+  };
+
+  const determineAction = () => {
+    switch (searchedUserUIConfig.relationship) {
+      case Relationship.friend:
+        return handleStartConversation;
+      case Relationship.notFriend:
+        return handleAddFriend;
+      case Relationship.pendingRequest:
+        return handleCancelRequest;
+      default:
+        return () => {};
+    }
+  };
 
   return (
     <View style={tw.style("flex-1 bg-primary py-3")}>
@@ -238,9 +259,10 @@ const SearchFriendModal = () => {
                 //   ? handleStartConversation
                 //   : handleAddFriend
                 // handleCancelRequest
-                searchedUserUIConfig.action
-                  ? searchedUserUIConfig.action
-                  : () => {}
+                // searchedUserUIConfig.action
+                //   ? searchedUserUIConfig.action
+                //   : () => {}
+                determineAction()
               }
               style={({ pressed }) => [
                 tw.style("mt-4 items-center rounded-md border border-primary"),
