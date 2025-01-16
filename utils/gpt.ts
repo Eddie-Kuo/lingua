@@ -1,6 +1,9 @@
 import OpenAI from "openai";
-import { EXPO_OPENAI_API_KEY } from "@env";
+
+const openaiAPIKey = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
+
+console.log(openaiAPIKey);
 
 export const openai = new OpenAI({
-  apiKey: "EXPO_OPENAI_API_KEY", // Use the imported variable here
+  apiKey: openaiAPIKey,
 });

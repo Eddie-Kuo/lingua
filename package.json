@@ -1,7 +1,7 @@
 {
   "name": "lingua",
   "main": "expo-router/entry",
-  "version": "1.0.0",
+  "version": "1.0",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
@@ -22,6 +22,7 @@
     "base64-arraybuffer": "^1.0.2",
     "drizzle-orm": "^0.33.0",
     "expo": "~51.0.39",
+    "expo-dev-client": "~4.0.29",
     "expo-font": "~12.0.10",
     "expo-image-picker": "^15.0.7",
     "expo-linking": "~6.3.1",
@@ -38,9 +39,7 @@
     "react-dom": "18.2.0",
     "react-native": "0.74.5",
     "react-native-base64": "^0.2.1",
-    "react-native-config": "^1.5.3",
     "react-native-confirmation-code-field": "^7.4.0",
-    "react-native-dotenv": "^3.4.11",
     "react-native-element-dropdown": "^2.12.1",
     "react-native-get-random-values": "^1.11.0",
     "react-native-reanimated": "~3.10.1",
