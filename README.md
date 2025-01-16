@@ -1,10 +1,8 @@
-
 # Lingua
 
-This mobile app is built to bridge the generational gap between parents and their first generation children who are proficient in texting in different languages. 
+This mobile app is built to bridge the generational gap between parents and their first generation children who are proficient in texting in different languages.
 
 Traditionally, using Google Translate has been the "go to solution" in translating text. The problem with using Google Translate is that the translated text is often too literal and sounds robotic. Using AI and specific prompt engineering, Lingua (Latin for language) translates text messages in realtime while preserving the natural way of speaking in the language of choice as if it were from a native speaker.
-
 
 ## Features
 
@@ -13,22 +11,20 @@ Traditionally, using Google Translate has been the "go to solution" in translati
 - Chat comfortably in your native language even if the other is chatting in another language
 - Messages are translated in realtime
 
-
 ## Tech Stack
 
 **Client:** React Native Expo, TypeScript
 
 **Server:** Supabase, Drizzle ORM, OpenAI API
 
-
 ## Getting Started
 
 **Prerequisites**
 
-This project uses bun as package manager
+This project uses npm as package manager
 
 ```bash
-npm install -g bun
+npm install -g npm
 ```
 
 1. Clone the repo
@@ -46,7 +42,7 @@ npm install -g bun
 3. Install dependencies
 
 ```bash
-  bun install
+  npm install
 ```
 
 4. Setup environment variables
@@ -57,15 +53,19 @@ npm install -g bun
 
 5. Starting the development server
 
+Pre building the application requires some additional setup before continuing. Follow documentation to get your environment set up.
+
+Expo pre build docs: https://docs.expo.dev/guides/local-app-development/
+
 ```bash
 // Expo Go
-bunx expo start
+npx expo start
 
 // pre build
-bunx expo run:ios
-  
-```
-    
-## Screenshots
-Screenshots coming soon.
+npx expo run:ios
 
+```
+
+## Screenshots
+
+Screenshots coming soon.
