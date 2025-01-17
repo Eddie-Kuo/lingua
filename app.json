@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "lingua",
-    "slug": "lingua",
+    "name": "linguachat",
+    "slug": "linguachat",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -14,7 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.lingua"
+      "bundleIdentifier": "com.linguachat"
     },
     "android": {
       "adaptiveIcon": {
@@ -27,9 +27,20 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": ["expo-router", "expo-secure-store"],
+    "plugins": [
+      "expo-router",
+      "expo-secure-store"
+    ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "f5dd0349-371a-4b0a-978e-6a7783612219"
+      }
     }
   }
 }
